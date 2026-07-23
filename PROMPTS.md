@@ -1532,3 +1532,85 @@ Implement minimum login functionality during Green phase of TDD.
 Implemented login endpoint with password comparison and JWT generation. Verified tests and TypeScript build passed successfully.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are following strict Test Driven Development (TDD).
+
+Task:
+Create a failing test for JWT authentication middleware.
+
+Requirements:
+
+Create:
+
+src/tests/middleware/auth.middleware.test.ts
+
+The test should verify that requests without a valid JWT token are rejected.
+
+Scenario:
+
+GET /api/protected
+
+Without Authorization header.
+
+Expected response:
+
+HTTP 401
+
+{
+ success: false,
+ message: "Not authorized"
+}
+
+Requirements:
+
+- Do not create middleware implementation.
+- Do not modify application files.
+- Do not connect database.
+
+Only create the failing test.
+
+## Purpose:
+Create the failing authentication middleware test following the Red phase of TDD.
+
+## Result:
+Created middleware test and confirmed failure because authentication middleware did not exist.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are in the Green phase of Test Driven Development (TDD).
+
+Implement the minimum JWT authentication middleware.
+
+Create:
+
+src/middleware/auth.middleware.ts
+
+Requirements:
+
+- Read Authorization header.
+- Expect Bearer token format.
+- Verify token using jsonwebtoken.
+- Return 401 when token is missing.
+- Call next() when token is valid.
+
+Do not add:
+- roles
+- permissions
+- refresh tokens
+- extra authorization logic
+
+## Purpose:
+Implement minimum JWT middleware required during Green phase.
+
+## Result:
+Created JWT authentication middleware. Verified tests and TypeScript build passed successfully.
+
+---
