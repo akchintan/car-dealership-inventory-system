@@ -1311,3 +1311,120 @@ Implement the minimum user creation logic required during the Green phase of TDD
 Updated auth.controller.ts to create users through User.create(). Verified all tests and TypeScript build passed successfully.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are following strict Test Driven Development (TDD).
+
+Task:
+Create a failing integration test to verify password hashing during registration.
+
+Requirements:
+
+Update:
+
+src/tests/auth/register.test.ts
+
+Add a test that verifies:
+
+- User.create() is called
+- Password passed to User.create() is not equal to the original password
+- Password is stored as a hashed value
+
+The test should use mocked User.create().
+Do not connect to real MongoDB.
+
+The test must fail because password hashing has not been implemented.
+
+Do not modify:
+- controllers
+- models
+- routes
+- app.ts
+- database configuration
+- package.json
+
+## Purpose:
+Create the failing password hashing test following the Red phase of TDD.
+
+## Result:
+Created a password hashing test and confirmed it failed because registration stored the raw password.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are in the Green phase of Test Driven Development (TDD).
+
+Implement password hashing during registration.
+
+Update only:
+
+src/controllers/auth.controller.ts
+
+Requirements:
+
+- Import bcryptjs
+- Hash password using bcrypt.hash(password, 10)
+- Pass hashed password to User.create()
+
+Keep all existing validations unchanged.
+
+Do not add:
+- JWT
+- login logic
+- middleware
+- extra validation
+
+Do not modify:
+- tests
+- routes
+- models
+- app.ts
+- database configuration
+- package.json
+
+## Purpose:
+Implement minimum password hashing required during the Green phase of TDD.
+
+## Result:
+Added bcrypt password hashing before user creation. Verified tests and TypeScript build passed.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+Update the existing registration test to match the new password hashing behavior.
+
+Requirements:
+
+Update only:
+
+src/tests/auth/register.test.ts
+
+Change the user creation expectation.
+
+Do not expect plain password anymore.
+
+Verify:
+
+- User.create() receives a string password
+- Password passed is different from original password
+
+Keep test purpose unchanged.
+
+Do not modify application code.
+
+## Purpose:
+Keep tests aligned with the updated password hashing behavior.
+
+## Result:
+Updated registration test expectations. All tests passed successfully.
+
+---

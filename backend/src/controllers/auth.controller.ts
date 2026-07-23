@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
+import bcrypt from 'bcryptjs';
 import User from '../models/user.model';
 
-export const registerUser = (req: Request, res: Response): void => {
+export const registerUser = async (req: Request, res: Response): Promise<void> => {
   if (typeof req.body.name !== 'string' || req.body.name.trim() === '') {
     res.status(400).json({
       success: false,
@@ -55,10 +56,12 @@ export const registerUser = (req: Request, res: Response): void => {
     return;
   }
 
-  User.create({
+  const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+  await User.create({
     name: req.body.name,
     email: req.body.email,
-    password: req.body.password
+    password: hashedPassword
   });
 
   res.status(201).json({

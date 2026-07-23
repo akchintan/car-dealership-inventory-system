@@ -45,8 +45,27 @@ describe('POST /api/auth/register', () => {
     expect(mockedCreate).toHaveBeenCalledWith({
       name: userData.name,
       email: userData.email,
-      password: userData.password
+      password: expect.any(String)
     });
+    expect(mockedCreate.mock.calls[0][0].password).not.toBe(userData.password);
+  });
+
+  it('hashes the password before creating a user', async () => {
+    const userData = {
+      name: 'John Doe',
+      email: 'john@example.com',
+      password: 'Password123!'
+    };
+    const mockedCreate = User.create as jest.Mock;
+    mockedCreate.mockClear();
+    mockedCreate.mockResolvedValue(userData);
+
+    await request(app).post('/api/auth/register').send(userData);
+
+    expect(mockedCreate).toHaveBeenCalled();
+    const createdUser = mockedCreate.mock.calls[0][0];
+    expect(createdUser.password).not.toBe('Password123!');
+    expect(createdUser.password).toMatch(/^\$2[aby]\$\d{2}\$[./A-Za-z0-9]{53}$/);
   });
 
   it('returns an error when name is missing', async () => {
