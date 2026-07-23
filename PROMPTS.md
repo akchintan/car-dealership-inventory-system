@@ -56,3 +56,25 @@ Configure the TypeScript compiler for a clean production-ready backend structure
 Updated TypeScript configuration with proper source directory, build output directory, strict checking, and debugging support. Verified compilation successfully using npx tsc.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+Update only backend/package.json.
+
+Change the test script from:
+"test": "jest"
+
+to:
+"test": "jest --passWithNoTests"
+
+Do not modify any other files.
+
+## Purpose:
+Allow Jest setup verification before actual tests exist while maintaining TDD workflow.
+
+## Result:
+Updated npm test script so Jest exits successfully when no test files are present during initial project setup.
+
+---
