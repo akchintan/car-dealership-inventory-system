@@ -2039,3 +2039,85 @@ Implement the minimum Get All Cars API during the Green phase of TDD.
 Added GET /api/cars endpoint using Car.find(). Protected the route and verified tests and TypeScript build passed successfully.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are following strict Test Driven Development (TDD).
+
+Task:
+Create a failing integration test for updating a car by id.
+
+Create:
+
+src/tests/cars/update-car.test.ts
+
+Test endpoint:
+
+PUT /api/cars/:id
+
+Requirements:
+
+- Use Jest and Supertest.
+- Mock authentication middleware.
+- Mock Car.findByIdAndUpdate().
+
+Request body:
+
+{
+ price: 2700000,
+ status: "sold"
+}
+
+Verify:
+
+- Car.findByIdAndUpdate() is called with the provided id and update data.
+- Updated car is returned.
+
+Expected response:
+
+HTTP 200
+
+{
+ success: true,
+ car: expect.any(Object)
+}
+
+Do not implement controller or route.
+
+Do not modify application files.
+
+## Purpose:
+Create the failing update car test following the Red phase of TDD.
+
+## Result:
+Created update-car.test.ts and confirmed failure because PUT /api/cars/:id was not implemented.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are in the Green phase of Test Driven Development (TDD).
+
+Implement the minimum Update Car API.
+
+Requirements:
+
+- Add PUT /api/cars/:id endpoint.
+- Use Car.findByIdAndUpdate().
+- Return updated car.
+- Return 404 when car is not found.
+- Protect route using existing authentication middleware.
+
+Do not add extra features.
+
+## Purpose:
+Implement the minimum Update Car API during the Green phase of TDD.
+
+## Result:
+Added PUT /api/cars/:id endpoint with update logic and not-found handling. Verified tests and TypeScript build passed successfully.
+
+---

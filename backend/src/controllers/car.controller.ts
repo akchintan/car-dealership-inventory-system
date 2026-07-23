@@ -36,3 +36,22 @@ export const getSingleCar = async (req: Request, res: Response): Promise<void> =
     car
   });
 };
+
+export const updateCar = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params;
+  const updateData = req.body;
+  const updatedCar = await Car.findByIdAndUpdate(id, updateData);
+
+  if (!updatedCar) {
+    res.status(404).json({
+      success: false,
+      message: 'Car not found'
+    });
+    return;
+  }
+
+  res.status(200).json({
+    success: true,
+    car: updatedCar
+  });
+};
