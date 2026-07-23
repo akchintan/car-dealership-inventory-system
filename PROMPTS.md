@@ -1672,3 +1672,123 @@ Implement the minimum user profile endpoint required during the Green phase of T
 Created user.controller.ts and user.routes.ts, added GET /api/users/me, connected it in app.ts, returned authenticated user data, and verified tests and TypeScript build passed.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are following strict Test Driven Development (TDD).
+
+Task:
+Create a failing test for the Car model structure.
+
+Requirements:
+
+Create:
+
+src/tests/models/car.test.ts
+
+The test should verify that the Car model exists and contains required fields.
+
+Required fields:
+
+- brand
+- model
+- year
+- price
+- mileage
+- status
+
+Requirements:
+
+- Import Car model from ../../models/car.model
+- Verify the model exists.
+- Verify the schema contains all required fields.
+
+Do NOT create the model implementation yet.
+
+Do NOT modify:
+
+- controllers
+- routes
+- app.ts
+- server.ts
+- database configuration
+- package.json
+- existing models
+
+Only create the test file.
+
+The test must fail because Car model does not exist.
+
+Explain every line added.
+
+## Purpose:
+Create the failing Car model test following the Red phase of TDD.
+
+## Result:
+Created car model test and verified failure because the Car model implementation did not exist.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are in the Green phase of Test Driven Development (TDD).
+
+The Car model test fails because the Car model does not exist.
+
+Implement only the minimum code required to make the test pass.
+
+Create:
+
+src/models/car.model.ts
+
+Requirements:
+
+Create a Mongoose Car model.
+
+Schema fields:
+
+- brand: String, required
+- model: String, required
+- year: Number, required
+- price: Number, required
+- mileage: Number, required
+- status: String, required
+
+Requirements:
+
+- Import mongoose.
+- Create CarSchema.
+- Export Car model as default.
+
+Keep implementation minimal.
+
+Do NOT add:
+
+- image upload
+- owner/dealer relation
+- search functionality
+- extra fields
+- timestamps
+
+Do NOT modify:
+
+- tests
+- controllers
+- routes
+- app.ts
+- database configuration
+- package.json
+
+Explain every file modified.
+
+## Purpose:
+Create the minimum Car model required during the Green phase of TDD.
+
+## Result:
+Created car.model.ts with the required Mongoose schema fields. Verified all tests and TypeScript build passed successfully.
+
+---
