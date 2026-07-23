@@ -2447,3 +2447,58 @@ Fix middleware registration issue while maintaining TDD behavior.
 Fixed error middleware registration and verified all tests and build passed successfully.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are following strict Test Driven Development (TDD).
+
+Task:
+Create a failing test for Swagger API documentation setup.
+
+Create:
+
+src/tests/docs/swagger.test.ts
+
+Requirements:
+
+- Use Jest and Supertest.
+- Test GET /api-docs/ endpoint.
+- Verify Swagger UI documentation route exists.
+- Expect successful HTML response.
+
+Do not implement Swagger setup.
+
+## Purpose:
+Create the failing Swagger documentation test following the Red phase of TDD.
+
+## Result:
+Created swagger.test.ts and confirmed failure because Swagger documentation was not configured.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are in the Green phase of Test Driven Development (TDD).
+
+Implement minimum Swagger documentation setup.
+
+Requirements:
+
+- Install swagger-ui-express and swagger-jsdoc.
+- Create Swagger configuration.
+- Add /api-docs route in app.ts.
+- Configure basic API title and version.
+
+Do not add endpoint documentation yet.
+
+## Purpose:
+Implement Swagger API documentation during the Green phase of TDD.
+
+## Result:
+Added Swagger configuration and API documentation endpoint. Verified tests and TypeScript build passed successfully.
+
+---
