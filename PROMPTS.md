@@ -2121,3 +2121,78 @@ Implement the minimum Update Car API during the Green phase of TDD.
 Added PUT /api/cars/:id endpoint with update logic and not-found handling. Verified tests and TypeScript build passed successfully.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are following strict Test Driven Development (TDD).
+
+Task:
+Create a failing integration test for deleting a car by id.
+
+Create:
+
+src/tests/cars/delete-car.test.ts
+
+Test endpoint:
+
+DELETE /api/cars/:id
+
+Requirements:
+
+- Use Jest and Supertest.
+- Mock authentication middleware.
+- Mock Car.findByIdAndDelete().
+
+Verify:
+
+- Car.findByIdAndDelete() is called with provided id.
+- Successful deletion returns correct response.
+
+Expected response:
+
+HTTP 200
+
+{
+ success: true,
+ message: "Car deleted successfully"
+}
+
+Do not implement controller or route.
+
+Do not modify application files.
+
+## Purpose:
+Create the failing delete car test following the Red phase of TDD.
+
+## Result:
+Created delete-car.test.ts and confirmed failure because DELETE /api/cars/:id was not implemented.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are in the Green phase of Test Driven Development (TDD).
+
+Implement the minimum Delete Car API.
+
+Requirements:
+
+- Add DELETE /api/cars/:id endpoint.
+- Use Car.findByIdAndDelete().
+- Return success message after deletion.
+- Return 404 when car is not found.
+- Protect route using existing authentication middleware.
+
+Do not add extra features.
+
+## Purpose:
+Implement the minimum Delete Car API during the Green phase of TDD.
+
+## Result:
+Added DELETE /api/cars/:id endpoint with delete logic and not-found handling. Verified tests and TypeScript build passed successfully.
+
+---

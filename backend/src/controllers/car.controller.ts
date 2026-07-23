@@ -55,3 +55,21 @@ export const updateCar = async (req: Request, res: Response): Promise<void> => {
     car: updatedCar
   });
 };
+
+export const deleteCar = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params;
+  const deletedCar = await Car.findByIdAndDelete(id);
+
+  if (!deletedCar) {
+    res.status(404).json({
+      success: false,
+      message: 'Car not found'
+    });
+    return;
+  }
+
+  res.status(200).json({
+    success: true,
+    message: 'Car deleted successfully'
+  });
+};
