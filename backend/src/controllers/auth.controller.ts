@@ -17,6 +17,14 @@ export const registerUser = (req: Request, res: Response): void => {
     return;
   }
 
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(req.body.email)) {
+    res.status(400).json({
+      success: false,
+      message: 'Invalid email format'
+    });
+    return;
+  }
+
   res.status(201).json({
     success: true,
     message: 'User registered successfully'

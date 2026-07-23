@@ -453,3 +453,117 @@ Implement the minimum validation required for the email field so the failing reg
 Updated src/controllers/auth.controller.ts to validate the required email field, returning HTTP 400 with "Email is required" for invalid input while preserving the existing registration success response. Verified that all Jest tests passed and the TypeScript build completed successfully.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are following strict Test Driven Development (TDD).
+
+Task:
+Update the registration integration tests.
+
+Requirements:
+
+Update only:
+src/tests/auth/register.test.ts
+
+Add ONE new failing integration test.
+
+Scenario:
+
+POST /api/auth/register
+
+Request Body:
+
+{
+  "name": "John Doe",
+  "email": "invalid-email",
+  "password": "Password123!"
+}
+
+Expected Response:
+
+HTTP 400
+
+{
+  "success": false,
+  "message": "Invalid email format"
+}
+
+Keep the existing tests unchanged.
+
+Do NOT modify:
+- controllers
+- routes
+- app.ts
+- middleware
+- package.json
+
+Only update the test file.
+
+The test must fail because email format validation has not been implemented.
+
+Explain every new line you add.
+
+## Purpose:
+Create a failing integration test for invalid email format before implementing validation, following the Red phase of TDD.
+
+## Result:
+Added a new integration test covering registration with an invalid email format. Verified that the new test failed as expected because email format validation had not yet been implemented.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are in the Green phase of Test Driven Development (TDD).
+
+The integration test for POST /api/auth/register fails because the application does not validate the email format.
+
+Implement only the minimum code required to make the failing test pass.
+
+Requirements:
+
+Update only:
+src/controllers/auth.controller.ts
+
+Keep the existing name validation unchanged.
+
+Keep the existing email-required validation unchanged.
+
+After confirming that an email exists, validate its format using a simple regular expression.
+
+If the email format is invalid, return:
+
+HTTP 400
+
+{
+  "success": false,
+  "message": "Invalid email format"
+}
+
+Keep the existing success response unchanged.
+
+Do NOT modify:
+- routes
+- tests
+- app.ts
+- package.json
+- middleware
+
+Do NOT implement:
+- password validation
+- database logic
+- JWT generation
+
+Implement only the minimum code required for the current failing test.
+
+## Purpose:
+Implement the minimum email format validation required for the registration endpoint while preserving existing behavior.
+
+## Result:
+Updated src/controllers/auth.controller.ts to validate the email format after confirming the email field is present. Invalid email addresses now return HTTP 400 with "Invalid email format". Verified that all Jest tests passed and the TypeScript build completed successfully.
+
+---
