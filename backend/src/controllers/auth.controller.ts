@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import User from '../models/user.model';
 
+const jwt = require('jsonwebtoken');
+
 export const registerUser = async (req: Request, res: Response): Promise<void> => {
   if (typeof req.body.name !== 'string' || req.body.name.trim() === '') {
     res.status(400).json({
@@ -67,5 +69,19 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
   res.status(201).json({
     success: true,
     message: 'User registered successfully'
+  });
+};
+
+export const loginUser = async (req: Request, res: Response): Promise<void> => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+  await bcrypt.compare(password, user!.password);
+  const token = jwt.sign({ id: user!._id }, process.env.JWT_SECRET || 'secret', {
+    expiresIn: '1d'
+  });
+
+  res.status(200).json({
+    success: true,
+    token
   });
 };

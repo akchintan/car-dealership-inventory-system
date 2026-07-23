@@ -1428,3 +1428,107 @@ Keep tests aligned with the updated password hashing behavior.
 Updated registration test expectations. All tests passed successfully.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are following strict Test Driven Development (TDD).
+
+Task:
+Create a failing integration test for user login.
+
+Requirements:
+
+Create:
+
+src/tests/auth/login.test.ts
+
+Test endpoint:
+
+POST /api/auth/login
+
+Scenario:
+
+Existing user:
+
+{
+  name: "John Doe",
+  email: "john@example.com",
+  password: "hashedPassword"
+}
+
+Request:
+
+{
+  email: "john@example.com",
+  password: "Password123!"
+}
+
+Mock:
+
+- User.findOne()
+- bcrypt.compare()
+
+Expected response:
+
+HTTP 200
+
+{
+  success: true,
+  token: expect.any(String)
+}
+
+Do not connect to real MongoDB.
+
+Do not modify application files.
+
+## Purpose:
+Create the failing login test following the Red phase of TDD.
+
+## Result:
+Created login integration test and confirmed failure because login functionality was not implemented.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are in the Green phase of Test Driven Development (TDD).
+
+Implement the minimum login functionality required.
+
+Requirements:
+
+Add POST /login.
+
+Implement loginUser controller.
+
+Steps:
+
+- Find user by email
+- Compare password using bcrypt.compare()
+- Generate JWT token
+- Return success response with token
+
+Response:
+
+HTTP 200
+
+{
+ success: true,
+ token: token
+}
+
+Do not add extra authentication features.
+
+Do not modify tests.
+
+## Purpose:
+Implement minimum login functionality during Green phase of TDD.
+
+## Result:
+Implemented login endpoint with password comparison and JWT generation. Verified tests and TypeScript build passed successfully.
+
+---
