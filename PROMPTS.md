@@ -1792,3 +1792,94 @@ Create the minimum Car model required during the Green phase of TDD.
 Created car.model.ts with the required Mongoose schema fields. Verified all tests and TypeScript build passed successfully.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are following strict Test Driven Development (TDD).
+
+Task:
+Create a failing integration test for creating a car.
+
+Create:
+
+src/tests/cars/create-car.test.ts
+
+Test endpoint:
+
+POST /api/cars
+
+Request body:
+
+{
+ brand: "Toyota",
+ model: "Camry",
+ year: 2024,
+ price: 2500000,
+ mileage: 15,
+ status: "available"
+}
+
+Requirements:
+
+- Use Jest and Supertest.
+- Mock Car.create().
+- Mock authentication middleware.
+- Verify Car.create() is called with provided car details.
+
+Expected response:
+
+HTTP 201
+
+{
+ success: true,
+ car: expect.any(Object)
+}
+
+Do not implement controller or route.
+
+Do not modify application files.
+
+## Purpose:
+Create the failing car creation test following the Red phase of TDD.
+
+## Result:
+Created create-car.test.ts and confirmed failure because POST /api/cars was not implemented.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are in the Green phase of Test Driven Development (TDD).
+
+Implement the minimum Create Car API required.
+
+Create:
+
+src/controllers/car.controller.ts
+
+Create:
+
+src/routes/car.routes.ts
+
+Requirements:
+
+- Add POST /api/cars endpoint.
+- Read car details from request body.
+- Use Car.create().
+- Return HTTP 201 response with created car.
+- Protect route using existing authentication middleware.
+- Register /api/cars route in app.ts.
+
+Do not add extra features.
+
+## Purpose:
+Implement the minimum Create Car API during the Green phase of TDD.
+
+## Result:
+Added car controller and route for creating cars. Connected authentication middleware and verified tests and build passed successfully.
+
+---
