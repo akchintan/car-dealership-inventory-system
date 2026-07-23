@@ -242,3 +242,93 @@ Implement the minimum registration endpoint required to satisfy the failing inte
 Created src/routes/auth.routes.ts, registered the authentication router in src/app.ts, implemented the POST /api/auth/register endpoint, and verified that both integration tests passed successfully using Jest.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are continuing the TDD workflow.
+
+The registration endpoint already passes all tests.
+
+Refactor the implementation without changing its behavior.
+
+Requirements:
+
+1. Create:
+src/controllers/auth.controller.ts
+
+2. Move the registration logic from the route into a controller function named:
+
+registerUser
+
+3. Update:
+src/routes/auth.routes.ts
+
+so that it imports registerUser and uses it for:
+
+POST /register
+
+4. Do NOT change:
+- Response body
+- Status code
+- Route path
+- Tests
+- app.ts
+- package.json
+
+5. The existing Jest tests must continue to pass without modification.
+
+Explain every file you changed.
+
+## Purpose:
+Refactor the registration endpoint by separating routing and controller responsibilities while preserving existing behavior and keeping all tests passing.
+
+## Result:
+Created `src/controllers/auth.controller.ts`, moved the registration logic into the `registerUser` controller function, updated the authentication route to use the controller, and verified that TypeScript compilation and all Jest tests continued to pass successfully.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are continuing the TDD workflow.
+
+The registration endpoint already passes all tests.
+
+Refactor the implementation without changing its behavior.
+
+Requirements:
+
+1. Create:
+src/controllers/auth.controller.ts
+
+2. Move the registration logic from the route into a controller function named:
+registerUser
+
+3. Update:
+src/routes/auth.routes.ts
+
+so that it imports registerUser and uses it for:
+POST /register
+
+4. Do NOT change:
+- Response body
+- Status code
+- Route path
+- Tests
+- app.ts
+- package.json
+
+5. The existing Jest tests must continue to pass without modification.
+
+Explain every file you changed.
+
+## Purpose:
+Refactor the registration endpoint by separating routing and controller responsibilities while preserving existing behavior and keeping all tests passing.
+
+## Result:
+Created src/controllers/auth.controller.ts, moved the registration logic into the registerUser controller function, updated the authentication route to use the controller, and verified that TypeScript compilation and all Jest tests continued to pass successfully.
+
+---
