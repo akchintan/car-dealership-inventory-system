@@ -2196,3 +2196,81 @@ Implement the minimum Delete Car API during the Green phase of TDD.
 Added DELETE /api/cars/:id endpoint with delete logic and not-found handling. Verified tests and TypeScript build passed successfully.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are following strict Test Driven Development (TDD).
+
+Task:
+Create a failing integration test for searching and filtering cars.
+
+Create:
+
+src/tests/cars/search-cars.test.ts
+
+Test endpoint:
+
+GET /api/cars?brand=Toyota&status=available
+
+Requirements:
+
+- Use Jest and Supertest.
+- Mock authentication middleware.
+- Mock Car.find().
+
+Verify:
+
+- Car.find() is called with the provided filter conditions.
+- Returned filtered cars are included in response.
+
+Expected response:
+
+HTTP 200
+
+{
+ success: true,
+ cars: expect.any(Array)
+}
+
+Do not implement filtering logic.
+
+Do not modify application files.
+
+## Purpose:
+Create the failing search/filter test following the Red phase of TDD.
+
+## Result:
+Created search-cars.test.ts and confirmed failure because filtering logic was not implemented.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are in the Green phase of Test Driven Development (TDD).
+
+Implement the minimum car search/filter functionality.
+
+Requirements:
+
+- Update GET /api/cars controller.
+- Read brand and status query parameters.
+- Create dynamic filter object.
+- Use Car.find(filter).
+- Return filtered cars.
+
+Do not add:
+- pagination
+- sorting
+- advanced search
+
+## Purpose:
+Implement minimum search/filter functionality during the Green phase of TDD.
+
+## Result:
+Added query-based filtering using Car.find(). Verified tests and TypeScript build passed successfully.
+
+---

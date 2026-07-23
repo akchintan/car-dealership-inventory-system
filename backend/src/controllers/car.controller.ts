@@ -10,8 +10,18 @@ export const createCar = async (req: Request, res: Response): Promise<void> => {
   });
 };
 
-export const getCars = async (_req: Request, res: Response): Promise<void> => {
-  const cars = await Car.find();
+export const getCars = async (req: Request, res: Response): Promise<void> => {
+  const filters: { brand?: string; status?: string } = {};
+
+  if (typeof req.query.brand === 'string') {
+    filters.brand = req.query.brand;
+  }
+
+  if (typeof req.query.status === 'string') {
+    filters.status = req.query.status;
+  }
+
+  const cars = await Car.find(filters);
 
   res.status(200).json({
     success: true,
