@@ -25,6 +25,14 @@ export const registerUser = (req: Request, res: Response): void => {
     return;
   }
 
+  if (typeof req.body.password !== 'string' || req.body.password.trim() === '') {
+    res.status(400).json({
+      success: false,
+      message: 'Password is required'
+    });
+    return;
+  }
+
   res.status(201).json({
     success: true,
     message: 'User registered successfully'

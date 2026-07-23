@@ -57,4 +57,17 @@ describe('POST /api/auth/register', () => {
       message: 'Invalid email format'
     });
   });
+
+  it('returns an error when password is missing', async () => {
+    const response = await request(app).post('/api/auth/register').send({
+      name: 'John Doe',
+      email: 'john@example.com'
+    });
+
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual({
+      success: false,
+      message: 'Password is required'
+    });
+  });
 });

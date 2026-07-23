@@ -567,3 +567,125 @@ Implement the minimum email format validation required for the registration endp
 Updated src/controllers/auth.controller.ts to validate the email format after confirming the email field is present. Invalid email addresses now return HTTP 400 with "Invalid email format". Verified that all Jest tests passed and the TypeScript build completed successfully.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are following strict Test Driven Development (TDD).
+
+Task:
+Add one failing integration test for password required validation.
+
+Requirements:
+
+Update only:
+
+src/tests/auth/register.test.ts
+
+Add ONE new test case.
+
+Scenario:
+
+POST /api/auth/register
+
+Request Body:
+
+{
+  "name": "John Doe",
+  "email": "john@example.com"
+}
+
+The password field is intentionally missing.
+
+Expected Response:
+
+HTTP 400
+
+{
+  "success": false,
+  "message": "Password is required"
+}
+
+Keep all existing tests unchanged.
+
+Do NOT modify:
+- controllers
+- routes
+- app.ts
+- middleware
+- package.json
+
+Only update the test file.
+
+The test must fail because password validation has not been implemented yet.
+
+Explain every new line added.
+
+## Purpose:
+Create a failing integration test for required password validation following the Red phase of TDD.
+
+## Result:
+Added a new integration test for missing password validation. Verified that the test failed as expected because password validation was not implemented.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are in the Green phase of Test Driven Development (TDD).
+
+The integration test for POST /api/auth/register fails because the application does not validate the required password field.
+
+Implement only the minimum code required to make the failing test pass.
+
+Requirements:
+
+Update only:
+
+src/controllers/auth.controller.ts
+
+Keep existing validations unchanged:
+
+- Name required validation
+- Email required validation
+- Email format validation
+
+Add password required validation.
+
+If password is missing, invalid, or empty, return:
+
+HTTP 400
+
+{
+  "success": false,
+  "message": "Password is required"
+}
+
+Keep the existing success response unchanged.
+
+Do NOT modify:
+- routes
+- tests
+- app.ts
+- package.json
+- middleware
+
+Do NOT implement:
+- password hashing
+- JWT
+- database logic
+- password strength validation
+
+Implement only the minimum code required for the current failing test.
+
+Explain every file you modify.
+
+## Purpose:
+Implement the minimum password required validation required to satisfy the failing registration test while preserving existing behavior.
+
+## Result:
+Updated src/controllers/auth.controller.ts to validate the password field after existing validations. Missing or invalid passwords now return HTTP 400 with "Password is required". Verified all Jest tests and TypeScript build passed successfully.
+
+---
