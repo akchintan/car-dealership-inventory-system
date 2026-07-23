@@ -130,3 +130,115 @@ Create the first automated backend integration test following the TDD workflow.
 Created the first Jest + Supertest integration test for the health endpoint. The test was executed successfully using `npm test` on Node.js v24.15.0 and passed, confirming that GET / returns HTTP 200 and the expected JSON response.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are following strict Test Driven Development (TDD).
+
+Task:
+Create a failing integration test for user registration.
+
+Requirements:
+
+1. Create or update:
+backend/src/tests/auth/register.test.ts
+
+2. Use Jest and Supertest.
+
+3. Import the existing Express app from src/app.ts.
+
+4. Write one integration test:
+
+POST /api/auth/register
+
+Request body:
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "Password123!"
+}
+
+Expected response:
+HTTP 201
+
+{
+  "success": true,
+  "message": "User registered successfully"
+}
+
+Do NOT modify:
+- app.ts
+- server.ts
+- routes
+- controllers
+- models
+- middleware
+- package.json
+
+Only create the test file.
+
+The test is expected to FAIL because the endpoint does not exist.
+
+Explain every line after generating the file.
+
+## Purpose:
+Create the first failing integration test for the user registration endpoint following the Red phase of the TDD cycle.
+
+## Result:
+Created src/tests/auth/register.test.ts containing a Jest and Supertest integration test for POST /api/auth/register. The test failed as expected because the endpoint had not yet been implemented, completing the Red phase of TDD.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are in the Green phase of Test Driven Development (TDD).
+
+The test for POST /api/auth/register currently fails because the endpoint does not exist.
+
+Implement the minimum code required to make the test pass.
+
+Requirements:
+
+1. Create:
+- src/routes/auth.routes.ts
+
+2. Register this router in src/app.ts using:
+- /api/auth
+
+3. Add only one route:
+
+POST /register
+
+Return:
+
+HTTP 201
+
+{
+  "success": true,
+  "message": "User registered successfully"
+}
+
+Do NOT:
+- Connect MongoDB
+- Create models
+- Create controllers
+- Hash passwords
+- Generate JWT
+- Add validation
+- Add middleware
+
+Keep the implementation as small as possible so only the current test passes.
+
+Explain every file you modify.
+
+## Purpose:
+Implement the minimum registration endpoint required to satisfy the failing integration test during the Green phase of TDD.
+
+## Result:
+Created src/routes/auth.routes.ts, registered the authentication router in src/app.ts, implemented the POST /api/auth/register endpoint, and verified that both integration tests passed successfully using Jest.
+
+---
