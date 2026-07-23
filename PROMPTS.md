@@ -393,3 +393,63 @@ Implement the minimum validation required for the `name` field so the failing re
 Updated `src/controllers/auth.controller.ts` to validate the `name` field, returning HTTP 400 with `"Name is required"` for invalid input and preserving the existing HTTP 201 success response. Verified that all tests passed and the TypeScript build succeeded.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are in the Green phase of Test Driven Development (TDD).
+
+The integration test for POST /api/auth/register fails because the application does not validate the required email field.
+
+Implement only the minimum code required to make the failing test pass.
+
+Requirements:
+
+- Update only:
+  src/controllers/auth.controller.ts
+
+- Before returning the success response, validate the email field.
+
+- If req.body.email is:
+  - missing
+  - undefined
+  - null
+  - not a string
+  - an empty string
+  - or contains only whitespace
+
+Return:
+
+HTTP 400
+
+{
+  "success": false,
+  "message": "Email is required"
+}
+
+Keep the existing name validation unchanged.
+
+Keep the existing success response unchanged.
+
+Do NOT modify:
+- routes
+- tests
+- app.ts
+- package.json
+- middleware
+
+Do not implement email format validation.
+Do not implement password validation.
+
+Implement only the minimum code necessary for the current failing test.
+
+Explain every file you modify.
+
+## Purpose:
+Implement the minimum validation required for the email field so the failing registration integration test passes while preserving existing behavior.
+
+## Result:
+Updated src/controllers/auth.controller.ts to validate the required email field, returning HTTP 400 with "Email is required" for invalid input while preserving the existing registration success response. Verified that all Jest tests passed and the TypeScript build completed successfully.
+
+---

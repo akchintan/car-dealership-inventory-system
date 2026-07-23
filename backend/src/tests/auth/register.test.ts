@@ -30,4 +30,17 @@ describe('POST /api/auth/register', () => {
       message: 'Name is required'
     });
   });
+
+  it('returns an error when email is missing', async () => {
+    const response = await request(app).post('/api/auth/register').send({
+      name: 'John Doe',
+      password: 'Password123!'
+    });
+
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual({
+      success: false,
+      message: 'Email is required'
+    });
+  });
 });

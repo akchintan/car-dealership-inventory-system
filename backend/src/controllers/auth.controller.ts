@@ -9,6 +9,14 @@ export const registerUser = (req: Request, res: Response): void => {
     return;
   }
 
+  if (typeof req.body.email !== 'string' || req.body.email.trim() === '') {
+    res.status(400).json({
+      success: false,
+      message: 'Email is required'
+    });
+    return;
+  }
+
   res.status(201).json({
     success: true,
     message: 'User registered successfully'
