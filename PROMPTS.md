@@ -811,3 +811,136 @@ Implement the minimum password length validation required to satisfy the failing
 Updated src/controllers/auth.controller.ts to reject passwords shorter than 8 characters. The endpoint now returns HTTP 400 with the required message while keeping existing registration behavior unchanged. Verified all Jest tests and TypeScript build passed successfully.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are following strict Test Driven Development (TDD).
+
+Task:
+Add one failing integration test for password strength validation.
+
+Requirements:
+
+Update only:
+
+src/tests/auth/register.test.ts
+
+Add ONE new test case.
+
+Scenario:
+
+POST /api/auth/register
+
+Request Body:
+
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "password123"
+}
+
+The password is intentionally weak because it does not contain:
+- uppercase letter
+- special character
+
+Expected Response:
+
+HTTP 400
+
+{
+  "success": false,
+  "message": "Password must contain uppercase, lowercase, number and special character"
+}
+
+Keep all existing tests unchanged.
+
+Do NOT modify:
+- controllers
+- routes
+- app.ts
+- middleware
+- package.json
+
+Only update the test file.
+
+The test must fail because password strength validation has not been implemented yet.
+
+Explain every new line added.
+
+## Purpose:
+Create a failing integration test for password strength validation following the Red phase of TDD.
+
+## Result:
+Added a new integration test for rejecting weak passwords. Verified that the test failed as expected because password strength validation was not implemented.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are in the Green phase of Test Driven Development (TDD).
+
+The integration test for POST /api/auth/register fails because the application does not validate password strength.
+
+Implement only the minimum code required to make the failing test pass.
+
+Requirements:
+
+Update only:
+
+src/controllers/auth.controller.ts
+
+Keep all existing validations unchanged:
+
+- Name required validation
+- Email required validation
+- Email format validation
+- Password required validation
+- Password minimum length validation
+
+Add password strength validation.
+
+The password must contain:
+- uppercase letter
+- lowercase letter
+- number
+- special character
+
+If the password does not satisfy these rules, return:
+
+HTTP 400
+
+{
+  "success": false,
+  "message": "Password must contain uppercase, lowercase, number and special character"
+}
+
+Keep the existing success response unchanged.
+
+Do NOT modify:
+- routes
+- tests
+- app.ts
+- package.json
+- middleware
+
+Do NOT implement:
+- password hashing
+- JWT
+- database logic
+- user model
+
+Implement only the minimum code required for the current failing test.
+
+Explain every file you modify.
+
+## Purpose:
+Implement the minimum password strength validation required to satisfy the failing registration test while preserving existing behavior.
+
+## Result:
+Updated src/controllers/auth.controller.ts to validate password strength requirements. Weak passwords now return HTTP 400 with the required message. Verified all Jest tests and TypeScript build passed successfully.
+
+---

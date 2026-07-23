@@ -84,4 +84,18 @@ describe('POST /api/auth/register', () => {
       message: 'Password must be at least 8 characters'
     });
   });
+
+  it('returns an error when password is weak', async () => {
+    const response = await request(app).post('/api/auth/register').send({
+      name: 'John Doe',
+      email: 'john@example.com',
+      password: 'password123'
+    });
+
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual({
+      success: false,
+      message: 'Password must contain uppercase, lowercase, number and special character'
+    });
+  });
 });

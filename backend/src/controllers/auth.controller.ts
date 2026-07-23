@@ -41,6 +41,19 @@ export const registerUser = (req: Request, res: Response): void => {
     return;
   }
 
+  if (
+    !/[A-Z]/.test(req.body.password) ||
+    !/[a-z]/.test(req.body.password) ||
+    !/\d/.test(req.body.password) ||
+    !/[^A-Za-z0-9]/.test(req.body.password)
+  ) {
+    res.status(400).json({
+      success: false,
+      message: 'Password must contain uppercase, lowercase, number and special character'
+    });
+    return;
+  }
+
   res.status(201).json({
     success: true,
     message: 'User registered successfully'
