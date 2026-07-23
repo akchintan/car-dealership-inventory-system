@@ -1052,3 +1052,118 @@ Implement the minimum database connection function required to satisfy the faili
 Created src/config/database.ts with connectDatabase(). Added MongoDB URI validation and mongoose connection handling. Verified Jest tests and TypeScript build passed successfully.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are following strict Test Driven Development (TDD).
+
+Task:
+Create a failing test for the User model structure.
+
+Requirements:
+
+Create:
+
+src/tests/models/user.test.ts
+
+The test should verify that the User model exists and contains required fields.
+
+Required fields:
+
+- name
+- email
+- password
+
+Requirements:
+
+- Import User from ../../models/user.model
+- Verify the model exists
+- Verify the schema contains:
+  name
+  email
+  password
+
+Do NOT create the model implementation yet.
+
+Do NOT modify:
+- controllers
+- routes
+- app.ts
+- server.ts
+- database configuration
+- package.json
+
+Only create the test file.
+
+The test must fail because the User model does not exist.
+
+Explain every line added.
+
+## Purpose:
+Create the failing User model test following the Red phase of TDD.
+
+## Result:
+Created a User model test that verifies the required schema fields. Confirmed the test failed before implementing the model.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are in the Green phase of Test Driven Development (TDD).
+
+The User model test fails because the User model does not exist.
+
+Implement only the minimum code required to make the failing test pass.
+
+Create:
+
+src/models/user.model.ts
+
+Requirements:
+
+Create a Mongoose User model.
+
+Schema fields:
+
+- name: String, required
+- email: String, required, unique
+- password: String, required
+
+Requirements:
+
+- Import mongoose
+- Create UserSchema
+- Export User model as default
+
+Do NOT modify:
+- tests
+- controllers
+- routes
+- app.ts
+- server.ts
+- database configuration
+- package.json
+
+Do NOT add:
+- password hashing
+- JWT
+- middleware
+- hooks
+- timestamps
+- extra fields
+
+Keep implementation minimal.
+
+Explain every file modified.
+
+## Purpose:
+Implement the minimum User model required to satisfy the failing model test during the Green phase of TDD.
+
+## Result:
+Created src/models/user.model.ts with the required Mongoose schema fields. Verified Jest tests and TypeScript build passed successfully.
+
+---
