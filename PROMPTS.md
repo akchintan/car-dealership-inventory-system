@@ -1883,3 +1883,84 @@ Implement the minimum Create Car API during the Green phase of TDD.
 Added car controller and route for creating cars. Connected authentication middleware and verified tests and build passed successfully.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are following strict Test Driven Development (TDD).
+
+Task:
+Create a failing integration test for retrieving all cars.
+
+Create:
+
+src/tests/cars/get-cars.test.ts
+
+Test endpoint:
+
+GET /api/cars
+
+Requirements:
+
+- Use Jest and Supertest.
+- Mock authentication middleware.
+- Mock Car.find().
+
+Mock response data should contain a sample car object.
+
+Expected response:
+
+HTTP 200
+
+{
+ success: true,
+ cars: expect.any(Array)
+}
+
+Verify:
+
+- Car.find() is called.
+- Returned cars are included in response.
+
+Do not implement controller or route.
+
+Do not modify application files.
+
+## Purpose:
+Create the failing get cars test following the Red phase of TDD.
+
+## Result:
+Created get-cars.test.ts and confirmed failure because GET /api/cars was not implemented.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are in the Green phase of Test Driven Development (TDD).
+
+Implement the minimum Get All Cars API.
+
+Requirements:
+
+- Add GET /api/cars endpoint.
+- Use Car.find() to retrieve cars.
+- Return success response with cars array.
+- Protect route using existing authentication middleware.
+- Register route in app.ts if required.
+
+Do not add:
+- pagination
+- search
+- filtering
+- sorting
+
+## Purpose:
+Implement the minimum Get All Cars API during the Green phase of TDD.
+
+## Result:
+Added GET /api/cars endpoint using Car.find(). Protected the route and verified tests and TypeScript build passed successfully.
+
+---
