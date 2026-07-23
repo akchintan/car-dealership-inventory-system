@@ -1614,3 +1614,61 @@ Implement minimum JWT middleware required during Green phase.
 Created JWT authentication middleware. Verified tests and TypeScript build passed successfully.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are following strict Test Driven Development (TDD).
+
+Task:
+Create a failing test for the authenticated user profile endpoint.
+
+Requirements:
+
+Create:
+
+src/tests/users/profile.test.ts
+
+Test:
+
+GET /api/users/me
+
+Mock:
+
+- Authentication middleware
+- User.findById()
+
+Do not implement the route or controller yet.
+
+## Purpose:
+Create the failing user profile test following the Red phase of TDD.
+
+## Result:
+Created src/tests/users/profile.test.ts, mocked authentication middleware and User.findById(), and confirmed the test failed before implementation.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are in the Green phase of Test Driven Development (TDD).
+
+Implement the minimum authenticated user profile endpoint.
+
+Requirements:
+
+- Create src/controllers/user.controller.ts
+- Create src/routes/user.routes.ts
+- Add GET /api/users/me
+- Connect the route in app.ts
+- Return authenticated user data
+
+## Purpose:
+Implement the minimum user profile endpoint required during the Green phase of TDD.
+
+## Result:
+Created user.controller.ts and user.routes.ts, added GET /api/users/me, connected it in app.ts, returned authenticated user data, and verified tests and TypeScript build passed.
+
+---
