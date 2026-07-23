@@ -689,3 +689,125 @@ Implement the minimum password required validation required to satisfy the faili
 Updated src/controllers/auth.controller.ts to validate the password field after existing validations. Missing or invalid passwords now return HTTP 400 with "Password is required". Verified all Jest tests and TypeScript build passed successfully.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are following strict Test Driven Development (TDD).
+
+Task:
+Add one failing integration test for minimum password length validation.
+
+Requirements:
+
+Update only:
+
+src/tests/auth/register.test.ts
+
+Add ONE new test case.
+
+Scenario:
+
+POST /api/auth/register
+
+Request Body:
+
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "123"
+}
+
+Expected Response:
+
+HTTP 400
+
+{
+  "success": false,
+  "message": "Password must be at least 8 characters"
+}
+
+Keep all existing tests unchanged.
+
+Do NOT modify:
+- controllers
+- routes
+- app.ts
+- middleware
+- package.json
+
+Only update the test file.
+
+The test must fail because password length validation has not been implemented yet.
+
+Explain every new line added.
+
+## Purpose:
+Create a failing integration test for minimum password length validation following the Red phase of TDD.
+
+## Result:
+Added a new integration test for rejecting passwords shorter than 8 characters. Verified that the test failed as expected because minimum password length validation was not implemented.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are in the Green phase of Test Driven Development (TDD).
+
+The integration test for POST /api/auth/register fails because the application does not validate minimum password length.
+
+Implement only the minimum code required to make the failing test pass.
+
+Requirements:
+
+Update only:
+
+src/controllers/auth.controller.ts
+
+Keep existing validations unchanged:
+
+- Name required validation
+- Email required validation
+- Email format validation
+- Password required validation
+
+After checking that password exists, validate its length.
+
+If password length is less than 8 characters, return:
+
+HTTP 400
+
+{
+  "success": false,
+  "message": "Password must be at least 8 characters"
+}
+
+Keep the existing success response unchanged.
+
+Do NOT modify:
+- routes
+- tests
+- app.ts
+- package.json
+- middleware
+
+Do NOT implement:
+- password hashing
+- JWT
+- database logic
+- password strength rules
+
+Implement only the minimum code required for the current failing test.
+
+Explain every file you modify.
+
+## Purpose:
+Implement the minimum password length validation required to satisfy the failing registration test while preserving existing behavior.
+
+## Result:
+Updated src/controllers/auth.controller.ts to reject passwords shorter than 8 characters. The endpoint now returns HTTP 400 with the required message while keeping existing registration behavior unchanged. Verified all Jest tests and TypeScript build passed successfully.
+
+---

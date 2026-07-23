@@ -70,4 +70,18 @@ describe('POST /api/auth/register', () => {
       message: 'Password is required'
     });
   });
+
+  it('returns an error when password is too short', async () => {
+    const response = await request(app).post('/api/auth/register').send({
+      name: 'John Doe',
+      email: 'john@example.com',
+      password: '123'
+    });
+
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual({
+      success: false,
+      message: 'Password must be at least 8 characters'
+    });
+  });
 });

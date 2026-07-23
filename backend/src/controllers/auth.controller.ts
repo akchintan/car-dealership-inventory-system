@@ -33,6 +33,14 @@ export const registerUser = (req: Request, res: Response): void => {
     return;
   }
 
+  if (req.body.password.length < 8) {
+    res.status(400).json({
+      success: false,
+      message: 'Password must be at least 8 characters'
+    });
+    return;
+  }
+
   res.status(201).json({
     success: true,
     message: 'User registered successfully'
