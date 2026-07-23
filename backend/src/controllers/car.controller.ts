@@ -21,11 +21,30 @@ export const getCars = async (req: Request, res: Response): Promise<void> => {
     filters.status = req.query.status;
   }
 
-  const cars = await Car.find(filters);
+  const hasPagination = req.query.page !== undefined || req.query.limit !== undefined;
+
+  if (!hasPagination) {
+    const cars = await Car.find(filters);
+
+    res.status(200).json({
+      success: true,
+      cars
+    });
+    return;
+  }
+
+  const currentPage = Number(req.query.page) || 1;
+  const currentLimit = Number(req.query.limit) || 10;
+  const skip = (currentPage - 1) * currentLimit;
+  const cars = await Car.find(filters).skip(skip).limit(currentLimit);
+  const totalCars = await Car.countDocuments(filters);
 
   res.status(200).json({
     success: true,
-    cars
+    cars,
+    page: currentPage,
+    limit: currentLimit,
+    total: totalCars
   });
 };
 

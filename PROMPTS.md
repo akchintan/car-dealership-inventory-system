@@ -2274,3 +2274,91 @@ Implement minimum search/filter functionality during the Green phase of TDD.
 Added query-based filtering using Car.find(). Verified tests and TypeScript build passed successfully.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are following strict Test Driven Development (TDD).
+
+Task:
+Create a failing integration test for paginated car listing.
+
+Create:
+
+src/tests/cars/pagination.test.ts
+
+Test endpoint:
+
+GET /api/cars?page=1&limit=10
+
+Requirements:
+
+- Use Jest and Supertest.
+- Mock authentication middleware.
+- Mock Car.find().
+- Mock Car.countDocuments().
+
+Verify:
+- Pagination methods are used.
+- Total count is retrieved.
+- Response contains cars, page, limit, and total.
+
+Do not implement pagination logic.
+
+## Purpose:
+Create the failing pagination test following the Red phase of TDD.
+
+## Result:
+Created pagination.test.ts and confirmed failure because pagination functionality was not implemented.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are in the Green phase of Test Driven Development (TDD).
+
+Implement minimum pagination functionality.
+
+Requirements:
+
+- Read page and limit query parameters.
+- Calculate skip value.
+- Use Car.find().skip().limit().
+- Use Car.countDocuments().
+- Return paginated response.
+- Maintain existing brand and status filters.
+
+Do not add sorting or advanced query features.
+
+## Purpose:
+Implement pagination during the Green phase of TDD.
+
+## Result:
+Added pagination support using skip, limit, and countDocuments.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+Fix regression caused by pagination implementation.
+
+Requirements:
+
+- Keep old GET /api/cars response working without pagination parameters.
+- Return pagination metadata only when page or limit is provided.
+- Maintain existing filtering functionality.
+
+Do not modify tests.
+
+## Purpose:
+Restore backward compatibility after adding pagination.
+
+## Result:
+Fixed GET /api/cars regression. Verified all tests and build passed successfully.
+
+---
