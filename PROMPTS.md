@@ -332,3 +332,64 @@ Refactor the registration endpoint by separating routing and controller responsi
 Created src/controllers/auth.controller.ts, moved the registration logic into the registerUser controller function, updated the authentication route to use the controller, and verified that TypeScript compilation and all Jest tests continued to pass successfully.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are in the Green phase of Test Driven Development (TDD).
+
+The integration test for POST /api/auth/register fails because the application does not validate the required name field.
+
+Implement only the minimum code required to make the failing test pass.
+
+Requirements:
+
+1. Update only:
+src/controllers/auth.controller.ts
+
+2. Validate the incoming request before returning the success response.
+
+3. If req.body.name is:
+- missing
+- undefined
+- null
+- an empty string
+- or contains only whitespace
+
+Return:
+
+HTTP 400
+
+{
+  "success": false,
+  "message": "Name is required"
+}
+
+4. Otherwise keep the existing success response exactly the same:
+
+HTTP 201
+
+{
+  "success": true,
+  "message": "User registered successfully"
+}
+
+Do NOT modify:
+- routes
+- tests
+- app.ts
+- package.json
+- middleware
+
+Do not add email validation.
+Do not add password validation.
+Implement only the minimum code necessary for the current failing test.
+
+## Purpose:
+Implement the minimum validation required for the `name` field so the failing registration integration test passes while preserving existing behavior.
+
+## Result:
+Updated `src/controllers/auth.controller.ts` to validate the `name` field, returning HTTP 400 with `"Name is required"` for invalid input and preserving the existing HTTP 201 success response. Verified that all tests passed and the TypeScript build succeeded.
+
+---

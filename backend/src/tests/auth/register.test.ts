@@ -17,4 +17,17 @@ describe('POST /api/auth/register', () => {
       message: 'User registered successfully'
     });
   });
+
+  it('returns an error when name is missing', async () => {
+    const response = await request(app).post('/api/auth/register').send({
+      email: 'john@example.com',
+      password: 'Password123!'
+    });
+
+    expect(response.status).toBe(400);
+    expect(response.body).toEqual({
+      success: false,
+      message: 'Name is required'
+    });
+  });
 });

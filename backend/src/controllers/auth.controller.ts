@@ -1,6 +1,14 @@
 import { Request, Response } from 'express';
 
-export const registerUser = (_req: Request, res: Response): void => {
+export const registerUser = (req: Request, res: Response): void => {
+  if (typeof req.body.name !== 'string' || req.body.name.trim() === '') {
+    res.status(400).json({
+      success: false,
+      message: 'Name is required'
+    });
+    return;
+  }
+
   res.status(201).json({
     success: true,
     message: 'User registered successfully'
