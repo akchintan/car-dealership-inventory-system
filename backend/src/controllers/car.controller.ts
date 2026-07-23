@@ -18,3 +18,21 @@ export const getCars = async (_req: Request, res: Response): Promise<void> => {
     cars
   });
 };
+
+export const getSingleCar = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params;
+  const car = await Car.findById(id);
+
+  if (!car) {
+    res.status(404).json({
+      success: false,
+      message: 'Car not found'
+    });
+    return;
+  }
+
+  res.status(200).json({
+    success: true,
+    car
+  });
+};

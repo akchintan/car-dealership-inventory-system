@@ -22,6 +22,81 @@ Confirmed repository structure and identified current project setup.
 OpenAI Codex
 
 ## Prompt:
+We are following strict Test Driven Development (TDD).
+
+Task:
+Create a failing integration test for retrieving a single car by id.
+
+Create:
+
+src/tests/cars/get-single-car.test.ts
+
+Test endpoint:
+
+GET /api/cars/:id
+
+Requirements:
+
+- Use Jest and Supertest.
+- Mock authentication middleware.
+- Mock Car.findById().
+
+Verify:
+
+- Car.findById() is called with the provided id.
+- Returned car is included in response.
+
+Expected response:
+
+HTTP 200
+
+{
+ success: true,
+ car: expect.any(Object)
+}
+
+Do not implement controller or route.
+
+Do not modify application files.
+
+## Purpose:
+Create the failing get single car test following the Red phase of TDD.
+
+## Result:
+Created get-single-car.test.ts and confirmed failure because GET /api/cars/:id was not implemented.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are in the Green phase of Test Driven Development (TDD).
+
+Implement the minimum Get Single Car API.
+
+Requirements:
+
+- Add GET /api/cars/:id endpoint.
+- Use Car.findById(id).
+- Return car data with success response.
+- Return 404 when car is not found.
+- Protect route using existing authentication middleware.
+
+Do not add extra features.
+
+## Purpose:
+Implement the minimum Get Single Car API during the Green phase of TDD.
+
+## Result:
+Added GET /api/cars/:id endpoint with Car.findById() logic and not-found handling. Verified tests and TypeScript build passed successfully.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
 Create a clean backend folder structure inside backend/src directory. Create only folders and placeholder files.
 
 ## Purpose:
