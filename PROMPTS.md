@@ -944,3 +944,111 @@ Implement the minimum password strength validation required to satisfy the faili
 Updated src/controllers/auth.controller.ts to validate password strength requirements. Weak passwords now return HTTP 400 with the required message. Verified all Jest tests and TypeScript build passed successfully.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are following strict Test Driven Development (TDD).
+
+Task:
+Create a failing test for MongoDB database connection setup.
+
+Requirements:
+
+Create:
+
+src/tests/database/database.test.ts
+
+The test should verify database connection behavior without connecting to a real MongoDB instance.
+
+Requirements:
+
+- Import connectDatabase from ../../config/database
+- Mock mongoose.connect
+- Test the behavior when MONGO_URI is missing
+
+Expected behavior:
+
+When MONGO_URI is missing:
+
+await expect(connectDatabase()).rejects.toThrow(
+  'MongoDB connection string is missing'
+)
+
+Do NOT modify:
+- config/database.ts
+- app.ts
+- server.ts
+- controllers
+- routes
+- models
+- package.json
+
+Only create/update the test file.
+
+The test must fail because database connection logic has not been implemented correctly.
+
+Explain every line added.
+
+## Purpose:
+Create an isolated failing database connection test following the Red phase of TDD.
+
+## Result:
+Created a database connection test that validates missing MongoDB configuration handling. Verified the test failed before implementation.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are in the Green phase of Test Driven Development (TDD).
+
+The database connection test fails because connectDatabase() does not properly handle missing MongoDB configuration.
+
+Implement only the minimum code required to make the failing test pass.
+
+Update only:
+
+src/config/database.ts
+
+Requirements:
+
+Export an async function:
+
+connectDatabase()
+
+Behavior:
+
+- Read process.env.MONGO_URI
+- If MONGO_URI is missing, throw:
+  "MongoDB connection string is missing"
+- If MONGO_URI exists, connect using mongoose.connect()
+
+Do NOT modify:
+- tests
+- app.ts
+- server.ts
+- controllers
+- routes
+- models
+- package.json
+
+Do NOT add:
+- retry logic
+- logging
+- models
+- extra database features
+
+Keep implementation minimal.
+
+Explain every file modified.
+
+## Purpose:
+Implement the minimum database connection function required to satisfy the failing test during the Green phase of TDD.
+
+## Result:
+Created src/config/database.ts with connectDatabase(). Added MongoDB URI validation and mongoose connection handling. Verified Jest tests and TypeScript build passed successfully.
+
+---
