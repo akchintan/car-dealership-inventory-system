@@ -102,3 +102,31 @@ Create standard development, build, and production scripts for the backend.
 Added npm scripts for development with Nodemon, TypeScript compilation, and running the compiled production server.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are following Test Driven Development (TDD).
+
+Create the first backend test only.
+
+Requirements:
+- Create backend/src/tests/app.test.ts
+- Use Jest and Supertest
+- Test GET /
+- Verify HTTP 200
+- Verify:
+{
+  "message": "Car Dealership Inventory API is running"
+}
+
+Do not modify any application files.
+
+## Purpose:
+Create the first automated backend integration test following the TDD workflow.
+
+## Result:
+Created the first Jest + Supertest integration test for the health endpoint. The test was executed successfully using `npm test` on Node.js v24.15.0 and passed, confirming that GET / returns HTTP 200 and the expected JSON response.
+
+---
