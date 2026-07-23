@@ -2362,3 +2362,88 @@ Restore backward compatibility after adding pagination.
 Fixed GET /api/cars regression. Verified all tests and build passed successfully.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are following strict Test Driven Development (TDD).
+
+Task:
+Create a failing test for global error handling middleware.
+
+Create:
+
+src/tests/middleware/error.middleware.test.ts
+
+Requirements:
+
+- Use Jest and Supertest.
+- Create a test route that throws an error.
+- Verify centralized error response.
+
+Expected response:
+
+HTTP 500
+
+{
+ success: false,
+ message: "Test error"
+}
+
+Do not implement error middleware.
+
+## Purpose:
+Create the failing error middleware test following the Red phase of TDD.
+
+## Result:
+Created error middleware test and confirmed failure because global error handling was not implemented.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are in the Green phase of Test Driven Development (TDD).
+
+Implement minimum global error handling.
+
+Requirements:
+
+- Create error.middleware.ts.
+- Handle Express errors.
+- Return standardized JSON response.
+- Register middleware after routes in app.ts.
+
+Do not add logging or external services.
+
+## Purpose:
+Implement centralized error handling during the Green phase of TDD.
+
+## Result:
+Added global error middleware and standardized error responses.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+Fix regression in global error handling.
+
+Requirements:
+
+- Ensure Express uses custom error middleware.
+- Ensure middleware order is correct.
+- Ensure error responses are returned using res.status().json().
+
+Do not modify tests.
+
+## Purpose:
+Fix middleware registration issue while maintaining TDD behavior.
+
+## Result:
+Fixed error middleware registration and verified all tests and build passed successfully.
+
+---
