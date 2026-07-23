@@ -78,3 +78,27 @@ Allow Jest setup verification before actual tests exist while maintaining TDD wo
 Updated npm test script so Jest exits successfully when no test files are present during initial project setup.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+Update only backend/package.json.
+
+Add the following scripts:
+
+- dev
+- build
+- start
+
+Keep the existing test script unchanged.
+
+Do not modify any other files.
+
+## Purpose:
+Create standard development, build, and production scripts for the backend.
+
+## Result:
+Added npm scripts for development with Nodemon, TypeScript compilation, and running the compiled production server.
+
+---
