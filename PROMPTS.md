@@ -1167,3 +1167,147 @@ Implement the minimum User model required to satisfy the failing model test duri
 Created src/models/user.model.ts with the required Mongoose schema fields. Verified Jest tests and TypeScript build passed successfully.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are following strict Test Driven Development (TDD).
+
+Task:
+Create a failing integration test to verify that registration creates a user.
+
+Requirements:
+
+Update only:
+
+src/tests/auth/register.test.ts
+
+Add ONE new test case.
+
+Scenario:
+
+POST /api/auth/register
+
+Request:
+
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "Password123!"
+}
+
+Expected response:
+
+HTTP 201
+
+{
+  "success": true,
+  "message": "User registered successfully"
+}
+
+Additionally verify:
+
+- User.create() is called
+- It receives:
+  name
+  email
+  password
+
+Requirements:
+
+- Mock the User model operation
+- Do not connect to real MongoDB
+
+Keep existing tests unchanged.
+
+Do NOT modify:
+- controllers
+- routes
+- models
+- app.ts
+- database configuration
+- package.json
+
+Only update the test file.
+
+The test must fail because registration does not create users yet.
+
+Explain every line added.
+
+## Purpose:
+Create the failing user creation integration test following the Red phase of TDD.
+
+## Result:
+Added a test verifying that registration creates a user through User.create(). Confirmed the test failed before implementing database creation logic.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are in the Green phase of Test Driven Development (TDD).
+
+The user creation test fails because the registration controller does not create users.
+
+Implement only the minimum code required to make the failing test pass.
+
+Update only:
+
+src/controllers/auth.controller.ts
+
+Requirements:
+
+Import User model from:
+
+../models/user.model
+
+After validations pass, create a user using:
+
+User.create({
+  name,
+  email,
+  password
+})
+
+Use values from req.body.
+
+Keep existing validations unchanged.
+
+Keep existing response unchanged:
+
+HTTP 201
+
+{
+  "success": true,
+  "message": "User registered successfully"
+}
+
+Do NOT add:
+- password hashing
+- JWT
+- login logic
+- middleware
+- extra validation
+
+Do NOT modify:
+- tests
+- routes
+- models
+- app.ts
+- server.ts
+- database configuration
+- package.json
+
+Keep implementation minimal.
+
+Explain every file modified.
+
+## Purpose:
+Implement the minimum user creation logic required during the Green phase of TDD.
+
+## Result:
+Updated auth.controller.ts to create users through User.create(). Verified all tests and TypeScript build passed successfully.
+
+---

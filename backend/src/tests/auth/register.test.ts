@@ -1,5 +1,13 @@
 import request from 'supertest';
 import app from '../../app';
+import User from '../../models/user.model';
+
+jest.mock('../../models/user.model', () => ({
+  __esModule: true,
+  default: {
+    create: jest.fn()
+  }
+}));
 
 describe('POST /api/auth/register', () => {
   it('registers a user successfully', async () => {
@@ -15,6 +23,29 @@ describe('POST /api/auth/register', () => {
     expect(response.body).toEqual({
       success: true,
       message: 'User registered successfully'
+    });
+  });
+
+  it('creates a user when registration is valid', async () => {
+    const userData = {
+      name: 'John Doe',
+      email: 'john@example.com',
+      password: 'Password123!'
+    };
+    const mockedCreate = User.create as jest.Mock;
+    mockedCreate.mockResolvedValue(userData);
+
+    const response = await request(app).post('/api/auth/register').send(userData);
+
+    expect(response.status).toBe(201);
+    expect(response.body).toEqual({
+      success: true,
+      message: 'User registered successfully'
+    });
+    expect(mockedCreate).toHaveBeenCalledWith({
+      name: userData.name,
+      email: userData.email,
+      password: userData.password
     });
   });
 

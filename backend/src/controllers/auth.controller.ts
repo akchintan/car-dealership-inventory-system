@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import User from '../models/user.model';
 
 export const registerUser = (req: Request, res: Response): void => {
   if (typeof req.body.name !== 'string' || req.body.name.trim() === '') {
@@ -53,6 +54,12 @@ export const registerUser = (req: Request, res: Response): void => {
     });
     return;
   }
+
+  User.create({
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password
+  });
 
   res.status(201).json({
     success: true,
