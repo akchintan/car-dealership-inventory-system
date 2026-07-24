@@ -2601,8 +2601,6 @@ Create the basic frontend navigation structure and connect application pages bef
 ## Result:
 Implemented React Router based navigation with shared Navbar layout. Connected all required pages and verified that the frontend production build completed successfully.
 
----
-
 ## Tool:
 OpenAI Codex
 
@@ -2662,3 +2660,36 @@ Create the frontend authentication foundation before implementing login and regi
 
 ## Result:
 Implemented Axios API service and authentication context with token persistence, login/logout handling, and reusable authentication state management. Verified frontend TypeScript compilation and production build successfully.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are continuing development of the Car Dealership Inventory System frontend.
+
+Task:
+Implement basic Login and Register functionality.
+
+Include:
+- Login form with email and password
+- Register form with name, email and password
+- API integration using existing Axios service
+- Authentication state update using AuthContext
+- Loading and error handling
+- AuthProvider integration in main.tsx
+
+Do not include:
+- JWT decoding
+- Protected routes
+- Role-based access
+- Advanced validation
+
+## Purpose:
+Connect frontend authentication pages with backend authentication APIs while keeping the implementation minimal.
+
+## Result:
+Implemented Login and Register flows using Axios and AuthContext. Added authentication provider integration and verified frontend production build successfully.
+
+---
