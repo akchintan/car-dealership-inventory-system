@@ -1,8 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import CarCard, { type Car } from '../components/CarCard'
+import CarTable, { type Car } from '../components/CarTable'
 import Card from '../components/ui/Card'
-import EmptyState from '../components/ui/EmptyState'
 import Spinner from '../components/ui/Spinner'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
@@ -124,48 +123,27 @@ function Cars() {
         </p>
       )}
 
-      {!isLoading && !error && cars.length === 0 && (
-        <Card>
-          <EmptyState
-            title="No cars in inventory"
-            description="Cars added to the dealership will appear here."
-          />
-        </Card>
-      )}
-
-      {!isLoading && !error && cars.length > 0 && (
+      {!isLoading && !error && (
         <>
-          <div className="form-field" style={{ width: 'min(100%, 420px)', marginBottom: '24px' }}>
-            <label htmlFor="car-search">Search inventory</label>
-            <input
-              id="car-search"
-              type="search"
-              value={searchTerm}
-              onChange={(event) => setSearchTerm(event.target.value)}
-              placeholder="Search by brand or model"
-            />
-          </div>
-
-          {filteredCars.length === 0 ? (
-            <Card>
-              <EmptyState
-                title="No matching vehicles found."
-                description="Try searching for a different brand or model."
+          {cars.length > 0 && (
+            <div className="form-field" style={{ width: 'min(100%, 420px)', marginBottom: '24px' }}>
+              <label htmlFor="car-search">Search inventory</label>
+              <input
+                id="car-search"
+                type="search"
+                value={searchTerm}
+                onChange={(event) => setSearchTerm(event.target.value)}
+                placeholder="Search by brand or model"
               />
-            </Card>
-          ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
-              {filteredCars.map((car) => (
-                <CarCard
-                  key={car._id}
-                  car={car}
-                  onDelete={handleDelete}
-                  isDeleting={deletingCarId === car._id}
-                  isDeleteDisabled={deletingCarId !== null}
-                />
-              ))}
             </div>
           )}
+
+          <CarTable
+            cars={filteredCars}
+            onDelete={handleDelete}
+            deletingCarId={deletingCarId}
+            isSearching={normalizedSearchTerm.length > 0}
+          />
         </>
       )}
     </section>

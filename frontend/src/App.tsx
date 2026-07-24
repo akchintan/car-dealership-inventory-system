@@ -13,8 +13,10 @@ function AppLayout() {
   return (
     <>
       <Navbar />
-      <main>
-        <Outlet />
+      <main className="app-main">
+        <div className="app-container">
+          <Outlet />
+        </div>
       </main>
     </>
   )
