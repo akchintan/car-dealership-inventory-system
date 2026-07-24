@@ -3160,3 +3160,78 @@ Improve inventory search performance and user experience by introducing a reusab
 ## Result:
 
 Implemented a reusable generic useDebounce hook, integrated debounced searching into the inventory page, ensured pagination resets only after the debounced search value updates, preserved all existing functionality, and verified the frontend production build completed successfully.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+
+Replace window.confirm with a reusable confirmation modal.
+
+Requirements:
+- Create reusable ConfirmationModal component
+- Location:
+  - frontend/src/components/ui/ConfirmationModal.tsx
+- Keep the component completely reusable
+- No inventory-specific logic
+
+Props:
+- open
+- title
+- message
+- confirmLabel
+- cancelLabel
+- loading
+- onConfirm
+- onCancel
+
+Modal requirements:
+- Accessible dialog using proper ARIA attributes
+- Close on Escape key
+- Close when clicking backdrop
+- Trap keyboard focus while open
+- Restore focus after closing
+- Prevent background scrolling while open
+- Responsive desktop/mobile layout
+- Use existing project styling
+- Reuse existing Button and Card components
+- Do not use external modal libraries
+
+Cars.tsx changes:
+- Replace browser window.confirm usage
+- Store selected car before opening modal
+- Open confirmation modal when delete is clicked
+- Close modal on cancel
+- Clear selected car after cancellation
+- Execute existing delete API request on confirmation
+- Close modal after successful deletion
+
+Maintain:
+- Existing deleting state
+- Toast notifications
+- API error handling
+- Delete functionality
+
+Preserve:
+- Debounced search
+- Status filter
+- Sorting
+- Pagination
+- Inventory summary
+- StatusBadge
+- Edit functionality
+- Responsive layout
+- Empty states
+- Loading states
+
+Verify frontend production build.
+
+## Purpose:
+
+Improve the inventory management experience by replacing the browser confirmation dialog with a reusable accessible modal component while maintaining clean component architecture and separation of concerns.
+
+## Result:
+
+Implemented a reusable confirmation modal with accessibility features, focus management, responsive behavior, and integrated it into the inventory delete workflow. Existing delete functionality, error handling, loading states, and toast notifications were preserved, and the frontend production build completed successfully.

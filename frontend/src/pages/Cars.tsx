@@ -5,6 +5,7 @@ import InventorySummary from '../components/InventorySummary'
 import Pagination from '../components/Pagination'
 import StatusFilter from '../components/StatusFilter'
 import Card from '../components/ui/Card'
+import ConfirmationModal from '../components/ui/ConfirmationModal'
 import Spinner from '../components/ui/Spinner'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
@@ -39,6 +40,7 @@ function Cars() {
   const [error, setError] = useState('')
   const [deleteError, setDeleteError] = useState('')
   const [deletingCarId, setDeletingCarId] = useState<string | null>(null)
+  const [carPendingDeletion, setCarPendingDeletion] = useState<Car | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300)
@@ -106,13 +108,14 @@ function Cars() {
     setCurrentPage(1)
   }, [debouncedSearchTerm])
 
-  const handleDelete = async (car: Car) => {
-    const isConfirmed = window.confirm(
-      `Delete ${car.brand} ${car.model} from inventory? This cannot be undone.`,
-    )
+  const handleDelete = (car: Car) => {
+    setCarPendingDeletion(car)
+  }
 
-    if (!isConfirmed) return
+  const handleConfirmDelete = async () => {
+    if (!carPendingDeletion) return
 
+    const car = carPendingDeletion
     setDeleteError('')
     setDeletingCarId(car._id)
 
@@ -128,6 +131,7 @@ function Cars() {
       setDeleteError(message)
     } finally {
       setDeletingCarId(null)
+      setCarPendingDeletion(null)
     }
   }
 
@@ -227,6 +231,19 @@ function Cars() {
               onPageChange={setCurrentPage}
             />
           )}
+
+          <ConfirmationModal
+            open={carPendingDeletion !== null}
+            title="Delete vehicle?"
+            message={carPendingDeletion
+              ? `Delete ${carPendingDeletion.brand} ${carPendingDeletion.model} from inventory? This cannot be undone.`
+              : ''}
+            confirmLabel={deletingCarId ? 'Deleting...' : 'Delete'}
+            cancelLabel="Cancel"
+            loading={deletingCarId !== null}
+            onConfirm={handleConfirmDelete}
+            onCancel={() => setCarPendingDeletion(null)}
+          />
         </>
       )}
     </section>
