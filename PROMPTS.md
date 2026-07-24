@@ -4128,3 +4128,114 @@ Introduce a reusable frontend testing infrastructure using Vitest and React Test
 ## Result:
 
 Implemented a reusable frontend testing foundation using Vitest and React Testing Library, added a shared testing configuration and example component test, preserved all existing application functionality, and verified both the test suite and production build completed successfully.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+
+Implement reusable CSV export for the inventory.
+
+Requirements:
+
+Create:
+
+frontend/src/utils/exportCarsToCsv.ts
+
+The utility must be completely reusable.
+
+--------------------------------------------------
+
+Utility requirements
+
+Input:
+- Array of cars
+
+Output:
+- Automatically download a CSV file
+
+Filename:
+inventory-YYYY-MM-DD.csv
+
+Columns:
+
+- Brand
+- Model
+- Year
+- Price
+- Mileage
+- Status
+
+Requirements:
+
+- Proper CSV escaping
+- UTF-8 BOM support
+- Browser download support
+- Pure TypeScript utility
+- No React imports
+- Reusable for future tables
+
+--------------------------------------------------
+
+Cars.tsx
+
+Add an "Export CSV" button beside the search and status filter controls.
+
+Requirements:
+
+Clicking Export CSV should export:
+
+- current search results
+- current status filter
+- current sorting
+
+Pagination must NOT affect exported data.
+
+Export all filtered and sorted records.
+
+Use the existing reusable Button component.
+
+--------------------------------------------------
+
+Architecture
+
+Cars.tsx prepares the filtered/sorted dataset.
+
+CSV generation and browser download logic must remain inside exportCarsToCsv.ts.
+
+--------------------------------------------------
+
+Preserve:
+
+- Search
+- Debounced search
+- Status filter
+- Sorting
+- Pagination
+- Delete confirmation modal
+- Toast notifications
+- Global loading overlay
+- Error handling
+- Responsive layout
+
+--------------------------------------------------
+
+Verification
+
+Run:
+
+npm.cmd run build
+
+The build must complete successfully with zero TypeScript errors.
+
+Finally provide a concise summary of every modified file.
+
+## Purpose:
+
+Provide a reusable CSV export utility that allows users to download the currently filtered and sorted inventory while keeping export logic independent from UI components.
+
+## Result:
+
+Implemented a reusable CSV export utility with UTF-8 BOM support, proper CSV escaping, browser download functionality, and an Export CSV action in the inventory page. The feature exports all filtered and sorted inventory records regardless of pagination while preserving existing application behavior. Verified the frontend production build completed successfully with zero TypeScript errors.

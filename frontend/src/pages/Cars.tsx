@@ -3,6 +3,7 @@ import CarTable, { type Car, type CarSortField, type SortDirection } from '../co
 import InventorySummary from '../components/InventorySummary'
 import Pagination from '../components/Pagination'
 import StatusFilter from '../components/StatusFilter'
+import Button from '../components/ui/Button'
 import Card from '../components/ui/Card'
 import ConfirmationModal from '../components/ui/ConfirmationModal'
 import Spinner from '../components/ui/Spinner'
@@ -12,6 +13,7 @@ import useDebounce from '../hooks/useDebounce'
 import useAsync from '../hooks/useAsync'
 import { deleteCar, getCars } from '../services/api'
 import { getApiErrorMessage } from '../utils/apiError'
+import { exportCarsToCsv } from '../utils/exportCarsToCsv'
 
 interface CarsResponse {
   cars: Car[]
@@ -131,6 +133,10 @@ function Cars() {
     setCurrentPage(1)
   }
 
+  const handleExportCsv = () => {
+    exportCarsToCsv(sortedCars)
+  }
+
   return (
     <section style={pageStyle} aria-labelledby="cars-heading">
       <header style={{ marginBottom: '28px' }}>
@@ -176,6 +182,11 @@ function Cars() {
                 />
               </div>
               <StatusFilter value={statusFilter} onChange={handleStatusFilterChange} />
+              <div style={{ display: 'flex', alignItems: 'end' }}>
+                <Button type="button" variant="secondary" onClick={handleExportCsv} disabled={sortedCars.length === 0}>
+                  Export CSV
+                </Button>
+              </div>
             </div>
           )}
 
