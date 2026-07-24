@@ -36,4 +36,24 @@ export async function createCar<T>(
   return data
 }
 
+export async function getCarById<T>(id: string, token?: string): Promise<T> {
+  const { data } = await api.get<T>(`/api/cars/${id}`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+  })
+
+  return data
+}
+
+export async function updateCar<T>(
+  id: string,
+  car: CreateCarPayload,
+  token?: string,
+): Promise<T> {
+  const { data } = await api.put<T>(`/api/cars/${id}`, car, {
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+  })
+
+  return data
+}
+
 export default api

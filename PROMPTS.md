@@ -2778,3 +2778,39 @@ Implement the frontend Create Car workflow while keeping API communication reusa
 
 ## Result:
 Implemented a responsive Add Car form with client-side validation, loading and error handling, reusable createCar() API helper, authenticated POST integration, success feedback, and automatic navigation to the inventory page. Verified that the frontend production build completed successfully.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are continuing the frontend implementation of the Car Dealership Inventory System.
+
+Task:
+Implement the Edit Car feature using the existing backend.
+
+Requirements:
+
+- Create EditCar.tsx.
+- Add protected route:
+  - /cars/:id/edit
+- Add reusable API helpers:
+  - getCarById()
+  - updateCar()
+- Load the existing vehicle using the route id.
+- Pre-populate the form.
+- Reuse the Add Car validation and UI style.
+- Display loading while fetching.
+- Display backend errors.
+- Update the vehicle using the backend API.
+- Show success feedback.
+- Redirect to /cars after success.
+- Do not modify backend or authentication architecture.
+- Verify the frontend production build.
+
+## Purpose:
+Implement the Update operation of the CRUD workflow while keeping networking logic reusable and maintaining separation between UI and API communication.
+
+## Result:
+Implemented Edit Car with authenticated data loading, reusable API helpers, pre-filled form fields, validation, loading and error handling, successful update flow, protected routing, and automatic navigation back to the inventory. Verified that the frontend production build completed successfully.
