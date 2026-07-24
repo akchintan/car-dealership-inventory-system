@@ -1,15 +1,18 @@
+import { lazy, Suspense } from 'react'
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import LoadingOverlay from './components/ui/LoadingOverlay'
+import PageLoader from './components/ui/PageLoader'
 import ProtectedRoute from './components/ProtectedRoute'
 import PublicOnlyRoute from './components/PublicOnlyRoute'
-import AddCar from './pages/AddCar'
-import Cars from './pages/Cars'
-import EditCar from './pages/EditCar'
-import Home from './pages/Home'
-import Login from './pages/Login'
-import Register from './pages/Register'
 import { useLoading } from './context/LoadingContext'
+
+const Home = lazy(() => import('./pages/Home'))
+const Cars = lazy(() => import('./pages/Cars'))
+const AddCar = lazy(() => import('./pages/AddCar'))
+const EditCar = lazy(() => import('./pages/EditCar'))
+const Login = lazy(() => import('./pages/Login'))
+const Register = lazy(() => import('./pages/Register'))
 
 function AppLayout() {
   return (
@@ -17,7 +20,9 @@ function AppLayout() {
       <Navbar />
       <main className="app-main">
         <div className="app-container">
-          <Outlet />
+          <Suspense fallback={<PageLoader />}>
+            <Outlet />
+          </Suspense>
         </div>
       </main>
     </>
