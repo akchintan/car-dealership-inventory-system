@@ -4239,3 +4239,179 @@ Provide a reusable CSV export utility that allows users to download the currentl
 ## Result:
 
 Implemented a reusable CSV export utility with UTF-8 BOM support, proper CSV escaping, browser download functionality, and an Export CSV action in the inventory page. The feature exports all filtered and sorted inventory records regardless of pagination while preserving existing application behavior. Verified the frontend production build completed successfully with zero TypeScript errors.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+
+Implement a reusable keyboard shortcuts system for the inventory page.
+
+Requirements:
+
+Create:
+
+frontend/src/hooks/useKeyboardShortcuts.ts
+
+The hook must be completely reusable.
+
+--------------------------------------------------
+
+Hook API
+
+Accept an array of shortcut definitions.
+
+Each shortcut supports:
+
+- key
+- ctrlKey (optional)
+- shiftKey (optional)
+- altKey (optional)
+- callback
+- enabled (optional)
+
+Requirements:
+
+- Register listeners only while mounted
+- Automatically remove listeners
+- Ignore repeated key presses
+- Ignore shortcuts while typing inside:
+  - input
+  - textarea
+  - select
+  - contenteditable elements
+- Support multiple shortcuts simultaneously
+- Fully typed with TypeScript
+
+--------------------------------------------------
+
+Create:
+
+frontend/src/components/ui/KeyboardShortcutsModal.tsx
+
+Reusable presentational component.
+
+Props:
+
+- open
+- onClose
+- shortcuts
+
+Requirements:
+
+Display:
+
+- Key combination
+- Shortcut description
+
+Example:
+
+/
+
+Focus Search
+
+Ctrl + Shift + E
+
+Export CSV
+
+N
+
+Add Vehicle
+
+Esc
+
+Clear Search
+
+?
+
+Open Shortcuts
+
+--------------------------------------------------
+
+Modal requirements
+
+- Accessible dialog
+- Close on Escape
+- Close on backdrop click
+- Keyboard focus trap
+- Restore focus after closing
+- Responsive
+- Reuse existing Card
+- Reuse existing Button
+- No inventory-specific logic
+
+--------------------------------------------------
+
+Cars.tsx
+
+Implement keyboard shortcuts:
+
+/
+
+Focus search input.
+
+Esc
+
+Clear search.
+
+Ctrl + Shift + E
+
+Export current filtered inventory using the reusable CSV export utility.
+
+N
+
+Navigate to Add Car.
+
+?
+
+Open keyboard shortcuts help.
+
+Disable shortcuts whenever a modal is open.
+
+--------------------------------------------------
+
+Architecture
+
+Keyboard event handling belongs entirely inside useKeyboardShortcuts.
+
+KeyboardShortcutsModal remains presentational.
+
+Cars.tsx only connects existing actions.
+
+--------------------------------------------------
+
+Preserve:
+
+- Search
+- Debounced search
+- Status filter
+- Sorting
+- Pagination
+- CSV export
+- Confirmation modal
+- Toast notifications
+- Global loading overlay
+- Error handling
+- Responsive layout
+
+--------------------------------------------------
+
+Verification
+
+Run:
+
+npm.cmd run build
+
+The build must complete successfully with zero TypeScript errors.
+
+Finally provide a concise summary of every modified file.
+
+## Purpose:
+
+Provide reusable keyboard shortcuts to improve productivity and accessibility while keeping keyboard event handling separate from page logic.
+
+## Result:
+
+Implemented a reusable keyboard shortcuts hook and an accessible keyboard shortcuts modal. Added shortcuts for search focus, clearing search, CSV export, navigation, and opening the shortcuts reference. Preserved all existing inventory functionality and verified the frontend production build completed successfully with zero TypeScript errors.

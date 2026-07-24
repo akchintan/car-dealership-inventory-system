@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import CarTable, { type Car, type CarSortField, type SortDirection } from '../components/CarTable'
 import InventorySummary from '../components/InventorySummary'
 import Pagination from '../components/Pagination'
@@ -6,10 +7,12 @@ import StatusFilter from '../components/StatusFilter'
 import Button from '../components/ui/Button'
 import Card from '../components/ui/Card'
 import ConfirmationModal from '../components/ui/ConfirmationModal'
+import KeyboardShortcutsModal, { type KeyboardShortcutDisplay } from '../components/ui/KeyboardShortcutsModal'
 import Spinner from '../components/ui/Spinner'
 import { useToast } from '../context/ToastContext'
 import { useLoading } from '../context/LoadingContext'
 import useDebounce from '../hooks/useDebounce'
+import useKeyboardShortcuts from '../hooks/useKeyboardShortcuts'
 import useAsync from '../hooks/useAsync'
 import { deleteCar, getCars } from '../services/api'
 import { getApiErrorMessage } from '../utils/apiError'
@@ -27,7 +30,16 @@ const pageStyle = {
 
 const ITEMS_PER_PAGE = 8
 
+const keyboardShortcutDisplays: KeyboardShortcutDisplay[] = [
+  { keys: ['/'], description: 'Focus search' },
+  { keys: ['Esc'], description: 'Clear search' },
+  { keys: ['Ctrl', 'Shift', 'E'], description: 'Export CSV' },
+  { keys: ['N'], description: 'Add vehicle' },
+  { keys: ['?'], description: 'Open shortcuts' },
+]
+
 function Cars() {
+  const navigate = useNavigate()
   const { success } = useToast()
   const { showLoading, hideLoading } = useLoading()
   const [cars, setCars] = useState<Car[]>([])
@@ -39,6 +51,8 @@ function Cars() {
   const [deleteError, setDeleteError] = useState('')
   const [deletingCarId, setDeletingCarId] = useState<string | null>(null)
   const [carPendingDeletion, setCarPendingDeletion] = useState<Car | null>(null)
+  const [isShortcutsModalOpen, setIsShortcutsModalOpen] = useState(false)
+  const searchInputRef = useRef<HTMLInputElement>(null)
   const { data: carsResponse, loading, error, execute } = useAsync<CarsResponse>()
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300)
@@ -137,6 +151,39 @@ function Cars() {
     exportCarsToCsv(sortedCars)
   }
 
+  const shortcutsEnabled = !isShortcutsModalOpen && carPendingDeletion === null
+
+  useKeyboardShortcuts([
+    {
+      key: '/',
+      enabled: shortcutsEnabled,
+      callback: () => searchInputRef.current?.focus(),
+    },
+    {
+      key: 'Escape',
+      enabled: shortcutsEnabled,
+      callback: () => setSearchTerm(''),
+    },
+    {
+      key: 'e',
+      ctrlKey: true,
+      shiftKey: true,
+      enabled: shortcutsEnabled && sortedCars.length > 0,
+      callback: handleExportCsv,
+    },
+    {
+      key: 'n',
+      enabled: shortcutsEnabled,
+      callback: () => navigate('/add-car'),
+    },
+    {
+      key: '?',
+      shiftKey: true,
+      enabled: shortcutsEnabled,
+      callback: () => setIsShortcutsModalOpen(true),
+    },
+  ])
+
   return (
     <section style={pageStyle} aria-labelledby="cars-heading">
       <header style={{ marginBottom: '28px' }}>
@@ -174,6 +221,7 @@ function Cars() {
               <div className="form-field" style={{ flex: '1 1 280px' }}>
                 <label htmlFor="car-search">Search inventory</label>
                 <input
+                  ref={searchInputRef}
                   id="car-search"
                   type="search"
                   value={searchTerm}
@@ -229,6 +277,11 @@ function Cars() {
             loading={deletingCarId !== null}
             onConfirm={handleConfirmDelete}
             onCancel={() => setCarPendingDeletion(null)}
+          />
+          <KeyboardShortcutsModal
+            open={isShortcutsModalOpen}
+            onClose={() => setIsShortcutsModalOpen(false)}
+            shortcuts={keyboardShortcutDisplays}
           />
         </>
       )}
