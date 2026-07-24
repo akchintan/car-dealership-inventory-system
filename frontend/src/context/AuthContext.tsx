@@ -1,8 +1,21 @@
-import { createContext, useContext, useState, type ReactNode } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react'
 
 const TOKEN_STORAGE_KEY = 'authToken'
+const USER_STORAGE_KEY = 'authUser'
 
 export type AuthUser = Record<string, unknown>
+
+interface AuthState {
+  token: string | null
+  user: AuthUser | null
+}
 
 interface AuthContextValue {
   token: string | null
@@ -17,26 +30,78 @@ interface AuthProviderProps {
   children: ReactNode
 }
 
-export function AuthProvider({ children }: AuthProviderProps) {
-  const [token, setToken] = useState<string | null>(() =>
-    localStorage.getItem(TOKEN_STORAGE_KEY),
-  )
-  const [user, setUser] = useState<AuthUser | null>(null)
+const emptyAuthState: AuthState = { token: null, user: null }
 
-  const login = (newToken: string, newUser: AuthUser) => {
-    localStorage.setItem(TOKEN_STORAGE_KEY, newToken)
-    setToken(newToken)
-    setUser(newUser)
-  }
-
-  const logout = () => {
+function clearStoredAuth() {
+  try {
     localStorage.removeItem(TOKEN_STORAGE_KEY)
-    setToken(null)
-    setUser(null)
+    localStorage.removeItem(USER_STORAGE_KEY)
+  } catch {
+    // Storage can be unavailable in restricted browsing contexts.
   }
+}
+
+function restoreAuthState(): AuthState {
+  try {
+    const storedToken = localStorage.getItem(TOKEN_STORAGE_KEY)
+
+    const token = storedToken?.trim()
+    if (!token) {
+      clearStoredAuth()
+      return emptyAuthState
+    }
+
+    const storedUser = localStorage.getItem(USER_STORAGE_KEY)
+
+    if (!storedUser) {
+      return { token, user: null }
+    }
+
+    try {
+      const parsedUser: unknown = JSON.parse(storedUser)
+      if (typeof parsedUser === 'object' && parsedUser !== null && !Array.isArray(parsedUser)) {
+        return { token, user: parsedUser as AuthUser }
+      }
+    } catch {
+      // The token remains usable if only the optional profile data is corrupted.
+    }
+
+    localStorage.removeItem(USER_STORAGE_KEY)
+    return { token, user: null }
+  } catch {
+    clearStoredAuth()
+    return emptyAuthState
+  }
+}
+
+export function AuthProvider({ children }: AuthProviderProps) {
+  const [authState, setAuthState] = useState<AuthState>(restoreAuthState)
+
+  const login = useCallback((newToken: string, newUser: AuthUser) => {
+    try {
+      localStorage.setItem(TOKEN_STORAGE_KEY, newToken)
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(newUser))
+    } catch {
+      // Keep the active session available even when persistent storage is unavailable.
+    }
+
+    setAuthState({ token: newToken, user: newUser })
+  }, [])
+
+  const logout = useCallback(() => {
+    clearStoredAuth()
+    setAuthState(emptyAuthState)
+  }, [])
+
+  const contextValue = useMemo<AuthContextValue>(() => ({
+    token: authState.token,
+    user: authState.user,
+    login,
+    logout,
+  }), [authState, login, logout])
 
   return (
-    <AuthContext.Provider value={{ token, user, login, logout }}>
+    <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
   )

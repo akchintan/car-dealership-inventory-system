@@ -3630,3 +3630,116 @@ Implemented a reusable global loading overlay with LoadingProvider, integrated i
 
 ---
 
+## Tool:
+OpenAI Codex
+
+## Prompt:
+
+Implement reusable session persistence and automatic authentication restoration.
+
+Requirements:
+
+Update:
+
+frontend/src/context/AuthContext.tsx
+
+Implement persistent authentication using localStorage.
+
+Store:
+
+- authToken
+- authUser
+
+Restore both automatically during provider initialization.
+
+--------------------------------------------------
+
+Authentication behavior
+
+Login:
+
+- Persist token
+- Persist user information
+- Update context state
+- Preserve existing application behavior
+
+Logout:
+
+- Remove all persisted authentication data
+- Reset authentication context
+- Preserve existing redirect behavior
+
+--------------------------------------------------
+
+Session restoration
+
+On application startup:
+
+- Restore authentication synchronously
+- Prevent protected-route flashes after page refresh
+- Restore user information when available
+- Continue operating normally when no session exists
+
+--------------------------------------------------
+
+Error handling
+
+- Handle malformed JSON safely
+- Remove corrupted stored user data automatically
+- Preserve a valid token if only the stored user profile is corrupted
+- Recover gracefully if browser storage is unavailable
+- Continue using in-memory authentication when persistence is unavailable
+
+--------------------------------------------------
+
+Architecture requirements
+
+- Keep authentication logic centralized inside AuthContext
+- Use memoized callbacks and context values
+- Avoid unnecessary re-renders
+- Keep strict TypeScript typing
+- Do not duplicate authentication logic inside pages
+
+--------------------------------------------------
+
+Preserve:
+
+- Protected routes
+- Navbar
+- Dashboard
+- Inventory
+- CRUD operations
+- Global loading
+- Toast notifications
+- useAsync
+- Search
+- Debounced search
+- Status filter
+- Sorting
+- Pagination
+- Charts
+- Existing responsive UI
+
+--------------------------------------------------
+
+Verify:
+
+Run:
+
+npm.cmd run build
+
+Build must complete successfully with zero TypeScript errors.
+
+Finally provide:
+
+- Modified files
+- Authentication architecture summary
+- Build verification
+
+## Purpose:
+
+Improve application authentication by implementing persistent sessions with automatic restoration while keeping authentication logic centralized, reusable, and production-ready.
+
+## Result:
+
+Implemented persistent authentication using localStorage, automatic session restoration, safe recovery from corrupted storage, memoized authentication context, preserved all existing application behavior, and verified the frontend production build completed successfully.
