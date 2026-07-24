@@ -1,5 +1,6 @@
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar'
+import LoadingOverlay from './components/ui/LoadingOverlay'
 import ProtectedRoute from './components/ProtectedRoute'
 import PublicOnlyRoute from './components/PublicOnlyRoute'
 import AddCar from './pages/AddCar'
@@ -8,6 +9,7 @@ import EditCar from './pages/EditCar'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import { useLoading } from './context/LoadingContext'
 
 function AppLayout() {
   return (
@@ -23,6 +25,8 @@ function AppLayout() {
 }
 
 function App() {
+  const { isLoading, message } = useLoading()
+
   return (
     <BrowserRouter>
       <Routes>
@@ -39,6 +43,7 @@ function App() {
           </Route>
         </Route>
       </Routes>
+      <LoadingOverlay open={isLoading} message={message} />
     </BrowserRouter>
   )
 }

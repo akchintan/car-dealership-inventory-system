@@ -3485,3 +3485,148 @@ Improve maintainability by centralizing API error handling logic into a reusable
 ## Result:
 
 Implemented a reusable typed API error handling utility, refactored all affected pages to use centralized error parsing, preserved existing behavior and messages, reduced duplicated logic, and verified the frontend production build completed successfully.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+
+Implement a reusable global loading overlay system.
+
+Requirements:
+
+Create:
+
+frontend/src/components/ui/LoadingOverlay.tsx
+
+- Completely reusable
+- Accessible loading overlay
+- Responsive desktop/mobile
+- Optional loading message
+- Reuse existing Card and Spinner components where appropriate
+- No business logic
+- No page-specific behavior
+
+Props:
+
+- open
+- message
+
+--------------------------------------------------
+
+Create:
+
+frontend/src/context/LoadingContext.tsx
+
+Requirements:
+
+Provide reusable global loading state.
+
+Expose:
+
+- showLoading(message?)
+- hideLoading()
+
+Maintain:
+
+- loading visibility
+- optional loading message
+
+--------------------------------------------------
+
+Update:
+
+frontend/src/main.tsx
+
+Requirements:
+
+- Wrap the application with LoadingProvider
+- Preserve existing provider order and routing
+
+--------------------------------------------------
+
+Update:
+
+frontend/src/App.tsx
+
+Requirements:
+
+- Render LoadingOverlay globally
+- Overlay appears above every route
+- Preserve existing layout
+
+--------------------------------------------------
+
+Update:
+
+frontend/src/pages/AddCar.tsx
+frontend/src/pages/EditCar.tsx
+frontend/src/pages/Cars.tsx
+
+Requirements:
+
+Integrate the global loading system.
+
+AddCar:
+
+- Show global loading while creating a vehicle
+- Hide after success or failure
+
+EditCar:
+
+- Show global loading while updating a vehicle
+- Hide after success or failure
+
+Cars:
+
+- Show global loading while deleting a vehicle
+- Hide after completion
+
+--------------------------------------------------
+
+Preserve:
+
+- useAsync hook
+- Toast notifications
+- Authentication
+- API error handling
+- Delete confirmation modal
+- Search
+- Debounced search
+- Status filter
+- Sorting
+- Pagination
+- StatusBadge
+- Dashboard charts
+- Responsive layout
+- Empty states
+- Existing local loading behavior where appropriate
+
+--------------------------------------------------
+
+Verify:
+
+Run:
+
+npm.cmd run build
+
+The build must complete successfully with zero TypeScript errors.
+
+Finally provide:
+
+- Modified files
+- Architecture summary
+- Build verification
+
+## Purpose:
+
+Create a reusable application-wide loading system that centralizes async loading UX while keeping presentation and business logic cleanly separated.
+
+## Result:
+
+Implemented a reusable global loading overlay with LoadingProvider, integrated it into create, update, and delete workflows, preserved existing functionality, and verified the frontend production build completed successfully.
+
+---
+

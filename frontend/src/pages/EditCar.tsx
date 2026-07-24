@@ -1,7 +1,9 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import CarForm, { type CarFormValues } from '../components/forms/CarForm'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
+import { useLoading } from '../context/LoadingContext'
 import {
   getCarById,
   updateCar,
@@ -16,17 +18,6 @@ interface Car extends CreateCarPayload {
 interface CarResponse {
   car: Car
 }
-
-interface CarFormValues {
-  brand: string
-  model: string
-  year: string
-  price: string
-  mileage: string
-  status: '' | CreateCarPayload['status']
-}
-
-type FormErrors = Partial<Record<keyof CarFormValues, string>>
 
 const initialFormValues: CarFormValues = {
   brand: '',
@@ -44,22 +35,13 @@ const pageStyle = {
   placeItems: 'center',
 }
 
-const cardStyle = {
-  width: 'min(100%, 680px)',
-  padding: '40px',
-  background: '#ffffff',
-  border: '1px solid #e4e9f0',
-  borderRadius: '16px',
-  boxShadow: '0 18px 45px rgb(15 23 42 / 9%)',
-}
-
 function EditCar() {
   const { id } = useParams()
   const { token } = useAuth()
   const { success } = useToast()
+  const { showLoading, hideLoading } = useLoading()
   const navigate = useNavigate()
-  const [formValues, setFormValues] = useState<CarFormValues>(initialFormValues)
-  const [errors, setErrors] = useState<FormErrors>({})
+  const [initialValues, setInitialValues] = useState<CarFormValues>(initialFormValues)
   const [loadError, setLoadError] = useState('')
   const [submitError, setSubmitError] = useState('')
   const [isLoading, setIsLoading] = useState(true)
@@ -82,7 +64,7 @@ function EditCar() {
         const { car } = await getCarById<CarResponse>(id, token ?? undefined)
 
         if (isMounted) {
-          setFormValues({
+          setInitialValues({
             brand: car.brand,
             model: car.model,
             year: String(car.year),
@@ -109,37 +91,9 @@ function EditCar() {
     }
   }, [id, token])
 
-  const updateField = <TField extends keyof CarFormValues>(
-    field: TField,
-    value: CarFormValues[TField],
-  ) => {
-    setFormValues((currentValues) => ({ ...currentValues, [field]: value }))
-    setErrors((currentErrors) => ({ ...currentErrors, [field]: undefined }))
-  }
-
-  const validateForm = (): FormErrors => {
-    const validationErrors: FormErrors = {}
-
-    if (!formValues.brand.trim()) validationErrors.brand = 'Brand is required.'
-    if (!formValues.model.trim()) validationErrors.model = 'Model is required.'
-    if (!formValues.year) validationErrors.year = 'Year is required.'
-    if (!formValues.price) validationErrors.price = 'Price is required.'
-    if (!formValues.mileage) validationErrors.mileage = 'Mileage is required.'
-    if (!formValues.status) validationErrors.status = 'Status is required.'
-
-    return validationErrors
-  }
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+  const handleSubmit = async (formValues: CarFormValues) => {
     setSubmitError('')
     setIsSuccess(false)
-
-    const validationErrors = validateForm()
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors)
-      return
-    }
 
     if (!id) {
       setSubmitError('Unable to find this car.')
@@ -147,6 +101,7 @@ function EditCar() {
     }
 
     setIsSubmitting(true)
+    showLoading('Saving vehicle...')
 
     try {
       await updateCar<unknown>(
@@ -169,13 +124,14 @@ function EditCar() {
       setSubmitError(getApiErrorMessage(requestError, 'Unable to update the car.'))
     } finally {
       setIsSubmitting(false)
+      hideLoading()
     }
   }
 
   if (isLoading) {
     return (
       <section style={pageStyle} aria-live="polite">
-        <div style={cardStyle} role="status">Loading car details...</div>
+        <div style={{ width: 'min(100%, 680px)', padding: '40px', background: '#ffffff', border: '1px solid #e4e9f0', borderRadius: '16px', boxShadow: '0 18px 45px rgb(15 23 42 / 9%)' }} role="status">Loading car details...</div>
       </section>
     )
   }
@@ -183,7 +139,7 @@ function EditCar() {
   if (loadError) {
     return (
       <section style={pageStyle}>
-        <div style={{ ...cardStyle, color: '#b42318', background: '#fef3f2', borderColor: '#fecdca' }} role="alert">
+        <div style={{ width: 'min(100%, 680px)', padding: '40px', color: '#b42318', background: '#fef3f2', border: '1px solid #fecdca', borderRadius: '16px', boxShadow: '0 18px 45px rgb(15 23 42 / 9%)' }} role="alert">
           {loadError}
         </div>
       </section>
@@ -192,58 +148,20 @@ function EditCar() {
 
   return (
     <section style={pageStyle} aria-labelledby="edit-car-heading">
-      <div style={cardStyle}>
+      <CarForm
+        initialValues={initialValues}
+        onSubmit={handleSubmit}
+        submitLabel={isSubmitting ? 'Updating car...' : 'Update car'}
+        loading={isSubmitting}
+        disabled={isSubmitting || isSuccess}
+        serverError={submitError}
+      >
         <p className="auth-eyebrow">Inventory</p>
         <h1 id="edit-car-heading" style={{ margin: 0, color: '#172033', fontSize: 'clamp(1.75rem, 4vw, 2.15rem)' }}>
           Edit car
         </h1>
         <p className="auth-intro">Update the vehicle details in your dealership inventory.</p>
-
-        <form className="auth-form" onSubmit={handleSubmit} noValidate>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px' }}>
-            <div className="form-field">
-              <label htmlFor="car-brand">Brand</label>
-              <input id="car-brand" value={formValues.brand} onChange={(event) => updateField('brand', event.target.value)} placeholder="e.g. Toyota" aria-invalid={Boolean(errors.brand)} aria-describedby={errors.brand ? 'car-brand-error' : undefined} />
-              {errors.brand && <p id="car-brand-error" className="form-message form-message--error">{errors.brand}</p>}
-            </div>
-            <div className="form-field">
-              <label htmlFor="car-model">Model</label>
-              <input id="car-model" value={formValues.model} onChange={(event) => updateField('model', event.target.value)} placeholder="e.g. Camry" aria-invalid={Boolean(errors.model)} aria-describedby={errors.model ? 'car-model-error' : undefined} />
-              {errors.model && <p id="car-model-error" className="form-message form-message--error">{errors.model}</p>}
-            </div>
-            <div className="form-field">
-              <label htmlFor="car-year">Year</label>
-              <input id="car-year" type="number" min="1886" value={formValues.year} onChange={(event) => updateField('year', event.target.value)} placeholder="e.g. 2024" aria-invalid={Boolean(errors.year)} aria-describedby={errors.year ? 'car-year-error' : undefined} />
-              {errors.year && <p id="car-year-error" className="form-message form-message--error">{errors.year}</p>}
-            </div>
-            <div className="form-field">
-              <label htmlFor="car-price">Price</label>
-              <input id="car-price" type="number" min="0" value={formValues.price} onChange={(event) => updateField('price', event.target.value)} placeholder="e.g. 2500000" aria-invalid={Boolean(errors.price)} aria-describedby={errors.price ? 'car-price-error' : undefined} />
-              {errors.price && <p id="car-price-error" className="form-message form-message--error">{errors.price}</p>}
-            </div>
-            <div className="form-field">
-              <label htmlFor="car-mileage">Mileage (km)</label>
-              <input id="car-mileage" type="number" min="0" value={formValues.mileage} onChange={(event) => updateField('mileage', event.target.value)} placeholder="e.g. 15000" aria-invalid={Boolean(errors.mileage)} aria-describedby={errors.mileage ? 'car-mileage-error' : undefined} />
-              {errors.mileage && <p id="car-mileage-error" className="form-message form-message--error">{errors.mileage}</p>}
-            </div>
-            <div className="form-field">
-              <label htmlFor="car-status">Status</label>
-              <select id="car-status" value={formValues.status} onChange={(event) => updateField('status', event.target.value as CarFormValues['status'])} aria-invalid={Boolean(errors.status)} aria-describedby={errors.status ? 'car-status-error' : undefined} style={{ width: '100%', padding: '12px 14px', color: '#172033', background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '8px' }}>
-                <option value="">Select status</option>
-                <option value="available">Available</option>
-                <option value="sold">Sold</option>
-              </select>
-              {errors.status && <p id="car-status-error" className="form-message form-message--error">{errors.status}</p>}
-            </div>
-          </div>
-
-          {submitError && <p className="form-message form-message--error" role="alert">{submitError}</p>}
-          <button className="auth-submit" type="submit" disabled={isSubmitting || isSuccess}>
-            {isSubmitting && <span className="button-spinner" aria-hidden="true" />}
-            {isSubmitting ? 'Updating car...' : 'Update car'}
-          </button>
-        </form>
-      </div>
+      </CarForm>
     </section>
   )
 }

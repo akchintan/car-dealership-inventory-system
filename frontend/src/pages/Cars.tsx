@@ -8,7 +8,9 @@ import ConfirmationModal from '../components/ui/ConfirmationModal'
 import Spinner from '../components/ui/Spinner'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
+import { useLoading } from '../context/LoadingContext'
 import useDebounce from '../hooks/useDebounce'
+import useAsync from '../hooks/useAsync'
 import { deleteCar, getCars } from '../services/api'
 import { getApiErrorMessage } from '../utils/apiError'
 
@@ -27,17 +29,17 @@ const ITEMS_PER_PAGE = 8
 function Cars() {
   const { token } = useAuth()
   const { success } = useToast()
+  const { showLoading, hideLoading } = useLoading()
   const [cars, setCars] = useState<Car[]>([])
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [currentPage, setCurrentPage] = useState(1)
   const [sortField, setSortField] = useState<CarSortField>('brand')
   const [sortDirection, setSortDirection] = useState<SortDirection>('ascending')
-  const [error, setError] = useState('')
   const [deleteError, setDeleteError] = useState('')
   const [deletingCarId, setDeletingCarId] = useState<string | null>(null)
   const [carPendingDeletion, setCarPendingDeletion] = useState<Car | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const { data: carsResponse, loading, error, execute } = useAsync<CarsResponse>()
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300)
   const normalizedSearchTerm = debouncedSearchTerm.trim().toLowerCase()
@@ -63,32 +65,17 @@ function Cars() {
   const lastVisibleCar = pageStartIndex + paginatedCars.length
 
   useEffect(() => {
-    let isMounted = true
+    void execute(() => getCars<CarsResponse>(token ?? undefined))
+  }, [execute, token])
 
-    const fetchCars = async () => {
-      try {
-        const data = await getCars<CarsResponse>(token ?? undefined)
-
-        if (isMounted) {
-          setCars(data.cars)
-        }
-      } catch (requestError) {
-        if (isMounted) {
-          setError(getApiErrorMessage(requestError, 'Unable to load cars.'))
-        }
-      } finally {
-        if (isMounted) {
-          setIsLoading(false)
-        }
-      }
+  useEffect(() => {
+    if (carsResponse) {
+      setCars(carsResponse.cars)
     }
+  }, [carsResponse])
 
-    fetchCars()
-
-    return () => {
-      isMounted = false
-    }
-  }, [token])
+  const isLoading = loading || (carsResponse === null && error === null)
+  const errorMessage = error ? getApiErrorMessage(error, 'Unable to load cars.') : ''
 
   useEffect(() => {
     if (currentPage > totalPages) {
@@ -110,6 +97,7 @@ function Cars() {
     const car = carPendingDeletion
     setDeleteError('')
     setDeletingCarId(car._id)
+    showLoading('Deleting car...')
 
     try {
       await deleteCar<unknown>(car._id, token ?? undefined)
@@ -120,6 +108,7 @@ function Cars() {
     } finally {
       setDeletingCarId(null)
       setCarPendingDeletion(null)
+      hideLoading()
     }
   }
 
@@ -162,19 +151,19 @@ function Cars() {
         </Card>
       )}
 
-      {!isLoading && error && (
+      {!isLoading && errorMessage && (
         <Card style={{ color: '#b42318', background: '#fef3f2', borderColor: '#fecdca' }} role="alert">
-          {error}
+          {errorMessage}
         </Card>
       )}
 
-      {!isLoading && !error && deleteError && (
+      {!isLoading && !errorMessage && deleteError && (
         <p className="form-message form-message--error" role="alert" style={{ marginBottom: '20px' }}>
           {deleteError}
         </p>
       )}
 
-      {!isLoading && !error && (
+      {!isLoading && !errorMessage && (
         <>
           {cars.length > 0 && (
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', marginBottom: '24px' }}>

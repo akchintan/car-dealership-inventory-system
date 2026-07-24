@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import InventoryStatusChart, { InventoryStatusChartSkeleton } from '../components/charts/InventoryStatusChart'
 import Button from '../components/ui/Button'
 import Card from '../components/ui/Card'
 import StatisticCard, { StatisticCardSkeleton } from '../components/ui/StatisticCard'
 import { useAuth } from '../context/AuthContext'
+import useAsync from '../hooks/useAsync'
 import { getCars } from '../services/api'
 import { getApiErrorMessage } from '../utils/apiError'
 
@@ -27,37 +28,15 @@ const pageStyle = {
 function Home() {
   const { token } = useAuth()
   const navigate = useNavigate()
-  const [cars, setCars] = useState<DashboardCar[]>([])
-  const [error, setError] = useState('')
-  const [isLoading, setIsLoading] = useState(true)
+  const { data, loading, error, execute } = useAsync<CarsResponse>()
 
   useEffect(() => {
-    let isMounted = true
+    void execute(() => getCars<CarsResponse>(token ?? undefined))
+  }, [execute, token])
 
-    const fetchInventory = async () => {
-      try {
-        const data = await getCars<CarsResponse>(token ?? undefined)
-
-        if (isMounted) {
-          setCars(data.cars)
-        }
-      } catch (requestError) {
-        if (isMounted) {
-          setError(getApiErrorMessage(requestError, 'Unable to load dashboard data.'))
-        }
-      } finally {
-        if (isMounted) {
-          setIsLoading(false)
-        }
-      }
-    }
-
-    fetchInventory()
-
-    return () => {
-      isMounted = false
-    }
-  }, [token])
+  const cars: DashboardCar[] = data?.cars ?? []
+  const isLoading = loading || (data === null && error === null)
+  const errorMessage = error ? getApiErrorMessage(error, 'Unable to load dashboard data.') : ''
 
   const availableCars = cars.filter(
     ({ status }) => status.toLowerCase() === 'available',
@@ -136,13 +115,13 @@ function Home() {
           </div>
         )}
 
-        {!isLoading && error && (
+        {!isLoading && errorMessage && (
           <Card style={{ color: '#b42318', background: '#fef3f2', borderColor: '#fecdca' }} role="alert">
-            {error}
+            {errorMessage}
           </Card>
         )}
 
-        {!isLoading && !error && (
+        {!isLoading && !errorMessage && (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: '16px' }}>
             {statistics.map((statistic) => (
               <StatisticCard key={statistic.title} {...statistic} />
@@ -158,7 +137,7 @@ function Home() {
 
         {isLoading && <InventoryStatusChartSkeleton />}
 
-        {!isLoading && !error && <InventoryStatusChart data={inventoryStatusData} />}
+        {!isLoading && !errorMessage && <InventoryStatusChart data={inventoryStatusData} />}
       </section>
     </section>
   )
