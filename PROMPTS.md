@@ -2602,3 +2602,63 @@ Create the basic frontend navigation structure and connect application pages bef
 Implemented React Router based navigation with shared Navbar layout. Connected all required pages and verified that the frontend production build completed successfully.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are continuing development of the Car Dealership Inventory System.
+
+Follow the existing project architecture and do not modify backend files.
+
+Task:
+Create the frontend authentication foundation.
+
+Requirements:
+
+1. Update frontend/src/services/api.ts
+
+Create a reusable Axios API client.
+
+Requirements:
+- Use axios.create()
+- Set backend base URL using environment variable:
+  VITE_API_URL
+- Add default JSON headers.
+
+2. Update frontend/src/context/AuthContext.tsx
+
+Implement authentication state management.
+
+Requirements:
+- Store current user state.
+- Store authentication token state.
+- Provide login and logout functions.
+- Persist token using localStorage.
+- Create AuthContext provider.
+
+3. Do not implement:
+- Login form UI
+- Register form UI
+- JWT decoding
+- Protected routes
+- Advanced authentication features
+
+4. Keep implementation minimal and production-friendly.
+
+5. Verify:
+- TypeScript compilation
+- Frontend production build
+
+Do not modify:
+- backend files
+- routing structure
+- page components
+
+Explain every file modified.
+
+## Purpose:
+Create the frontend authentication foundation before implementing login and registration UI.
+
+## Result:
+Implemented Axios API service and authentication context with token persistence, login/logout handling, and reusable authentication state management. Verified frontend TypeScript compilation and production build successfully.
