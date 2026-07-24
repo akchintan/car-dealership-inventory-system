@@ -3074,3 +3074,48 @@ Improve the inventory experience with reusable client-side pagination while main
 ## Result:
 
 Implemented a reusable Pagination component with accessible navigation, integrated client-side pagination into Cars.tsx, updated InventorySummary with paginated result counts, preserved all existing inventory functionality, and verified the frontend production build completed successfully.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+
+Implement reusable inventory status filtering.
+
+Requirements:
+- Create reusable StatusFilter component
+- Render a styled dropdown
+- Supported options:
+  - All
+  - Available
+  - Reserved
+  - Sold
+- Keep StatusFilter completely presentational
+- Manage filter state inside Cars.tsx
+- Default filter = All
+- Apply filtering order:
+  - Fetch
+  - Search
+  - Status Filter
+  - Sorting
+  - Pagination
+- Reset pagination to page 1 whenever the status filter changes
+- Allow search and status filter to work together
+- Update InventorySummary to display:
+  - Showing X–Y of Z vehicles
+  - Current search
+  - Current status filter
+  - Current sorting
+- Keep CarTable presentational
+- Preserve search, sorting, pagination, StatusBadge, edit, delete, toast notifications, loading state, empty state, and responsive behavior
+- Verify frontend production build
+
+## Purpose:
+
+Improve inventory management by allowing users to filter vehicles by status while keeping filtering logic centralized in Cars.tsx and maintaining reusable UI components.
+
+## Result:
+
+Implemented a reusable StatusFilter component, integrated client-side status filtering with search, sorting, and pagination, enhanced InventorySummary with active filter information, preserved all existing inventory functionality, and verified the frontend production build completed successfully.

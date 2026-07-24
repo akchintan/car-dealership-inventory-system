@@ -8,6 +8,7 @@ interface InventorySummaryProps {
   firstVisibleCar: number
   lastVisibleCar: number
   searchTerm: string
+  statusFilter: string
   sortField: SortField
   sortDirection: SortDirection
 }
@@ -19,11 +20,19 @@ const sortFieldLabels: Record<SortField, string> = {
   mileage: 'Mileage',
 }
 
+const statusLabels: Record<string, string> = {
+  all: 'All',
+  available: 'Available',
+  reserved: 'Reserved',
+  sold: 'Sold',
+}
+
 function InventorySummary({
   totalCars,
   firstVisibleCar,
   lastVisibleCar,
   searchTerm,
+  statusFilter,
   sortField,
   sortDirection,
 }: InventorySummaryProps) {
@@ -38,10 +47,13 @@ function InventorySummary({
           <strong style={{ color: '#172033' }}>{vehicleSummary}</strong>
         </p>
         <p style={{ flex: '1 1 180px', margin: 0, color: '#667085' }}>
-          Search: <strong style={{ color: '#172033' }}>{isSearchActive ? searchTerm : 'All vehicles'}</strong>
+          Current Search: <strong style={{ color: '#172033' }}>{isSearchActive ? searchTerm : 'All vehicles'}</strong>
         </p>
         <p style={{ flex: '1 1 180px', margin: 0, color: '#667085' }}>
-          Sorted by: <strong style={{ color: '#172033' }}>{sortFieldLabels[sortField]} {sortIndicator}</strong>
+          Current Status: <strong style={{ color: '#172033' }}>{statusLabels[statusFilter] ?? statusFilter}</strong>
+        </p>
+        <p style={{ flex: '1 1 180px', margin: 0, color: '#667085' }}>
+          Current Sort: <strong style={{ color: '#172033' }}>{sortFieldLabels[sortField]} {sortIndicator}</strong>
         </p>
       </div>
     </Card>

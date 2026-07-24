@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import CarTable, { type Car, type CarSortField, type SortDirection } from '../components/CarTable'
 import InventorySummary from '../components/InventorySummary'
 import Pagination from '../components/Pagination'
+import StatusFilter from '../components/StatusFilter'
 import Card from '../components/ui/Card'
 import Spinner from '../components/ui/Spinner'
 import { useAuth } from '../context/AuthContext'
@@ -30,6 +31,7 @@ function Cars() {
   const { success } = useToast()
   const [cars, setCars] = useState<Car[]>([])
   const [searchTerm, setSearchTerm] = useState('')
+  const [statusFilter, setStatusFilter] = useState('all')
   const [currentPage, setCurrentPage] = useState(1)
   const [sortField, setSortField] = useState<CarSortField>('brand')
   const [sortDirection, setSortDirection] = useState<SortDirection>('ascending')
@@ -40,10 +42,13 @@ function Cars() {
 
   const normalizedSearchTerm = searchTerm.trim().toLowerCase()
   const summarySearchTerm = searchTerm.trim()
-  const filteredCars = cars.filter((car) =>
+  const searchFilteredCars = cars.filter((car) =>
     `${car.brand} ${car.model}`.toLowerCase().includes(normalizedSearchTerm),
   )
-  const sortedCars = [...filteredCars].sort((firstCar, secondCar) => {
+  const statusFilteredCars = searchFilteredCars.filter((car) =>
+    statusFilter === 'all' || car.status.toLowerCase() === statusFilter,
+  )
+  const sortedCars = [...statusFilteredCars].sort((firstCar, secondCar) => {
     const comparison = sortField === 'brand'
       ? firstCar.brand.localeCompare(secondCar.brand)
       : firstCar[sortField] - secondCar[sortField]
@@ -137,6 +142,11 @@ function Cars() {
     setCurrentPage(1)
   }
 
+  const handleStatusFilterChange = (value: string) => {
+    setStatusFilter(value)
+    setCurrentPage(1)
+  }
+
   return (
     <section style={pageStyle} aria-labelledby="cars-heading">
       <header style={{ marginBottom: '28px' }}>
@@ -170,15 +180,18 @@ function Cars() {
       {!isLoading && !error && (
         <>
           {cars.length > 0 && (
-            <div className="form-field" style={{ width: 'min(100%, 420px)', marginBottom: '24px' }}>
-              <label htmlFor="car-search">Search inventory</label>
-              <input
-                id="car-search"
-                type="search"
-                value={searchTerm}
-                onChange={(event) => handleSearchChange(event.target.value)}
-                placeholder="Search by brand or model"
-              />
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', marginBottom: '24px' }}>
+              <div className="form-field" style={{ flex: '1 1 280px' }}>
+                <label htmlFor="car-search">Search inventory</label>
+                <input
+                  id="car-search"
+                  type="search"
+                  value={searchTerm}
+                  onChange={(event) => handleSearchChange(event.target.value)}
+                  placeholder="Search by brand or model"
+                />
+              </div>
+              <StatusFilter value={statusFilter} onChange={handleStatusFilterChange} />
             </div>
           )}
 
@@ -187,6 +200,7 @@ function Cars() {
             firstVisibleCar={firstVisibleCar}
             lastVisibleCar={lastVisibleCar}
             searchTerm={summarySearchTerm}
+            statusFilter={statusFilter}
             sortField={sortField}
             sortDirection={sortDirection}
           />
