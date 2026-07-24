@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import CarForm, { type CarFormValues } from '../components/forms/CarForm'
-import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
 import { useLoading } from '../context/LoadingContext'
 import {
@@ -37,7 +36,6 @@ const pageStyle = {
 
 function EditCar() {
   const { id } = useParams()
-  const { token } = useAuth()
   const { success } = useToast()
   const { showLoading, hideLoading } = useLoading()
   const navigate = useNavigate()
@@ -61,7 +59,7 @@ function EditCar() {
       }
 
       try {
-        const { car } = await getCarById<CarResponse>(id, token ?? undefined)
+        const { car } = await getCarById<CarResponse>(id)
 
         if (isMounted) {
           setInitialValues({
@@ -89,7 +87,7 @@ function EditCar() {
     return () => {
       isMounted = false
     }
-  }, [id, token])
+  }, [id])
 
   const handleSubmit = async (formValues: CarFormValues) => {
     setSubmitError('')
@@ -114,7 +112,6 @@ function EditCar() {
           mileage: Number(formValues.mileage),
           status: formValues.status as CreateCarPayload['status'],
         },
-        token ?? undefined,
       )
 
       setIsSuccess(true)

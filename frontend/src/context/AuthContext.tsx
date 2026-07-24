@@ -2,12 +2,14 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from 'react'
+import { API_UNAUTHORIZED_EVENT, AUTH_TOKEN_STORAGE_KEY } from '../services/apiClient'
 
-const TOKEN_STORAGE_KEY = 'authToken'
+const TOKEN_STORAGE_KEY = AUTH_TOKEN_STORAGE_KEY
 const USER_STORAGE_KEY = 'authUser'
 
 export type AuthUser = Record<string, unknown>
@@ -92,6 +94,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
     clearStoredAuth()
     setAuthState(emptyAuthState)
   }, [])
+
+  useEffect(() => {
+    window.addEventListener(API_UNAUTHORIZED_EVENT, logout)
+
+    return () => window.removeEventListener(API_UNAUTHORIZED_EVENT, logout)
+  }, [logout])
 
   const contextValue = useMemo<AuthContextValue>(() => ({
     token: authState.token,

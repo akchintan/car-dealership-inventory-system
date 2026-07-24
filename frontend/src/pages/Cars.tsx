@@ -6,7 +6,6 @@ import StatusFilter from '../components/StatusFilter'
 import Card from '../components/ui/Card'
 import ConfirmationModal from '../components/ui/ConfirmationModal'
 import Spinner from '../components/ui/Spinner'
-import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
 import { useLoading } from '../context/LoadingContext'
 import useDebounce from '../hooks/useDebounce'
@@ -27,7 +26,6 @@ const pageStyle = {
 const ITEMS_PER_PAGE = 8
 
 function Cars() {
-  const { token } = useAuth()
   const { success } = useToast()
   const { showLoading, hideLoading } = useLoading()
   const [cars, setCars] = useState<Car[]>([])
@@ -65,8 +63,8 @@ function Cars() {
   const lastVisibleCar = pageStartIndex + paginatedCars.length
 
   useEffect(() => {
-    void execute(() => getCars<CarsResponse>(token ?? undefined))
-  }, [execute, token])
+    void execute(() => getCars<CarsResponse>())
+  }, [execute])
 
   useEffect(() => {
     if (carsResponse) {
@@ -100,7 +98,7 @@ function Cars() {
     showLoading('Deleting car...')
 
     try {
-      await deleteCar<unknown>(car._id, token ?? undefined)
+      await deleteCar<unknown>(car._id)
       setCars((currentCars) => currentCars.filter(({ _id }) => _id !== car._id))
       success(`${car.brand} ${car.model} was deleted from inventory.`)
     } catch (requestError) {

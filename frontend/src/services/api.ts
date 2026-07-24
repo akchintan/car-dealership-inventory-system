@@ -1,12 +1,4 @@
-import axios from 'axios'
-
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-  },
-})
+import apiClient from './apiClient'
 
 export interface CreateCarPayload {
   brand: string
@@ -17,29 +9,23 @@ export interface CreateCarPayload {
   status: 'available' | 'sold'
 }
 
-export async function getCars<T>(token?: string): Promise<T> {
-  const { data } = await api.get<T>('/api/cars', {
-    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-  })
+export async function getCars<T>(_token?: string): Promise<T> {
+  const { data } = await apiClient.get<T>('/api/cars')
 
   return data
 }
 
 export async function createCar<T>(
   car: CreateCarPayload,
-  token?: string,
+  _token?: string,
 ): Promise<T> {
-  const { data } = await api.post<T>('/api/cars', car, {
-    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-  })
+  const { data } = await apiClient.post<T>('/api/cars', car)
 
   return data
 }
 
-export async function getCarById<T>(id: string, token?: string): Promise<T> {
-  const { data } = await api.get<T>(`/api/cars/${id}`, {
-    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-  })
+export async function getCarById<T>(id: string, _token?: string): Promise<T> {
+  const { data } = await apiClient.get<T>(`/api/cars/${id}`)
 
   return data
 }
@@ -47,21 +33,17 @@ export async function getCarById<T>(id: string, token?: string): Promise<T> {
 export async function updateCar<T>(
   id: string,
   car: CreateCarPayload,
-  token?: string,
+  _token?: string,
 ): Promise<T> {
-  const { data } = await api.put<T>(`/api/cars/${id}`, car, {
-    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-  })
+  const { data } = await apiClient.put<T>(`/api/cars/${id}`, car)
 
   return data
 }
 
-export async function deleteCar<T>(id: string, token?: string): Promise<T> {
-  const { data } = await api.delete<T>(`/api/cars/${id}`, {
-    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-  })
+export async function deleteCar<T>(id: string, _token?: string): Promise<T> {
+  const { data } = await apiClient.delete<T>(`/api/cars/${id}`)
 
   return data
 }
 
-export default api
+export default apiClient

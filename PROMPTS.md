@@ -3990,3 +3990,141 @@ Improve application resilience by introducing a reusable global Error Boundary t
 ## Result:
 
 Implemented a reusable Error Boundary with a reusable ErrorFallback component, graceful runtime error recovery, retry support, centralized error handling architecture, preserved all existing application behavior, and verified the frontend production build completed successfully.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+
+Set up a reusable frontend testing foundation using Vitest and React Testing Library without changing existing application behavior.
+
+Requirements:
+
+Install and configure:
+
+- Vitest
+- React Testing Library
+- @testing-library/jest-dom
+- @testing-library/user-event
+- jsdom
+- V8 coverage provider
+
+--------------------------------------------------
+
+Create:
+
+frontend/src/test/setup.ts
+
+Requirements:
+
+- Configure global testing setup
+- Import jest-dom matchers
+- Automatically clean up rendered components after each test
+- Keep setup reusable for future tests
+
+--------------------------------------------------
+
+Update:
+
+vite.config.ts
+
+Requirements:
+
+Configure Vitest with:
+
+- jsdom environment
+- globals enabled
+- shared setup file
+- reusable testing configuration
+
+--------------------------------------------------
+
+Update:
+
+package.json
+
+Add reusable scripts:
+
+- npm run test
+- npm run test:watch
+- npm run test:coverage
+
+--------------------------------------------------
+
+Create example component test:
+
+frontend/src/components/ui/StatusBadge.test.tsx
+
+Requirements:
+
+Verify:
+
+- Available status
+- Sold status
+- Reserved status
+- Unknown status
+
+Confirm the correct text is rendered for every badge.
+
+--------------------------------------------------
+
+Architecture requirements
+
+- Centralized reusable testing configuration
+- Strict TypeScript
+- Future tests should require minimal setup
+- No duplicated configuration
+- No production behavior changes
+
+--------------------------------------------------
+
+Preserve:
+
+- Authentication
+- Persistent sessions
+- CRUD functionality
+- Dashboard
+- Charts
+- Global loading
+- Toast notifications
+- Error Boundary
+- Axios client
+- Routing
+- Lazy loading
+- Search
+- Debounced search
+- Sorting
+- Pagination
+- Status filtering
+- Confirmation modal
+- Responsive UI
+
+--------------------------------------------------
+
+Verify:
+
+Run:
+
+npm.cmd run test
+
+Run:
+
+npm.cmd run build
+
+Both commands must complete successfully.
+
+Finally provide:
+
+- Modified files
+- Testing architecture summary
+- Verification results
+
+## Purpose:
+
+Introduce a reusable frontend testing infrastructure using Vitest and React Testing Library to improve maintainability, reliability, and future test development while preserving all existing application behavior.
+
+## Result:
+
+Implemented a reusable frontend testing foundation using Vitest and React Testing Library, added a shared testing configuration and example component test, preserved all existing application functionality, and verified both the test suite and production build completed successfully.

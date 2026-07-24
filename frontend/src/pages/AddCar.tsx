@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import CarForm, { type CarFormValues } from '../components/forms/CarForm'
-import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
 import { useLoading } from '../context/LoadingContext'
 import { createCar, type CreateCarPayload } from '../services/api'
@@ -24,7 +23,6 @@ const pageStyle = {
 }
 
 function AddCar() {
-  const { token } = useAuth()
   const { success } = useToast()
   const { showLoading, hideLoading } = useLoading()
   const navigate = useNavigate()
@@ -48,7 +46,6 @@ function AddCar() {
           mileage: Number(formValues.mileage),
           status: formValues.status as CreateCarPayload['status'],
         },
-        token ?? undefined,
       )
 
       setIsSuccess(true)

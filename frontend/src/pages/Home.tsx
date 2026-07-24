@@ -4,7 +4,6 @@ import InventoryStatusChart, { InventoryStatusChartSkeleton } from '../component
 import Button from '../components/ui/Button'
 import Card from '../components/ui/Card'
 import StatisticCard, { StatisticCardSkeleton } from '../components/ui/StatisticCard'
-import { useAuth } from '../context/AuthContext'
 import useAsync from '../hooks/useAsync'
 import { getCars } from '../services/api'
 import { getApiErrorMessage } from '../utils/apiError'
@@ -26,13 +25,12 @@ const pageStyle = {
 }
 
 function Home() {
-  const { token } = useAuth()
   const navigate = useNavigate()
   const { data, loading, error, execute } = useAsync<CarsResponse>()
 
   useEffect(() => {
-    void execute(() => getCars<CarsResponse>(token ?? undefined))
-  }, [execute, token])
+    void execute(() => getCars<CarsResponse>())
+  }, [execute])
 
   const cars: DashboardCar[] = data?.cars ?? []
   const isLoading = loading || (data === null && error === null)
