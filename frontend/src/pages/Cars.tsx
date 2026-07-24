@@ -1,6 +1,9 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import CarCard, { type Car } from '../components/CarCard'
+import Card from '../components/ui/Card'
+import EmptyState from '../components/ui/EmptyState'
+import Spinner from '../components/ui/Spinner'
 import { useAuth } from '../context/AuthContext'
 import { deleteCar, getCars } from '../services/api'
 
@@ -16,14 +19,6 @@ const pageStyle = {
   width: 'min(100%, 1200px)',
   margin: '0 auto',
   padding: '48px 24px',
-}
-
-const cardStyle = {
-  padding: '24px',
-  background: '#ffffff',
-  border: '1px solid #e4e9f0',
-  borderRadius: '16px',
-  boxShadow: '0 10px 25px rgb(15 23 42 / 7%)',
 }
 
 function Cars() {
@@ -109,15 +104,18 @@ function Cars() {
       </header>
 
       {isLoading && (
-        <div style={cardStyle} role="status">
-          Loading cars...
-        </div>
+        <Card role="status">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <Spinner />
+            Loading cars...
+          </div>
+        </Card>
       )}
 
       {!isLoading && error && (
-        <div style={{ ...cardStyle, color: '#b42318', background: '#fef3f2', borderColor: '#fecdca' }} role="alert">
+        <Card style={{ color: '#b42318', background: '#fef3f2', borderColor: '#fecdca' }} role="alert">
           {error}
-        </div>
+        </Card>
       )}
 
       {!isLoading && !error && deleteError && (
@@ -133,10 +131,12 @@ function Cars() {
       )}
 
       {!isLoading && !error && cars.length === 0 && (
-        <div style={cardStyle}>
-          <h2 style={{ margin: '0 0 8px', color: '#172033', fontSize: '1.15rem' }}>No cars in inventory</h2>
-          <p style={{ margin: 0, color: '#667085', lineHeight: 1.5 }}>Cars added to the dealership will appear here.</p>
-        </div>
+        <Card>
+          <EmptyState
+            title="No cars in inventory"
+            description="Cars added to the dealership will appear here."
+          />
+        </Card>
       )}
 
       {!isLoading && !error && cars.length > 0 && (
@@ -153,10 +153,12 @@ function Cars() {
           </div>
 
           {filteredCars.length === 0 ? (
-            <div style={cardStyle}>
-              <h2 style={{ margin: '0 0 8px', color: '#172033', fontSize: '1.15rem' }}>No matching vehicles found.</h2>
-              <p style={{ margin: 0, color: '#667085', lineHeight: 1.5 }}>Try searching for a different brand or model.</p>
-            </div>
+            <Card>
+              <EmptyState
+                title="No matching vehicles found."
+                description="Try searching for a different brand or model."
+              />
+            </Card>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
               {filteredCars.map((car) => (
