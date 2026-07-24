@@ -2717,3 +2717,26 @@ Improve frontend authentication page presentation before implementing further pr
 Updated Login and Register pages with a professional responsive dealer portal UI. Added improved form styling, loading states, error handling presentation, and registration success feedback. Verified frontend production build completed successfully.
 
 ---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are continuing the frontend implementation of the Car Dealership Inventory System.
+
+Task:
+Separate the car retrieval API logic from the Cars page while preserving the existing UI and behavior.
+
+Requirements:
+
+- Create a reusable getCars() helper in frontend/src/services/api.ts.
+- Replace the direct API request inside Cars.tsx with getCars().
+- Preserve loading state, error handling, UI, and TypeScript types.
+- Do not modify routing, AuthContext, backend, or styles.
+- Verify the frontend production build.
+
+## Purpose:
+Refactor frontend data access by separating API communication from UI components, improving maintainability and enabling future reuse.
+
+## Result:
+Created a reusable getCars() API helper and updated Cars.tsx to consume it. Preserved existing behavior while improving separation of concerns. Verified that the frontend production build completed successfully.

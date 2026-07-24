@@ -8,4 +8,12 @@ const api = axios.create({
   },
 })
 
+export async function getCars<T>(token?: string): Promise<T> {
+  const { data } = await api.get<T>('/api/cars', {
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+  })
+
+  return data
+}
+
 export default api

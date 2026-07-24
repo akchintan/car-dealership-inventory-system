@@ -1,5 +1,7 @@
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar'
+import ProtectedRoute from './components/ProtectedRoute'
+import PublicOnlyRoute from './components/PublicOnlyRoute'
 import AddCar from './pages/AddCar'
 import Cars from './pages/Cars'
 import Home from './pages/Home'
@@ -22,11 +24,15 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<AppLayout />}>
-          <Route index element={<Home />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="cars" element={<Cars />} />
-          <Route path="add-car" element={<AddCar />} />
+          <Route element={<ProtectedRoute />}>
+            <Route index element={<Home />} />
+            <Route path="cars" element={<Cars />} />
+            <Route path="add-car" element={<AddCar />} />
+          </Route>
+          <Route element={<PublicOnlyRoute />}>
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
