@@ -5,7 +5,8 @@ type SortDirection = 'ascending' | 'descending'
 
 interface InventorySummaryProps {
   totalCars: number
-  filteredCars: number
+  firstVisibleCar: number
+  lastVisibleCar: number
   searchTerm: string
   sortField: SortField
   sortDirection: SortDirection
@@ -20,15 +21,14 @@ const sortFieldLabels: Record<SortField, string> = {
 
 function InventorySummary({
   totalCars,
-  filteredCars,
+  firstVisibleCar,
+  lastVisibleCar,
   searchTerm,
   sortField,
   sortDirection,
 }: InventorySummaryProps) {
   const isSearchActive = searchTerm.length > 0
-  const vehicleSummary = isSearchActive
-    ? `Showing ${filteredCars} of ${totalCars} vehicles`
-    : `Showing ${totalCars} vehicles`
+  const vehicleSummary = `Showing ${firstVisibleCar}\u2013${lastVisibleCar} of ${totalCars} vehicles`
   const sortIndicator = sortDirection === 'ascending' ? '↑' : '↓'
 
   return (

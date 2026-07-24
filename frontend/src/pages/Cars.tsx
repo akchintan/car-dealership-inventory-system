@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import CarTable, { type Car, type CarSortField, type SortDirection } from '../components/CarTable'
 import InventorySummary from '../components/InventorySummary'
+import Pagination from '../components/Pagination'
 import Card from '../components/ui/Card'
 import Spinner from '../components/ui/Spinner'
 import { useAuth } from '../context/AuthContext'
@@ -22,11 +23,14 @@ const pageStyle = {
   padding: '48px 24px',
 }
 
+const ITEMS_PER_PAGE = 8
+
 function Cars() {
   const { token } = useAuth()
   const { success } = useToast()
   const [cars, setCars] = useState<Car[]>([])
   const [searchTerm, setSearchTerm] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
   const [sortField, setSortField] = useState<CarSortField>('brand')
   const [sortDirection, setSortDirection] = useState<SortDirection>('ascending')
   const [error, setError] = useState('')
@@ -46,6 +50,12 @@ function Cars() {
 
     return sortDirection === 'ascending' ? comparison : -comparison
   })
+  const totalPages = Math.max(1, Math.ceil(sortedCars.length / ITEMS_PER_PAGE))
+  const activePage = Math.min(currentPage, totalPages)
+  const pageStartIndex = (activePage - 1) * ITEMS_PER_PAGE
+  const paginatedCars = sortedCars.slice(pageStartIndex, pageStartIndex + ITEMS_PER_PAGE)
+  const firstVisibleCar = sortedCars.length === 0 ? 0 : pageStartIndex + 1
+  const lastVisibleCar = pageStartIndex + paginatedCars.length
 
   useEffect(() => {
     let isMounted = true
@@ -78,6 +88,12 @@ function Cars() {
       isMounted = false
     }
   }, [token])
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages)
+    }
+  }, [currentPage, totalPages])
 
   const handleDelete = async (car: Car) => {
     const isConfirmed = window.confirm(
@@ -114,6 +130,11 @@ function Cars() {
 
     setSortField(field)
     setSortDirection('ascending')
+  }
+
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value)
+    setCurrentPage(1)
   }
 
   return (
@@ -155,22 +176,23 @@ function Cars() {
                 id="car-search"
                 type="search"
                 value={searchTerm}
-                onChange={(event) => setSearchTerm(event.target.value)}
+                onChange={(event) => handleSearchChange(event.target.value)}
                 placeholder="Search by brand or model"
               />
             </div>
           )}
 
           <InventorySummary
-            totalCars={cars.length}
-            filteredCars={filteredCars.length}
+            totalCars={sortedCars.length}
+            firstVisibleCar={firstVisibleCar}
+            lastVisibleCar={lastVisibleCar}
             searchTerm={summarySearchTerm}
             sortField={sortField}
             sortDirection={sortDirection}
           />
 
           <CarTable
-            cars={sortedCars}
+            cars={paginatedCars}
             onDelete={handleDelete}
             deletingCarId={deletingCarId}
             isSearching={normalizedSearchTerm.length > 0}
@@ -178,6 +200,14 @@ function Cars() {
             sortDirection={sortDirection}
             onSortChange={handleSortChange}
           />
+
+          {sortedCars.length > 0 && (
+            <Pagination
+              currentPage={activePage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          )}
         </>
       )}
     </section>
