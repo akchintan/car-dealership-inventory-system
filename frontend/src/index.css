@@ -319,6 +319,38 @@ input {
   margin-top: 12px;
 }
 
+.inventory-chart-skeleton {
+  display: grid;
+  overflow: hidden;
+  place-items: center;
+}
+
+.inventory-chart-skeleton__chart {
+  width: min(100%, 230px);
+  aspect-ratio: 1;
+  background: linear-gradient(90deg, #f2f4f7 25%, #e4e9f0 50%, #f2f4f7 75%);
+  background-size: 200% 100%;
+  border-radius: 50%;
+  animation: statistic-card-shimmer 1.4s ease-in-out infinite;
+}
+
+.inventory-chart-skeleton__legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.inventory-chart-skeleton__legend span {
+  width: 72px;
+  height: 12px;
+  background: linear-gradient(90deg, #f2f4f7 25%, #e4e9f0 50%, #f2f4f7 75%);
+  background-size: 200% 100%;
+  border-radius: 6px;
+  animation: statistic-card-shimmer 1.4s ease-in-out infinite;
+}
+
 @keyframes statistic-card-shimmer {
   to {
     background-position: -200% 0;

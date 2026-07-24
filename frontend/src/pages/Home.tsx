@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import InventoryStatusChart, { InventoryStatusChartSkeleton } from '../components/charts/InventoryStatusChart'
 import Button from '../components/ui/Button'
 import Card from '../components/ui/Card'
 import StatisticCard, { StatisticCardSkeleton } from '../components/ui/StatisticCard'
@@ -72,6 +73,9 @@ function Home() {
   const soldCars = cars.filter(
     ({ status }) => status.toLowerCase() === 'sold',
   ).length
+  const reservedCars = cars.filter(
+    ({ status }) => status.toLowerCase() === 'reserved',
+  ).length
   const averagePrice = cars.length > 0
     ? cars.reduce((total, car) => total + car.price, 0) / cars.length
     : 0
@@ -90,6 +94,12 @@ function Home() {
       description: 'Across all vehicles',
       variant: 'warning' as const,
     },
+  ]
+
+  const inventoryStatusData = [
+    { name: 'Available', value: availableCars },
+    { name: 'Reserved', value: reservedCars },
+    { name: 'Sold', value: soldCars },
   ]
 
   return (
@@ -147,6 +157,16 @@ function Home() {
             ))}
           </div>
         )}
+      </section>
+
+      <section aria-labelledby="inventory-distribution-heading" style={{ marginTop: '40px' }}>
+        <h2 id="inventory-distribution-heading" style={{ margin: '0 0 16px', color: '#172033', fontSize: '1.2rem' }}>
+          Inventory Distribution
+        </h2>
+
+        {isLoading && <InventoryStatusChartSkeleton />}
+
+        {!isLoading && !error && <InventoryStatusChart data={inventoryStatusData} />}
       </section>
     </section>
   )
