@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import CarTable, { type Car, type CarSortField, type SortDirection } from '../components/CarTable'
+import InventorySummary from '../components/InventorySummary'
 import Card from '../components/ui/Card'
 import Spinner from '../components/ui/Spinner'
 import { useAuth } from '../context/AuthContext'
@@ -34,6 +35,7 @@ function Cars() {
   const [isLoading, setIsLoading] = useState(true)
 
   const normalizedSearchTerm = searchTerm.trim().toLowerCase()
+  const summarySearchTerm = searchTerm.trim()
   const filteredCars = cars.filter((car) =>
     `${car.brand} ${car.model}`.toLowerCase().includes(normalizedSearchTerm),
   )
@@ -158,6 +160,14 @@ function Cars() {
               />
             </div>
           )}
+
+          <InventorySummary
+            totalCars={cars.length}
+            filteredCars={filteredCars.length}
+            searchTerm={summarySearchTerm}
+            sortField={sortField}
+            sortDirection={sortDirection}
+          />
 
           <CarTable
             cars={sortedCars}
