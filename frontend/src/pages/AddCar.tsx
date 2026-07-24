@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { useToast } from '../context/ToastContext'
 import { createCar, type CreateCarPayload } from '../services/api'
 
 interface CarFormValues {
@@ -46,6 +47,7 @@ const cardStyle = {
 
 function AddCar() {
   const { token } = useAuth()
+  const { success } = useToast()
   const navigate = useNavigate()
   const [formValues, setFormValues] = useState<CarFormValues>(initialFormValues)
   const [errors, setErrors] = useState<FormErrors>({})
@@ -101,6 +103,7 @@ function AddCar() {
       )
 
       setIsSuccess(true)
+      success('Car added successfully. Redirecting to inventory...')
       window.setTimeout(() => navigate('/cars'), 800)
     } catch (requestError) {
       const message = axios.isAxiosError<ApiErrorResponse>(requestError)
@@ -166,8 +169,6 @@ function AddCar() {
           </div>
 
           {submitError && <p className="form-message form-message--error" role="alert">{submitError}</p>}
-          {isSuccess && <p className="form-message form-message--success" role="status">Car added successfully. Redirecting to inventory...</p>}
-
           <button className="auth-submit" type="submit" disabled={isLoading || isSuccess}>
             {isLoading && <span className="button-spinner" aria-hidden="true" />}
             {isLoading ? 'Adding car...' : 'Add car'}

@@ -5,6 +5,7 @@ import Card from '../components/ui/Card'
 import EmptyState from '../components/ui/EmptyState'
 import Spinner from '../components/ui/Spinner'
 import { useAuth } from '../context/AuthContext'
+import { useToast } from '../context/ToastContext'
 import { deleteCar, getCars } from '../services/api'
 
 interface CarsResponse {
@@ -23,11 +24,11 @@ const pageStyle = {
 
 function Cars() {
   const { token } = useAuth()
+  const { success } = useToast()
   const [cars, setCars] = useState<Car[]>([])
   const [searchTerm, setSearchTerm] = useState('')
   const [error, setError] = useState('')
   const [deleteError, setDeleteError] = useState('')
-  const [successMessage, setSuccessMessage] = useState('')
   const [deletingCarId, setDeletingCarId] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -76,13 +77,12 @@ function Cars() {
     if (!isConfirmed) return
 
     setDeleteError('')
-    setSuccessMessage('')
     setDeletingCarId(car._id)
 
     try {
       await deleteCar<unknown>(car._id, token ?? undefined)
       setCars((currentCars) => currentCars.filter(({ _id }) => _id !== car._id))
-      setSuccessMessage(`${car.brand} ${car.model} was deleted from inventory.`)
+      success(`${car.brand} ${car.model} was deleted from inventory.`)
     } catch (requestError) {
       const message = axios.isAxiosError<ApiErrorResponse>(requestError)
         ? (requestError.response?.data.message ?? 'Unable to delete the car.')
@@ -121,12 +121,6 @@ function Cars() {
       {!isLoading && !error && deleteError && (
         <p className="form-message form-message--error" role="alert" style={{ marginBottom: '20px' }}>
           {deleteError}
-        </p>
-      )}
-
-      {!isLoading && !error && successMessage && (
-        <p className="form-message form-message--success" role="status" style={{ marginBottom: '20px' }}>
-          {successMessage}
         </p>
       )}
 

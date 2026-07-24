@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useState, type FormEvent } from 'react'
 import api from '../services/api'
+import { useToast } from '../context/ToastContext'
 
 interface ApiErrorResponse {
   message?: string
@@ -11,18 +12,17 @@ function Register() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  const [success, setSuccess] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const { success } = useToast()
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setError('')
-    setSuccess('')
     setIsLoading(true)
 
     try {
       await api.post('/api/auth/register', { name, email, password })
-      setSuccess('Registration complete. You can now sign in to your account.')
+      success('Registration complete. You can now sign in to your account.')
     } catch (requestError) {
       if (axios.isAxiosError<ApiErrorResponse>(requestError)) {
         setError(requestError.response?.data.message ?? 'Unable to register.')
@@ -89,12 +89,6 @@ function Register() {
                 {error}
               </p>
             )}
-            {success && (
-              <p className="form-message form-message--success" role="status">
-                {success}
-              </p>
-            )}
-
             <button className="auth-submit" type="submit" disabled={isLoading}>
               {isLoading && <span className="button-spinner" aria-hidden="true" />}
               {isLoading ? 'Creating account...' : 'Create account'}

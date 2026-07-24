@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useEffect, useState, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { useToast } from '../context/ToastContext'
 import {
   getCarById,
   updateCar,
@@ -59,6 +60,7 @@ const cardStyle = {
 function EditCar() {
   const { id } = useParams()
   const { token } = useAuth()
+  const { success } = useToast()
   const navigate = useNavigate()
   const [formValues, setFormValues] = useState<CarFormValues>(initialFormValues)
   const [errors, setErrors] = useState<FormErrors>({})
@@ -169,6 +171,7 @@ function EditCar() {
       )
 
       setIsSuccess(true)
+      success('Car updated successfully. Redirecting to inventory...')
       window.setTimeout(() => navigate('/cars'), 800)
     } catch (requestError) {
       const message = axios.isAxiosError<ApiErrorResponse>(requestError)
@@ -247,8 +250,6 @@ function EditCar() {
           </div>
 
           {submitError && <p className="form-message form-message--error" role="alert">{submitError}</p>}
-          {isSuccess && <p className="form-message form-message--success" role="status">Car updated successfully. Redirecting to inventory...</p>}
-
           <button className="auth-submit" type="submit" disabled={isSubmitting || isSuccess}>
             {isSubmitting && <span className="button-spinner" aria-hidden="true" />}
             {isSubmitting ? 'Updating car...' : 'Update car'}

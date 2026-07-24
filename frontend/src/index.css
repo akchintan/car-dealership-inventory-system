@@ -161,6 +161,72 @@ input {
   }
 }
 
+.toast-container {
+  position: fixed;
+  z-index: 1000;
+  right: 24px;
+  bottom: 24px;
+  display: grid;
+  width: min(calc(100vw - 32px), 380px);
+  gap: 12px;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border: 1px solid;
+  border-radius: 12px;
+  box-shadow: 0 14px 32px rgb(15 23 42 / 15%);
+  font-size: 0.92rem;
+  line-height: 1.4;
+  pointer-events: auto;
+  animation: toast-enter 220ms ease-out both;
+}
+
+.toast--success {
+  color: #067647;
+  background: #ecfdf3;
+  border-color: #abefc6;
+}
+
+.toast--error {
+  color: #b42318;
+  background: #fef3f2;
+  border-color: #fecdca;
+}
+
+.toast--info {
+  color: #175cd3;
+  background: #eff8ff;
+  border-color: #b2ddff;
+}
+
+.toast__dismiss {
+  padding: 0;
+  color: currentColor;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+@keyframes toast-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 520px) {
   .auth-page {
     min-height: calc(100vh - 32px);
@@ -170,5 +236,10 @@ input {
   .auth-card {
     padding: 28px 22px;
     border-radius: 12px;
+  }
+
+  .toast-container {
+    right: 16px;
+    bottom: 16px;
   }
 }

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useState, type FormEvent } from 'react'
 import { useAuth } from '../context/AuthContext'
+import { useToast } from '../context/ToastContext'
 import api from '../services/api'
 
 interface LoginResponse {
@@ -13,6 +14,7 @@ interface ApiErrorResponse {
 
 function Login() {
   const { login } = useAuth()
+  const { success } = useToast()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -30,6 +32,7 @@ function Login() {
       })
 
       login(data.token, { email })
+      success('Signed in successfully.')
     } catch (requestError) {
       if (axios.isAxiosError<ApiErrorResponse>(requestError)) {
         setError(requestError.response?.data.message ?? 'Unable to log in.')
