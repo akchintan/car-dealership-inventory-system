@@ -43,34 +43,54 @@ function Login() {
 
   return (
     <section>
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="login-email">Email</label>
-        <input
-          id="login-email"
-          type="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          autoComplete="email"
-          required
-        />
+      <div className="auth-page">
+        <div className="auth-card">
+          <p className="auth-eyebrow">Dealer portal</p>
+          <h1>Welcome back</h1>
+          <p className="auth-intro">
+            Sign in to manage your dealership inventory.
+          </p>
 
-        <label htmlFor="login-password">Password</label>
-        <input
-          id="login-password"
-          type="password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          autoComplete="current-password"
-          required
-        />
+          <form className="auth-form" onSubmit={handleSubmit}>
+            <div className="form-field">
+              <label htmlFor="login-email">Email address</label>
+              <input
+                id="login-email"
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                autoComplete="email"
+                placeholder="you@dealership.com"
+                required
+              />
+            </div>
 
-        {error && <p role="alert">{error}</p>}
+            <div className="form-field">
+              <label htmlFor="login-password">Password</label>
+              <input
+                id="login-password"
+                type="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                autoComplete="current-password"
+                placeholder="Enter your password"
+                required
+              />
+            </div>
 
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Logging in...' : 'Login'}
-        </button>
-      </form>
+            {error && (
+              <p className="form-message form-message--error" role="alert">
+                {error}
+              </p>
+            )}
+
+            <button className="auth-submit" type="submit" disabled={isLoading}>
+              {isLoading && <span className="button-spinner" aria-hidden="true" />}
+              {isLoading ? 'Signing in...' : 'Sign in'}
+            </button>
+          </form>
+        </div>
+      </div>
     </section>
   )
 }
