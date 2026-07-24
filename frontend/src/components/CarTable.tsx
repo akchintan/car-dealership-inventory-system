@@ -13,11 +13,17 @@ export interface Car {
   status: string
 }
 
+export type CarSortField = 'brand' | 'year' | 'price' | 'mileage'
+export type SortDirection = 'ascending' | 'descending'
+
 interface CarTableProps {
   cars: Car[]
   onDelete: (car: Car) => void
   deletingCarId: string | null
   isSearching: boolean
+  sortField: CarSortField
+  sortDirection: SortDirection
+  onSortChange: (field: CarSortField) => void
 }
 
 const currencyFormatter = new Intl.NumberFormat(undefined, {
@@ -48,7 +54,51 @@ const cellStyle = {
   whiteSpace: 'nowrap' as const,
 }
 
-function CarTable({ cars, onDelete, deletingCarId, isSearching }: CarTableProps) {
+const sortButtonStyle = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '6px',
+  padding: 0,
+  color: 'inherit',
+  background: 'transparent',
+  border: 0,
+  cursor: 'pointer',
+  font: 'inherit',
+  letterSpacing: 'inherit',
+  textTransform: 'inherit' as const,
+}
+
+interface SortableHeaderProps {
+  label: string
+  field: CarSortField
+  sortField: CarSortField
+  sortDirection: SortDirection
+  onSortChange: (field: CarSortField) => void
+}
+
+function SortableHeader({ label, field, sortField, sortDirection, onSortChange }: SortableHeaderProps) {
+  const isActive = sortField === field
+  const indicator = isActive ? (sortDirection === 'ascending' ? '▲' : '▼') : '↕'
+
+  return (
+    <th scope="col" aria-sort={isActive ? sortDirection : 'none'} style={headerCellStyle}>
+      <button type="button" onClick={() => onSortChange(field)} style={sortButtonStyle}>
+        {label}
+        <span aria-hidden="true" style={{ color: isActive ? '#344054' : '#98a2b3' }}>{indicator}</span>
+      </button>
+    </th>
+  )
+}
+
+function CarTable({
+  cars,
+  onDelete,
+  deletingCarId,
+  isSearching,
+  sortField,
+  sortDirection,
+  onSortChange,
+}: CarTableProps) {
   if (cars.length === 0) {
     return (
       <Card>
@@ -68,11 +118,11 @@ function CarTable({ cars, onDelete, deletingCarId, isSearching }: CarTableProps)
         <table style={{ width: '100%', minWidth: '820px', borderCollapse: 'collapse' }}>
           <thead>
             <tr>
-              <th scope="col" style={headerCellStyle}>Brand</th>
+              <SortableHeader label="Brand" field="brand" sortField={sortField} sortDirection={sortDirection} onSortChange={onSortChange} />
               <th scope="col" style={headerCellStyle}>Model</th>
-              <th scope="col" style={headerCellStyle}>Year</th>
-              <th scope="col" style={headerCellStyle}>Price</th>
-              <th scope="col" style={headerCellStyle}>Mileage</th>
+              <SortableHeader label="Year" field="year" sortField={sortField} sortDirection={sortDirection} onSortChange={onSortChange} />
+              <SortableHeader label="Price" field="price" sortField={sortField} sortDirection={sortDirection} onSortChange={onSortChange} />
+              <SortableHeader label="Mileage" field="mileage" sortField={sortField} sortDirection={sortDirection} onSortChange={onSortChange} />
               <th scope="col" style={headerCellStyle}>Status</th>
               <th scope="col" style={headerCellStyle}>Actions</th>
             </tr>

@@ -2969,3 +2969,36 @@ Create the first reusable status presentation component to standardize vehicle s
 ## Result:
 
 Implemented reusable StatusBadge, replaced plain status text inside CarTable, preserved existing behavior, and verified the frontend production build completed successfully.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+
+Implement reusable client-side table sorting for the inventory table.
+
+Requirements:
+- Added client-side sorting
+- Default sort: Brand ascending
+- Sortable columns:
+  - Brand
+  - Year
+  - Price
+  - Mileage
+- Toggle ascending/descending sorting
+- Added reusable SortableHeader component inside CarTable
+- Added visual sort indicators (▲ ▼ ↕)
+- Kept CarTable presentational
+- Managed sorting state in Cars.tsx
+- Preserved search, delete, edit, StatusBadge, and existing functionality
+- Verified frontend production build
+
+## Purpose:
+
+Improve the inventory table with reusable client-side sorting while keeping business logic inside Cars.tsx and presentation inside CarTable.
+
+## Result:
+
+Implemented reusable table sorting with sortable headers, visual sort indicators, preserved all existing inventory functionality, and verified the frontend production build completed successfully.

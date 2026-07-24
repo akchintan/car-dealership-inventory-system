@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import CarTable, { type Car } from '../components/CarTable'
+import CarTable, { type Car, type CarSortField, type SortDirection } from '../components/CarTable'
 import Card from '../components/ui/Card'
 import Spinner from '../components/ui/Spinner'
 import { useAuth } from '../context/AuthContext'
@@ -26,6 +26,8 @@ function Cars() {
   const { success } = useToast()
   const [cars, setCars] = useState<Car[]>([])
   const [searchTerm, setSearchTerm] = useState('')
+  const [sortField, setSortField] = useState<CarSortField>('brand')
+  const [sortDirection, setSortDirection] = useState<SortDirection>('ascending')
   const [error, setError] = useState('')
   const [deleteError, setDeleteError] = useState('')
   const [deletingCarId, setDeletingCarId] = useState<string | null>(null)
@@ -35,6 +37,13 @@ function Cars() {
   const filteredCars = cars.filter((car) =>
     `${car.brand} ${car.model}`.toLowerCase().includes(normalizedSearchTerm),
   )
+  const sortedCars = [...filteredCars].sort((firstCar, secondCar) => {
+    const comparison = sortField === 'brand'
+      ? firstCar.brand.localeCompare(secondCar.brand)
+      : firstCar[sortField] - secondCar[sortField]
+
+    return sortDirection === 'ascending' ? comparison : -comparison
+  })
 
   useEffect(() => {
     let isMounted = true
@@ -93,6 +102,18 @@ function Cars() {
     }
   }
 
+  const handleSortChange = (field: CarSortField) => {
+    if (field === sortField) {
+      setSortDirection((currentDirection) =>
+        currentDirection === 'ascending' ? 'descending' : 'ascending',
+      )
+      return
+    }
+
+    setSortField(field)
+    setSortDirection('ascending')
+  }
+
   return (
     <section style={pageStyle} aria-labelledby="cars-heading">
       <header style={{ marginBottom: '28px' }}>
@@ -139,10 +160,13 @@ function Cars() {
           )}
 
           <CarTable
-            cars={filteredCars}
+            cars={sortedCars}
             onDelete={handleDelete}
             deletingCarId={deletingCarId}
             isSearching={normalizedSearchTerm.length > 0}
+            sortField={sortField}
+            sortDirection={sortDirection}
+            onSortChange={handleSortChange}
           />
         </>
       )}
