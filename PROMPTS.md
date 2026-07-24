@@ -2740,3 +2740,41 @@ Refactor frontend data access by separating API communication from UI components
 
 ## Result:
 Created a reusable getCars() API helper and updated Cars.tsx to consume it. Preserved existing behavior while improving separation of concerns. Verified that the frontend production build completed successfully.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+We are continuing the frontend implementation of the Car Dealership Inventory System.
+
+Task:
+Implement the Add Car page and connect it to the existing backend Create Car API.
+
+Requirements:
+
+- Create a responsive Add Car form.
+- Include fields:
+  - Brand
+  - Model
+  - Year
+  - Price
+  - Mileage
+  - Status
+- Use React useState for form state.
+- Validate that every field is completed before submission.
+- Display inline validation errors.
+- Show loading while submitting.
+- Create a reusable createCar() helper inside frontend/src/services/api.ts.
+- Submit data to POST /api/cars using the authentication token.
+- Display backend errors when available.
+- Show a success message and redirect to /cars after successful creation.
+- Do not modify backend or routing.
+- Verify the frontend production build.
+
+## Purpose:
+Implement the frontend Create Car workflow while keeping API communication reusable and separating UI from networking logic.
+
+## Result:
+Implemented a responsive Add Car form with client-side validation, loading and error handling, reusable createCar() API helper, authenticated POST integration, success feedback, and automatic navigation to the inventory page. Verified that the frontend production build completed successfully.
