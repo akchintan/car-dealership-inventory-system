@@ -1,183 +1,293 @@
-# Car Dealership Inventory System
+# Car Dealership Inventory Management System
 
-Car Dealership Inventory System is a TypeScript backend API for managing dealership car inventory and user access. It provides registration and login endpoints, JWT-protected car and user routes, and CRUD operations for cars. The car listing supports brand and status filtering, with optional pagination. Swagger UI is available for browsing the API documentation.
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5%2F6-3178C6?logo=typescript&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-Express-339933?logo=node.js&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-47A248?logo=mongodb&logoColor=white)
+![Vitest](https://img.shields.io/badge/Vitest-Testing-6E9F18?logo=vitest&logoColor=white)
 
-![Node.js](https://img.shields.io/badge/Node.js-Runtime-339933?logo=node.js&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-Language-3178C6?logo=typescript&logoColor=white)
-![Express](https://img.shields.io/badge/Express-Web%20Framework-000000?logo=express&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?logo=mongodb&logoColor=white)
-![Jest](https://img.shields.io/badge/Jest-Testing-C21325?logo=jest&logoColor=white)
-![Swagger](https://img.shields.io/badge/Swagger-API%20Documentation-85EA2D?logo=swagger&logoColor=black)
-
-## Table of Contents
-
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-- [Environment Variables](#environment-variables)
-- [Running Tests](#running-tests)
-- [API Documentation](#api-documentation)
-- [Available API Endpoints](#available-api-endpoints)
-- [Testing](#testing)
-- [Future Improvements](#future-improvements)
-- [Author](#author)
+Car Dealership Inventory Management System is a production-style MERN application for managing a car dealership’s vehicle inventory. It combines a React and TypeScript dashboard with an Express, MongoDB, and JWT-protected API to provide secure authentication, vehicle CRUD workflows, filtering, analytics, resilient loading and error states, and a reusable frontend architecture.
 
 ## Features
 
-- User registration with input and password-strength checks
-- Password hashing with bcrypt and JWT-based login tokens
-- JWT-protected car inventory and user-profile routes
-- Create, retrieve, update, and delete car inventory records
-- Filter cars by `brand` and `status`
-- Optional car-list pagination using `page` and `limit`
-- Standard JSON error responses for unhandled Express errors
-- Swagger UI API documentation
+### Authentication
+
+- JWT authentication for registration and sign-in
+- Persistent login using browser storage with safe session restoration
+- Protected and public-only routes
+- Automatic session reset after unauthorized API responses
+
+### Inventory Management
+
+- Add, edit, and delete vehicles
+- Inventory dashboard and vehicle listing
+- Brand/model search with debouncing
+- Status filtering
+- Sortable vehicle data
+- Client-side pagination
+
+### Dashboard
+
+- Statistics cards for inventory totals and status counts
+- Inventory status chart powered by Recharts
+- Quick actions for common inventory tasks
+- Loading skeletons while dashboard data is loading
+
+### User Experience
+
+- Toast notifications for user feedback
+- Delete confirmation modal
+- Responsive layout and navigation
+- Empty states for inventory results
+- Local and global loading states
+- API error messages and a global React error boundary with retry support
+
+### Architecture
+
+- Reusable UI and form components
+- Context API for authentication, toast notifications, and global loading
+- Custom `useAsync` and `useDebounce` hooks
+- Axios API client with request and response interceptors
+- Session persistence and reusable API utilities
+- Route-level code splitting with `React.lazy` and `Suspense`
+
+### Testing
+
+- Vitest test runner
+- React Testing Library and `@testing-library/jest-dom`
+- Shared jsdom test configuration and cleanup
+
+## Screenshots
+
+> Replace each placeholder below with a repository-relative screenshot when assets are available. No live or external image URLs are assumed.
+
+### Login Page
+
+![Login Page](REPLACE_WITH_LOGIN_PAGE_SCREENSHOT)
+
+### Dashboard
+
+![Dashboard](REPLACE_WITH_DASHBOARD_SCREENSHOT)
+
+### Inventory
+
+![Inventory](REPLACE_WITH_INVENTORY_SCREENSHOT)
+
+### Add Vehicle
+
+![Add Vehicle](REPLACE_WITH_ADD_VEHICLE_SCREENSHOT)
+
+### Edit Vehicle
+
+![Edit Vehicle](REPLACE_WITH_EDIT_VEHICLE_SCREENSHOT)
 
 ## Tech Stack
 
-**Backend:** Node.js, Express, TypeScript
+### Frontend
 
-**Database:** MongoDB with Mongoose
+| Technology | Purpose |
+| --- | --- |
+| React | Component-based user interface |
+| TypeScript | Type-safe frontend development |
+| Vite | Development server and production build tooling |
+| React Router | Client-side routing and route protection |
+| Axios | Centralized HTTP client and interceptors |
+| Context API | Authentication, loading, and toast state |
+| Recharts | Dashboard inventory visualization |
 
-**Testing:** Jest, ts-jest, Supertest
+### Backend
 
-**Documentation:** OpenAPI 3.0, swagger-jsdoc, swagger-ui-express
+| Technology | Purpose |
+| --- | --- |
+| Node.js | JavaScript runtime |
+| Express.js | REST API framework |
+| TypeScript | Type-safe server implementation |
+| JWT | Authentication tokens for protected endpoints |
+| bcryptjs | Password hashing |
+| Swagger / OpenAPI | Interactive API documentation at `/api-docs` |
 
-**Authentication:** JSON Web Tokens, bcryptjs
+### Database
 
-## Project Structure
+| Technology | Purpose |
+| --- | --- |
+| MongoDB | Persistent application data store |
+| Mongoose | MongoDB models and database access |
+
+### Testing
+
+| Technology | Purpose |
+| --- | --- |
+| Vitest | Frontend test runner |
+| React Testing Library | Component rendering and interaction tests |
+| jest-dom | Accessible DOM matchers |
+| jsdom | Browser-like test environment |
+| Jest / Supertest | Existing backend API testing stack |
+
+## Project Architecture
+
+The frontend separates visual components, application state, asynchronous behavior, and HTTP communication so that features can grow without coupling page code to infrastructure details.
+
+| Layer | Responsibility |
+| --- | --- |
+| **Component layer** | Reusable UI elements, forms, tables, modals, badges, and route layouts. Shared components keep presentation consistent. |
+| **Context layer** | `AuthContext`, `ToastContext`, and `LoadingContext` provide application-wide state and actions without prop drilling. |
+| **Hooks** | `useAsync` standardizes request state, while `useDebounce` avoids applying search input changes immediately. |
+| **Services** | `apiClient` owns Axios defaults and interceptors; `api.ts` exposes focused vehicle API helpers. |
+| **Utilities** | Shared API error formatting keeps request failures readable and consistent. |
+| **Charts** | Recharts-based dashboard components are isolated from inventory and routing logic. |
+| **Testing** | Vitest configuration and the shared setup file give component tests a consistent jsdom environment and matcher set. |
+
+This structure scales because shared concerns—authentication, networking, errors, loading, and UI primitives—have one owner, while route pages remain focused on feature-level business logic.
+
+## Folder Structure
 
 ```text
 car-dealership-inventory-system/
 ├── backend/
 │   ├── src/
-│   │   ├── config/
-│   │   │   ├── database.ts
-│   │   │   ├── env.ts
-│   │   │   └── swagger.ts
-│   │   ├── controllers/
-│   │   │   ├── auth.controller.ts
-│   │   │   ├── car.controller.ts
-│   │   │   └── user.controller.ts
-│   │   ├── middleware/
-│   │   │   ├── auth.middleware.ts
-│   │   │   └── error.middleware.ts
-│   │   ├── models/
-│   │   │   ├── car.model.ts
-│   │   │   └── user.model.ts
-│   │   ├── routes/
-│   │   │   ├── auth.routes.ts
-│   │   │   ├── car.routes.ts
-│   │   │   └── user.routes.ts
-│   │   ├── tests/
+│   │   ├── config/          # Database, environment, and Swagger configuration
+│   │   ├── controllers/     # Authentication, vehicle, and user request handlers
+│   │   ├── middleware/      # JWT authentication and error middleware
+│   │   ├── models/          # Mongoose models
+│   │   ├── routes/          # Express routes
+│   │   ├── tests/           # Backend Jest and Supertest tests
 │   │   ├── app.ts
 │   │   └── server.ts
-│   ├── jest.config.js
+│   └── package.json
+├── frontend/
+│   ├── src/
+│   │   ├── components/      # Layout, charts, forms, and reusable UI
+│   │   ├── context/         # Auth, loading, and toast providers
+│   │   ├── hooks/           # Reusable React hooks
+│   │   ├── pages/           # Lazy-loaded route components
+│   │   ├── services/        # Axios client and API helpers
+│   │   ├── test/            # Shared Vitest setup
+│   │   └── utils/           # API error utilities
 │   ├── package.json
-│   └── tsconfig.json
-├── frontend/                 # Currently empty
-├── PROMPTS.md
+│   └── vite.config.ts
+├── .env.example
 └── README.md
 ```
 
-## Getting Started
+## Installation
 
 ### Prerequisites
 
 - Node.js and npm
-- A MongoDB instance when using the database connection configuration
+- A running MongoDB instance or MongoDB connection string
 
-### Installation
+### 1. Clone the repository
 
 ```bash
-git clone <repository-url>
-cd car-dealership-inventory-system/backend
+git clone <your-repository-url>
+cd car-dealership-inventory-system
+```
+
+### 2. Install backend dependencies
+
+```bash
+cd backend
 npm install
 ```
 
-### Running locally
+### 3. Configure backend environment variables
 
-Set the environment variables listed below in your shell or hosting environment, then start the development server:
+Set the backend variables described in [Environment Variables](#environment-variables) in your shell or deployment environment. The current backend reads values from `process.env`.
+
+### 4. Run the backend
 
 ```bash
 npm run dev
 ```
 
-To build and run the compiled application:
+The backend defaults to port `5000` in `src/server.ts`. Swagger UI is available at `http://localhost:5000/api-docs/` when running locally.
+
+### 5. Install frontend dependencies
+
+Open another terminal from the repository root:
 
 ```bash
-npm run build
-npm start
+cd frontend
+npm install
 ```
+
+### 6. Configure the frontend API URL
+
+Create `frontend/.env` and point the Vite client to the backend:
+
+```env
+VITE_API_URL=http://localhost:5000
+```
+
+### 7. Run the frontend
+
+```bash
+npm run dev
+```
+
+Vite prints the local development URL after startup.
 
 ## Environment Variables
 
-The repository does not initialize `dotenv`, so provide these values through your shell, process manager, or deployment environment. Do not commit real secrets.
+### Backend
 
-```env
-PORT=5000
-MONGO_URI=mongodb://localhost:27017/car-dealership-inventory
-JWT_SECRET=replace_with_a_secure_secret
-```
+| Variable | Example | Description |
+| --- | --- | --- |
+| `PORT` | `5000` | Express server port. |
+| `MONGO_URI` | `mongodb://localhost:27017/car-dealership-inventory` | MongoDB connection string. |
+| `JWT_SECRET` | `replace_with_a_secure_secret` | Secret used to sign and verify JWTs. Use a strong value outside local development. |
 
-- `PORT` is used by the server and defaults to `5000` there.
-- `MONGO_URI` is required by the existing database connector. The code reads `MONGO_URI`, not `MONGODB_URI`.
-- `JWT_SECRET` is used when signing and verifying authentication tokens. Set a secure value outside local development.
+### Frontend
 
-## Running Tests
+| Variable | Example | Description |
+| --- | --- | --- |
+| `VITE_API_URL` | `http://localhost:5000` | Base URL consumed by the current Axios client. |
+| `VITE_API_BASE_URL` | `http://localhost:5000` | Naming alternative for deployments; the current implementation reads `VITE_API_URL`, so set that variable for the app to connect. |
 
-From the `backend` directory, run:
+Never commit production secrets or environment files containing credentials.
 
-```bash
-npm test
-```
+## Available Scripts
 
-To run an individual test file, pass its path to Jest:
+Run these commands from the `frontend` directory.
 
-```bash
-npm test -- --runInBand src/tests/cars/get-cars.test.ts
-```
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Starts the Vite development server. |
+| `npm run build` | Runs TypeScript checks and creates an optimized production build. |
+| `npm run test` | Runs the Vitest test suite once. |
+| `npm run test:watch` | Runs Vitest in watch mode. |
+| `npm run test:coverage` | Runs Vitest with V8 coverage reporting. |
 
-## API Documentation
+The backend also provides `npm run dev`, `npm run build`, `npm start`, and `npm test` from the `backend` directory.
 
-Start the backend and open Swagger UI at:
+## Performance Optimizations
 
-```text
-/api-docs
-```
-
-For a local server running on port 5000, visit `http://localhost:5000/api-docs/`.
-
-## Available API Endpoints
-
-| Method | Endpoint | Description | Authentication Required |
-| --- | --- | --- | --- |
-| GET | `/` | API status response | No |
-| POST | `/api/auth/register` | Register a user | No |
-| POST | `/api/auth/login` | Log in and receive a JWT | No |
-| POST | `/api/cars` | Create a car | Yes |
-| GET | `/api/cars` | List cars; supports `brand`, `status`, `page`, and `limit` query parameters | Yes |
-| GET | `/api/cars/:id` | Retrieve a car by ID | Yes |
-| PUT | `/api/cars/:id` | Update a car by ID | Yes |
-| DELETE | `/api/cars/:id` | Delete a car by ID | Yes |
-| GET | `/api/users/me` | Retrieve the authenticated user's profile | Yes |
-| GET | `/api-docs/` | Serve Swagger UI documentation | No |
-
-For protected endpoints, send a valid JWT in the `Authorization` header using the `Bearer <token>` format.
+- **Route-level lazy loading:** route pages are loaded with `React.lazy` and `Suspense` instead of being included in the initial route render.
+- **Code splitting:** Vite emits separate page chunks, including the dashboard and chart code.
+- **Debounced search:** inventory search waits for input to settle before applying the filter.
+- **Memoized context values:** authentication actions and context values avoid unnecessary consumer updates.
+- **Axios interceptors:** request configuration and authorization headers are handled once in the API client.
+- **Centralized async handling:** `useAsync` provides reusable loading, data, and error state for requests.
+- **Global loading system:** significant mutations can use one consistent overlay rather than duplicating loading UI.
+- **Reusable components and hooks:** shared UI and behavior reduce repeated rendering and business logic code.
 
 ## Testing
 
-The backend is developed with a Red-Green TDD workflow: tests describe the expected behavior first, implementation is added to make them pass, and regressions are checked through the Jest suite. Jest runs the TypeScript tests, while Supertest exercises the Express API through HTTP requests. The test suite covers application behavior, authentication, cars, configuration, database configuration, middleware, models, and Swagger UI availability.
+Frontend tests use Vitest with React Testing Library in a shared jsdom environment. The common setup imports jest-dom matchers and cleans the rendered DOM after each test, so future component tests need minimal boilerplate.
+
+The current example, `StatusBadge.test.tsx`, verifies that the `StatusBadge` component renders the expected text for `available`, `sold`, `reserved`, and an unknown status. This establishes the pattern for future component, hook, and integration tests.
 
 ## Future Improvements
 
-- Docker support for consistent local development and deployment
-- Deployment configuration for a hosted environment
-- A frontend application for inventory management
-- CI/CD workflows for automated testing and releases
-- Role-based authorization for differentiated user access
+- Vehicle image uploads with cloud storage
+- Refresh-token authentication and token rotation
+- User roles and role-based authorization
+- Advanced dealership analytics
+- Inventory export capabilities
+- Dark mode
+- Inventory reports
+- Email notifications
 
-## Author
+## License
 
-Created by Chintan
+This project is licensed under the [MIT License](LICENSE).
