@@ -2814,3 +2814,25 @@ Implement the Update operation of the CRUD workflow while keeping networking log
 
 ## Result:
 Implemented Edit Car with authenticated data loading, reusable API helpers, pre-filled form fields, validation, loading and error handling, successful update flow, protected routing, and automatic navigation back to the inventory. Verified that the frontend production build completed successfully.
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+Implement inventory management on the Cars page.
+
+Include:
+- Edit button on every car card
+- Delete button with confirmation dialog
+- Reusable deleteCar() API helper
+- Optimistic UI update after deletion
+- Per-card loading state
+- Success and API error feedback
+- Preserve existing search functionality
+- Verified frontend production build
+
+## Purpose:
+Allow authenticated users to edit and delete dealership inventory efficiently without reloading the page.
+
+## Result:
+Added edit and delete actions to inventory cards, implemented a reusable authenticated delete API helper, confirmed deletions before removal, updated the UI immediately after successful deletion, displayed loading and feedback states, and verified the frontend production build.

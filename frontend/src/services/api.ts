@@ -56,4 +56,12 @@ export async function updateCar<T>(
   return data
 }
 
+export async function deleteCar<T>(id: string, token?: string): Promise<T> {
+  const { data } = await api.delete<T>(`/api/cars/${id}`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+  })
+
+  return data
+}
+
 export default api
