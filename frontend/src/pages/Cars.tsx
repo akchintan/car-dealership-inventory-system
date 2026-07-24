@@ -8,6 +8,7 @@ import Card from '../components/ui/Card'
 import Spinner from '../components/ui/Spinner'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
+import useDebounce from '../hooks/useDebounce'
 import { deleteCar, getCars } from '../services/api'
 
 interface CarsResponse {
@@ -40,8 +41,9 @@ function Cars() {
   const [deletingCarId, setDeletingCarId] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  const normalizedSearchTerm = searchTerm.trim().toLowerCase()
-  const summarySearchTerm = searchTerm.trim()
+  const debouncedSearchTerm = useDebounce(searchTerm, 300)
+  const normalizedSearchTerm = debouncedSearchTerm.trim().toLowerCase()
+  const summarySearchTerm = debouncedSearchTerm.trim()
   const searchFilteredCars = cars.filter((car) =>
     `${car.brand} ${car.model}`.toLowerCase().includes(normalizedSearchTerm),
   )
@@ -100,6 +102,10 @@ function Cars() {
     }
   }, [currentPage, totalPages])
 
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [debouncedSearchTerm])
+
   const handleDelete = async (car: Car) => {
     const isConfirmed = window.confirm(
       `Delete ${car.brand} ${car.model} from inventory? This cannot be undone.`,
@@ -139,7 +145,6 @@ function Cars() {
 
   const handleSearchChange = (value: string) => {
     setSearchTerm(value)
-    setCurrentPage(1)
   }
 
   const handleStatusFilterChange = (value: string) => {

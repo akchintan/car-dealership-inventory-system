@@ -3119,3 +3119,44 @@ Improve inventory management by allowing users to filter vehicles by status whil
 ## Result:
 
 Implemented a reusable StatusFilter component, integrated client-side status filtering with search, sorting, and pagination, enhanced InventorySummary with active filter information, preserved all existing inventory functionality, and verified the frontend production build completed successfully.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+
+Implement reusable debounced inventory search.
+
+Requirements:
+- Create reusable useDebounce hook
+- Generic TypeScript implementation
+- Accept:
+  - value
+  - delay
+- Return the debounced value
+- Keep the hook reusable with no inventory-specific logic
+- Replace direct inventory filtering with the debounced value
+- Keep the search input fully controlled
+- Use a 300 ms debounce delay
+- Apply filtering only after the debounce completes
+- Reset pagination only when the debounced search value changes
+- Update InventorySummary to display the active debounced search value
+- Display "All vehicles" when no search is active
+- Preserve filtering order:
+  - Fetch
+  - Debounced Search
+  - Status Filter
+  - Sorting
+  - Pagination
+- Preserve search, status filtering, sorting, pagination, StatusBadge, edit, delete, toast notifications, loading state, empty state, and responsive behavior
+- Verify frontend production build
+
+## Purpose:
+
+Improve inventory search performance and user experience by introducing a reusable debounce hook while maintaining clean separation between reusable utilities and page-specific business logic.
+
+## Result:
+
+Implemented a reusable generic useDebounce hook, integrated debounced searching into the inventory page, ensured pagination resets only after the debounced search value updates, preserved all existing functionality, and verified the frontend production build completed successfully.
