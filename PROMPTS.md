@@ -3411,3 +3411,77 @@ Improve the dashboard by adding visual inventory analytics while keeping chart r
 ## Result:
 
 Implemented a reusable Recharts inventory status visualization, added dashboard status distribution analytics, created chart loading states, integrated inventory data transformation in Home.tsx, preserved existing dashboard functionality, and verified the frontend production build completed successfully.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+
+Implement reusable API error handling utility.
+
+Requirements:
+
+Create:
+
+frontend/src/utils/apiError.ts
+
+Create reusable function:
+
+getApiErrorMessage(error, fallbackMessage)
+
+Requirements:
+- Handle Axios errors
+- Extract backend error message when available
+- Return fallback message when unavailable
+- Safely handle unknown JavaScript errors
+- Fully typed with TypeScript
+- No component-specific logic
+
+--------------------------------------------------
+
+Refactor error handling in:
+
+- Home.tsx
+- Cars.tsx
+- AddCar.tsx
+- EditCar.tsx
+- Login.tsx
+- Register.tsx
+
+Requirements:
+- Remove duplicated axios.isAxiosError parsing logic
+- Replace repeated error extraction with:
+  getApiErrorMessage(error, fallbackMessage)
+
+--------------------------------------------------
+
+Maintain:
+
+- Existing fallback messages
+- Existing UI behavior
+- Toast notifications
+- Loading states
+- Form validation
+- API behavior
+
+--------------------------------------------------
+
+Do not modify:
+
+- API service structure
+- Authentication flow
+- Routing
+
+--------------------------------------------------
+
+Verify frontend production build.
+
+## Purpose:
+
+Improve maintainability by centralizing API error handling logic into a reusable utility and reducing duplicated error-processing code across the application.
+
+## Result:
+
+Implemented a reusable typed API error handling utility, refactored all affected pages to use centralized error parsing, preserved existing behavior and messages, reduced duplicated logic, and verified the frontend production build completed successfully.

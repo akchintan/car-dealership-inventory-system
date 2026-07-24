@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import InventoryStatusChart, { InventoryStatusChartSkeleton } from '../components/charts/InventoryStatusChart'
@@ -7,6 +6,7 @@ import Card from '../components/ui/Card'
 import StatisticCard, { StatisticCardSkeleton } from '../components/ui/StatisticCard'
 import { useAuth } from '../context/AuthContext'
 import { getCars } from '../services/api'
+import { getApiErrorMessage } from '../utils/apiError'
 
 interface DashboardCar {
   _id: string
@@ -16,10 +16,6 @@ interface DashboardCar {
 
 interface CarsResponse {
   cars: DashboardCar[]
-}
-
-interface ApiErrorResponse {
-  message?: string
 }
 
 const pageStyle = {
@@ -47,11 +43,7 @@ function Home() {
         }
       } catch (requestError) {
         if (isMounted) {
-          const message = axios.isAxiosError<ApiErrorResponse>(requestError)
-            ? (requestError.response?.data.message ?? 'Unable to load dashboard data.')
-            : 'Unable to load dashboard data.'
-
-          setError(message)
+          setError(getApiErrorMessage(requestError, 'Unable to load dashboard data.'))
         }
       } finally {
         if (isMounted) {

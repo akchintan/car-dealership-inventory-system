@@ -1,9 +1,9 @@
-import axios from 'axios'
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
 import { createCar, type CreateCarPayload } from '../services/api'
+import { getApiErrorMessage } from '../utils/apiError'
 
 interface CarFormValues {
   brand: string
@@ -12,10 +12,6 @@ interface CarFormValues {
   price: string
   mileage: string
   status: '' | CreateCarPayload['status']
-}
-
-interface ApiErrorResponse {
-  message?: string
 }
 
 type FormErrors = Partial<Record<keyof CarFormValues, string>>
@@ -106,11 +102,7 @@ function AddCar() {
       success('Car added successfully. Redirecting to inventory...')
       window.setTimeout(() => navigate('/cars'), 800)
     } catch (requestError) {
-      const message = axios.isAxiosError<ApiErrorResponse>(requestError)
-        ? (requestError.response?.data.message ?? 'Unable to add the car.')
-        : 'Unable to add the car.'
-
-      setSubmitError(message)
+      setSubmitError(getApiErrorMessage(requestError, 'Unable to add the car.'))
     } finally {
       setIsLoading(false)
     }

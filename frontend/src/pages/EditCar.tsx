@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { useEffect, useState, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
@@ -8,6 +7,7 @@ import {
   updateCar,
   type CreateCarPayload,
 } from '../services/api'
+import { getApiErrorMessage } from '../utils/apiError'
 
 interface Car extends CreateCarPayload {
   _id: string
@@ -24,10 +24,6 @@ interface CarFormValues {
   price: string
   mileage: string
   status: '' | CreateCarPayload['status']
-}
-
-interface ApiErrorResponse {
-  message?: string
 }
 
 type FormErrors = Partial<Record<keyof CarFormValues, string>>
@@ -97,11 +93,7 @@ function EditCar() {
         }
       } catch (requestError) {
         if (isMounted) {
-          const message = axios.isAxiosError<ApiErrorResponse>(requestError)
-            ? (requestError.response?.data.message ?? 'Unable to load this car.')
-            : 'Unable to load this car.'
-
-          setLoadError(message)
+          setLoadError(getApiErrorMessage(requestError, 'Unable to load this car.'))
         }
       } finally {
         if (isMounted) {
@@ -174,11 +166,7 @@ function EditCar() {
       success('Car updated successfully. Redirecting to inventory...')
       window.setTimeout(() => navigate('/cars'), 800)
     } catch (requestError) {
-      const message = axios.isAxiosError<ApiErrorResponse>(requestError)
-        ? (requestError.response?.data.message ?? 'Unable to update the car.')
-        : 'Unable to update the car.'
-
-      setSubmitError(message)
+      setSubmitError(getApiErrorMessage(requestError, 'Unable to update the car.'))
     } finally {
       setIsSubmitting(false)
     }

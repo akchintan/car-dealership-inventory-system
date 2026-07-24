@@ -1,15 +1,11 @@
-import axios from 'axios'
 import { useState, type FormEvent } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
 import api from '../services/api'
+import { getApiErrorMessage } from '../utils/apiError'
 
 interface LoginResponse {
   token: string
-}
-
-interface ApiErrorResponse {
-  message?: string
 }
 
 function Login() {
@@ -34,11 +30,7 @@ function Login() {
       login(data.token, { email })
       success('Signed in successfully.')
     } catch (requestError) {
-      if (axios.isAxiosError<ApiErrorResponse>(requestError)) {
-        setError(requestError.response?.data.message ?? 'Unable to log in.')
-      } else {
-        setError('Unable to log in.')
-      }
+      setError(getApiErrorMessage(requestError, 'Unable to log in.'))
     } finally {
       setIsLoading(false)
     }

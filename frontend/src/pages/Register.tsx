@@ -1,11 +1,7 @@
-import axios from 'axios'
 import { useState, type FormEvent } from 'react'
 import api from '../services/api'
 import { useToast } from '../context/ToastContext'
-
-interface ApiErrorResponse {
-  message?: string
-}
+import { getApiErrorMessage } from '../utils/apiError'
 
 function Register() {
   const [name, setName] = useState('')
@@ -24,11 +20,7 @@ function Register() {
       await api.post('/api/auth/register', { name, email, password })
       success('Registration complete. You can now sign in to your account.')
     } catch (requestError) {
-      if (axios.isAxiosError<ApiErrorResponse>(requestError)) {
-        setError(requestError.response?.data.message ?? 'Unable to register.')
-      } else {
-        setError('Unable to register.')
-      }
+      setError(getApiErrorMessage(requestError, 'Unable to register.'))
     } finally {
       setIsLoading(false)
     }

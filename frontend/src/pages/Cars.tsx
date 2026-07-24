@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { useEffect, useState } from 'react'
 import CarTable, { type Car, type CarSortField, type SortDirection } from '../components/CarTable'
 import InventorySummary from '../components/InventorySummary'
@@ -11,13 +10,10 @@ import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
 import useDebounce from '../hooks/useDebounce'
 import { deleteCar, getCars } from '../services/api'
+import { getApiErrorMessage } from '../utils/apiError'
 
 interface CarsResponse {
   cars: Car[]
-}
-
-interface ApiErrorResponse {
-  message?: string
 }
 
 const pageStyle = {
@@ -78,11 +74,7 @@ function Cars() {
         }
       } catch (requestError) {
         if (isMounted) {
-          const message = axios.isAxiosError<ApiErrorResponse>(requestError)
-            ? (requestError.response?.data.message ?? 'Unable to load cars.')
-            : 'Unable to load cars.'
-
-          setError(message)
+          setError(getApiErrorMessage(requestError, 'Unable to load cars.'))
         }
       } finally {
         if (isMounted) {
@@ -124,11 +116,7 @@ function Cars() {
       setCars((currentCars) => currentCars.filter(({ _id }) => _id !== car._id))
       success(`${car.brand} ${car.model} was deleted from inventory.`)
     } catch (requestError) {
-      const message = axios.isAxiosError<ApiErrorResponse>(requestError)
-        ? (requestError.response?.data.message ?? 'Unable to delete the car.')
-        : 'Unable to delete the car.'
-
-      setDeleteError(message)
+      setDeleteError(getApiErrorMessage(requestError, 'Unable to delete the car.'))
     } finally {
       setDeletingCarId(null)
       setCarPendingDeletion(null)
