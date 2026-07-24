@@ -2836,3 +2836,33 @@ Allow authenticated users to edit and delete dealership inventory efficiently wi
 
 ## Result:
 Added edit and delete actions to inventory cards, implemented a reusable authenticated delete API helper, confirmed deletions before removal, updated the UI immediately after successful deletion, displayed loading and feedback states, and verified the frontend production build.
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+Refactor the inventory page by extracting a reusable CarCard component.
+
+Include:
+- Create reusable CarCard component
+- Strongly typed props
+- Move existing vehicle card UI into CarCard
+- Render:
+  - Brand
+  - Model
+  - Year
+  - Price
+  - Mileage
+  - Status
+  - Edit button
+  - Delete button
+- Keep delete state support
+- Update Cars.tsx to render CarCard components
+- Preserve search, routing, authentication, styling, and API behavior
+- Verify frontend production build
+
+## Purpose:
+Improve frontend architecture by separating presentation from page logic, making the inventory easier to maintain and extend.
+
+## Result:
+Extracted a reusable CarCard component while keeping all existing functionality unchanged. Cars.tsx now focuses on inventory state management, searching, filtering, and delete operations, resulting in cleaner and more maintainable React code.

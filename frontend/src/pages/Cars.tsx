@@ -1,18 +1,8 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import CarCard, { type Car } from '../components/CarCard'
 import { useAuth } from '../context/AuthContext'
 import { deleteCar, getCars } from '../services/api'
-
-interface Car {
-  _id: string
-  brand: string
-  model: string
-  year: number
-  price: number
-  mileage: number
-  status: string
-}
 
 interface CarsResponse {
   cars: Car[]
@@ -170,37 +160,13 @@ function Cars() {
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
               {filteredCars.map((car) => (
-                <article key={car._id} style={cardStyle}>
-                  <p className="auth-eyebrow" style={{ marginBottom: '8px' }}>{car.brand}</p>
-                  <h2 style={{ margin: 0, color: '#172033', fontSize: '1.3rem' }}>{car.model}</h2>
-                  <p style={{ margin: '8px 0 20px', color: '#667085' }}>{car.year}</p>
-
-                  <dl style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '10px 16px', margin: 0, color: '#344054' }}>
-                    <dt style={{ color: '#667085' }}>Price</dt>
-                    <dd style={{ margin: 0, fontWeight: 700 }}>{new Intl.NumberFormat(undefined, { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(car.price)}</dd>
-                    <dt style={{ color: '#667085' }}>Mileage</dt>
-                    <dd style={{ margin: 0 }}>{new Intl.NumberFormat().format(car.mileage)} km</dd>
-                    <dt style={{ color: '#667085' }}>Status</dt>
-                    <dd style={{ margin: 0, fontWeight: 700, textTransform: 'capitalize' }}>{car.status}</dd>
-                  </dl>
-
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '24px' }}>
-                    <Link
-                      to={`/cars/${car._id}/edit`}
-                      style={{ padding: '10px 14px', color: '#ffffff', background: '#c2410c', borderRadius: '8px', fontWeight: 700, textDecoration: 'none' }}
-                    >
-                      Edit
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={() => handleDelete(car)}
-                      disabled={deletingCarId !== null}
-                      style={{ padding: '10px 14px', color: '#b42318', background: '#ffffff', border: '1px solid #fecdca', borderRadius: '8px', cursor: deletingCarId !== null ? 'wait' : 'pointer', fontWeight: 700, opacity: deletingCarId !== null && deletingCarId !== car._id ? 0.65 : 1 }}
-                    >
-                      {deletingCarId === car._id ? 'Deleting...' : 'Delete'}
-                    </button>
-                  </div>
-                </article>
+                <CarCard
+                  key={car._id}
+                  car={car}
+                  onDelete={handleDelete}
+                  isDeleting={deletingCarId === car._id}
+                  isDeleteDisabled={deletingCarId !== null}
+                />
               ))}
             </div>
           )}
