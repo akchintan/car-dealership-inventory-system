@@ -3868,3 +3868,125 @@ Improve frontend performance using route-level code splitting while keeping rout
 ## Result:
 
 Implemented reusable route-level lazy loading using React.lazy and Suspense, created a reusable PageLoader component, preserved existing routing behavior, reduced the initial JavaScript bundle, and verified the frontend production build completed successfully.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+
+Implement a reusable global Error Boundary system for the application.
+
+Requirements:
+
+Create:
+
+frontend/src/components/ui/ErrorFallback.tsx
+
+Reusable presentational component.
+
+Props:
+
+- error
+- onRetry
+
+Requirements:
+
+- Friendly error message
+- Accessible alert
+- Responsive layout
+- Reuse existing Card component
+- Reuse existing Button component
+- Technical error details inside a collapsible section
+- Keyboard-accessible retry button
+- No application-specific logic
+
+--------------------------------------------------
+
+Create:
+
+frontend/src/components/ErrorBoundary.tsx
+
+Requirements:
+
+- React class component
+- Implement:
+  - getDerivedStateFromError
+  - componentDidCatch
+- Capture unexpected runtime rendering errors
+- Render ErrorFallback
+- Log errors using console.error()
+- Retry should reset boundary state
+
+--------------------------------------------------
+
+Update:
+
+frontend/src/App.tsx
+
+Wrap the routed application with ErrorBoundary while preserving:
+
+- AuthProvider
+- LoadingProvider
+- ToastProvider
+- Suspense
+- AppLayout
+- Navbar
+- Route structure
+- Protected routes
+
+--------------------------------------------------
+
+Architecture requirements
+
+- ErrorBoundary owns recovery logic
+- ErrorFallback owns presentation
+- Keep logging isolated for future services (Sentry, LogRocket, etc.)
+- No page-specific logic
+- Strict TypeScript
+
+--------------------------------------------------
+
+Preserve:
+
+- Authentication
+- Session persistence
+- CRUD
+- Dashboard
+- Inventory
+- Charts
+- Search
+- Debounced search
+- Status filter
+- Sorting
+- Pagination
+- Global loading
+- Toast notifications
+- Confirmation modal
+- Responsive UI
+
+--------------------------------------------------
+
+Verify:
+
+Run:
+
+npm.cmd run build
+
+Build must complete successfully with zero TypeScript errors.
+
+Finally provide:
+
+- Modified files
+- Architecture summary
+- Error recovery flow
+- Build verification
+
+## Purpose:
+
+Improve application resilience by introducing a reusable global Error Boundary that gracefully recovers from unexpected runtime errors while keeping recovery and presentation cleanly separated.
+
+## Result:
+
+Implemented a reusable Error Boundary with a reusable ErrorFallback component, graceful runtime error recovery, retry support, centralized error handling architecture, preserved all existing application behavior, and verified the frontend production build completed successfully.

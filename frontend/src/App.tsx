@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom'
+import ErrorBoundary from './components/ErrorBoundary'
 import Navbar from './components/Navbar'
 import LoadingOverlay from './components/ui/LoadingOverlay'
 import PageLoader from './components/ui/PageLoader'
@@ -34,20 +35,22 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route element={<AppLayout />}>
-          <Route element={<ProtectedRoute />}>
-            <Route index element={<Home />} />
-            <Route path="cars" element={<Cars />} />
-            <Route path="cars/:id/edit" element={<EditCar />} />
-            <Route path="add-car" element={<AddCar />} />
+      <ErrorBoundary>
+        <Routes>
+          <Route element={<AppLayout />}>
+            <Route element={<ProtectedRoute />}>
+              <Route index element={<Home />} />
+              <Route path="cars" element={<Cars />} />
+              <Route path="cars/:id/edit" element={<EditCar />} />
+              <Route path="add-car" element={<AddCar />} />
+            </Route>
+            <Route element={<PublicOnlyRoute />}>
+              <Route path="login" element={<Login />} />
+              <Route path="register" element={<Register />} />
+            </Route>
           </Route>
-          <Route element={<PublicOnlyRoute />}>
-            <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
-          </Route>
-        </Route>
-      </Routes>
+        </Routes>
+      </ErrorBoundary>
       <LoadingOverlay open={isLoading} message={message} />
     </BrowserRouter>
   )
