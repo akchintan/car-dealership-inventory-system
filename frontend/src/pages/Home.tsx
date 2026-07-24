@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '../components/ui/Button'
 import Card from '../components/ui/Card'
+import StatisticCard, { StatisticCardSkeleton } from '../components/ui/StatisticCard'
 import { useAuth } from '../context/AuthContext'
 import { getCars } from '../services/api'
 
@@ -76,16 +77,18 @@ function Home() {
     : 0
 
   const statistics = [
-    { label: 'Total Cars', value: cars.length },
-    { label: 'Available Cars', value: availableCars },
-    { label: 'Sold Cars', value: soldCars },
+    { title: 'Total Cars', value: cars.length, description: 'Vehicles in inventory', variant: 'default' as const },
+    { title: 'Available Cars', value: availableCars, description: 'Ready for sale', variant: 'success' as const },
+    { title: 'Sold Cars', value: soldCars, description: 'Vehicles sold', variant: 'danger' as const },
     {
-      label: 'Average Price',
+      title: 'Average Price',
       value: new Intl.NumberFormat(undefined, {
         style: 'currency',
         currency: 'INR',
         maximumFractionDigits: 0,
       }).format(averagePrice),
+      description: 'Across all vehicles',
+      variant: 'warning' as const,
     },
   ]
 
@@ -126,7 +129,7 @@ function Home() {
         {isLoading && (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: '16px' }} aria-label="Loading inventory statistics">
             {Array.from({ length: 4 }, (_, index) => (
-              <Card key={index} style={{ minHeight: '122px', background: 'linear-gradient(90deg, #f8fafc 25%, #eef2f6 50%, #f8fafc 75%)' }} />
+              <StatisticCardSkeleton key={index} />
             ))}
           </div>
         )}
@@ -140,10 +143,7 @@ function Home() {
         {!isLoading && !error && (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: '16px' }}>
             {statistics.map((statistic) => (
-              <Card key={statistic.label}>
-                <p style={{ margin: 0, color: '#667085', fontSize: '0.9rem', fontWeight: 650 }}>{statistic.label}</p>
-                <p style={{ margin: '10px 0 0', color: '#172033', fontSize: '1.8rem', fontWeight: 750, letterSpacing: '-0.035em' }}>{statistic.value}</p>
-              </Card>
+              <StatisticCard key={statistic.title} {...statistic} />
             ))}
           </div>
         )}

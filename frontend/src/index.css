@@ -289,6 +289,42 @@ input {
   animation: button-spin 700ms linear infinite;
 }
 
+.statistic-card-skeleton {
+  overflow: hidden;
+}
+
+.statistic-card-skeleton__title,
+.statistic-card-skeleton__value,
+.statistic-card-skeleton__description {
+  background: linear-gradient(90deg, #f2f4f7 25%, #e4e9f0 50%, #f2f4f7 75%);
+  background-size: 200% 100%;
+  border-radius: 6px;
+  animation: statistic-card-shimmer 1.4s ease-in-out infinite;
+}
+
+.statistic-card-skeleton__title {
+  width: 42%;
+  height: 14px;
+}
+
+.statistic-card-skeleton__value {
+  width: 64%;
+  height: 30px;
+  margin-top: 14px;
+}
+
+.statistic-card-skeleton__description {
+  width: 52%;
+  height: 12px;
+  margin-top: 12px;
+}
+
+@keyframes statistic-card-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
 @keyframes button-spin {
   to {
     transform: rotate(360deg);
