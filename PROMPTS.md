@@ -4535,3 +4535,67 @@ Migrate the inventory page to TanStack Query while preserving existing functiona
 ## Result:
 
 Replaced manual inventory fetching with TanStack Query, introduced a reusable useCarsQuery hook, invalidated cached inventory after deletions, and preserved all existing inventory page behavior.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+
+Task: Migrate the Home dashboard to TanStack Query.
+
+Requirements:
+
+Create:
+
+frontend/src/hooks/queries/useDashboardQuery.ts
+
+Use:
+
+- Query key: ['dashboard']
+- Existing dashboard API service
+- Existing response shape
+- No UI logic
+
+Update Home.tsx:
+
+Replace:
+- useAsync
+- manual loading state
+- manual error state
+- manual fetch lifecycle
+
+with TanStack Query.
+
+Preserve:
+
+- Statistic cards
+- Inventory status chart
+- Dashboard skeleton
+- Chart skeleton
+- Empty states
+- Existing calculations
+- Existing responsive layout
+- Existing API response mapping
+- Existing error handling using getApiErrorMessage()
+
+Do not migrate any other page.
+
+Verification:
+
+Run:
+
+npm.cmd run build
+
+The build must complete successfully with zero TypeScript errors.
+
+Provide a concise summary of modified files.
+
+## Purpose:
+
+Complete migration of dashboard read operations to TanStack Query while preserving all existing UI behavior.
+
+## Result:
+
+Created a reusable dashboard query hook, replaced manual fetching with TanStack Query, preserved dashboard calculations and visualization, and completed migration of application read operations to React Query.

@@ -1,22 +1,10 @@
-import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import InventoryStatusChart, { InventoryStatusChartSkeleton } from '../components/charts/InventoryStatusChart'
 import Button from '../components/ui/Button'
 import Card from '../components/ui/Card'
 import StatisticCard, { StatisticCardSkeleton } from '../components/ui/StatisticCard'
-import useAsync from '../hooks/useAsync'
-import { getCars } from '../services/api'
+import { useDashboardQuery, type DashboardCar } from '../hooks/queries/useDashboardQuery'
 import { getApiErrorMessage } from '../utils/apiError'
-
-interface DashboardCar {
-  _id: string
-  price: number
-  status: string
-}
-
-interface CarsResponse {
-  cars: DashboardCar[]
-}
 
 const pageStyle = {
   width: 'min(100%, 1200px)',
@@ -26,15 +14,15 @@ const pageStyle = {
 
 function Home() {
   const navigate = useNavigate()
-  const { data, loading, error, execute } = useAsync<CarsResponse>()
-
-  useEffect(() => {
-    void execute(() => getCars<CarsResponse>())
-  }, [execute])
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+  } = useDashboardQuery()
 
   const cars: DashboardCar[] = data?.cars ?? []
-  const isLoading = loading || (data === null && error === null)
-  const errorMessage = error ? getApiErrorMessage(error, 'Unable to load dashboard data.') : ''
+  const errorMessage = isError ? getApiErrorMessage(error, 'Unable to load dashboard data.') : ''
 
   const availableCars = cars.filter(
     ({ status }) => status.toLowerCase() === 'available',
