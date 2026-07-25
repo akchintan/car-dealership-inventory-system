@@ -4415,3 +4415,123 @@ Provide reusable keyboard shortcuts to improve productivity and accessibility wh
 ## Result:
 
 Implemented a reusable keyboard shortcuts hook and an accessible keyboard shortcuts modal. Added shortcuts for search focus, clearing search, CSV export, navigation, and opening the shortcuts reference. Preserved all existing inventory functionality and verified the frontend production build completed successfully with zero TypeScript errors.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+
+Fix backend startup and configure persistent MongoDB connectivity.
+
+Requirements:
+- Load backend environment variables using dotenv before application startup
+- Connect to MongoDB before starting the Express server
+- Fail fast if the database connection cannot be established
+- Configure local MongoDB connection using MONGO_URI
+- Preserve existing authentication routes, middleware, Swagger, and application structure
+- Keep server startup asynchronous and properly handle startup failures
+- Ensure registration and login continue to function correctly
+- Verify frontend can communicate with backend without CORS issues
+- Verify successful user registration and login using the local MongoDB database
+
+## Purpose:
+
+Ensure the backend starts only after a successful database connection while enabling reliable local development with environment-based configuration.
+
+## Result:
+
+Configured environment loading and database initialization before server startup. Successfully connected the backend to the local MongoDB instance, restored registration and login functionality, and verified full frontend-backend authentication flow.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+
+Task: Introduce TanStack Query (React Query) infrastructure for server-state management.
+
+Requirements:
+
+Install:
+- @tanstack/react-query
+- @tanstack/react-query-devtools
+
+Create:
+frontend/src/lib/queryClient.ts
+
+Configure a singleton QueryClient with:
+- staleTime: 5 minutes
+- gcTime: 10 minutes
+- retry: 1
+- refetchOnWindowFocus: false
+- refetchOnReconnect: true
+- refetchOnMount: true
+
+Update main.tsx:
+- Wrap the application with QueryClientProvider.
+- Preserve all existing providers.
+- Mount React Query Devtools only in development.
+
+Do not migrate any pages yet.
+
+Verify:
+npm.cmd run build
+
+Provide a concise summary of modified files.
+
+## Purpose:
+
+Introduce production-grade server state management infrastructure without changing application behavior.
+
+## Result:
+
+Added a shared QueryClient, integrated QueryClientProvider, configured production defaults, mounted React Query Devtools only in development, and preserved the existing application architecture.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+
+Task: Migrate the Cars page to TanStack Query.
+
+Requirements:
+
+Replace the existing inventory fetch implementation with useQuery().
+
+Create:
+frontend/src/hooks/queries/useCarsQuery.ts
+
+Use:
+- Query key: ['cars']
+- Existing API service
+- No UI logic
+
+Update Cars.tsx:
+- Replace useAsync with useQuery.
+- Preserve search, debounced search, filtering, sorting, pagination, CSV export, keyboard shortcuts, delete confirmation, global loading overlay, empty states, and responsive layout.
+
+After successful delete:
+- Invalidate ['cars'].
+- Do not manually reload inventory.
+
+Continue using getApiErrorMessage().
+
+Do not migrate any other page.
+
+Verify:
+npm.cmd run build
+
+Provide a concise summary of modified files.
+
+## Purpose:
+
+Migrate the inventory page to TanStack Query while preserving existing functionality and introducing cache-aware server state management.
+
+## Result:
+
+Replaced manual inventory fetching with TanStack Query, introduced a reusable useCarsQuery hook, invalidated cached inventory after deletions, and preserved all existing inventory page behavior.

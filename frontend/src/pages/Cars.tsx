@@ -13,14 +13,11 @@ import { useToast } from '../context/ToastContext'
 import { useLoading } from '../context/LoadingContext'
 import useDebounce from '../hooks/useDebounce'
 import useKeyboardShortcuts from '../hooks/useKeyboardShortcuts'
-import useAsync from '../hooks/useAsync'
-import { deleteCar, getCars } from '../services/api'
+import { useCarsQuery } from '../hooks/queries/useCarsQuery'
+import { queryClient } from '../lib/queryClient'
+import { deleteCar } from '../services/api'
 import { getApiErrorMessage } from '../utils/apiError'
 import { exportCarsToCsv } from '../utils/exportCarsToCsv'
-
-interface CarsResponse {
-  cars: Car[]
-}
 
 const pageStyle = {
   width: 'min(100%, 1200px)',
@@ -42,7 +39,6 @@ function Cars() {
   const navigate = useNavigate()
   const { success } = useToast()
   const { showLoading, hideLoading } = useLoading()
-  const [cars, setCars] = useState<Car[]>([])
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [currentPage, setCurrentPage] = useState(1)
@@ -53,11 +49,17 @@ function Cars() {
   const [carPendingDeletion, setCarPendingDeletion] = useState<Car | null>(null)
   const [isShortcutsModalOpen, setIsShortcutsModalOpen] = useState(false)
   const searchInputRef = useRef<HTMLInputElement>(null)
-  const { data: carsResponse, loading, error, execute } = useAsync<CarsResponse>()
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+  } = useCarsQuery()
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300)
   const normalizedSearchTerm = debouncedSearchTerm.trim().toLowerCase()
   const summarySearchTerm = debouncedSearchTerm.trim()
+  const cars = data?.cars ?? []
   const searchFilteredCars = cars.filter((car) =>
     `${car.brand} ${car.model}`.toLowerCase().includes(normalizedSearchTerm),
   )
@@ -78,18 +80,7 @@ function Cars() {
   const firstVisibleCar = sortedCars.length === 0 ? 0 : pageStartIndex + 1
   const lastVisibleCar = pageStartIndex + paginatedCars.length
 
-  useEffect(() => {
-    void execute(() => getCars<CarsResponse>())
-  }, [execute])
-
-  useEffect(() => {
-    if (carsResponse) {
-      setCars(carsResponse.cars)
-    }
-  }, [carsResponse])
-
-  const isLoading = loading || (carsResponse === null && error === null)
-  const errorMessage = error ? getApiErrorMessage(error, 'Unable to load cars.') : ''
+  const errorMessage = isError ? getApiErrorMessage(error, 'Unable to load cars.') : ''
 
   useEffect(() => {
     if (currentPage > totalPages) {
@@ -115,7 +106,7 @@ function Cars() {
 
     try {
       await deleteCar<unknown>(car._id)
-      setCars((currentCars) => currentCars.filter(({ _id }) => _id !== car._id))
+      await queryClient.invalidateQueries({ queryKey: ['cars'] })
       success(`${car.brand} ${car.model} was deleted from inventory.`)
     } catch (requestError) {
       setDeleteError(getApiErrorMessage(requestError, 'Unable to delete the car.'))
