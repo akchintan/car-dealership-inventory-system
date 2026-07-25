@@ -4956,3 +4956,79 @@ Implemented optimistic deletion with cache snapshotting, rollback support, autom
 
 ---
 
+## Tool:
+OpenAI Codex
+
+## Prompt:
+
+Task: Introduce professional code quality tooling.
+
+Requirements:
+
+Install and configure:
+
+- ESLint
+- Prettier
+- eslint-config-prettier
+- eslint-plugin-react-hooks
+- eslint-plugin-react-refresh
+- Husky
+- lint-staged
+
+Update configuration:
+
+- eslint.config.*
+- .prettierrc
+- .prettierignore
+
+Package.json:
+
+Add scripts:
+
+- lint
+- lint:fix
+- format
+- format:check
+
+Configure lint-staged:
+
+For:
+
+*.ts
+*.tsx
+
+Run:
+
+- eslint --fix
+- prettier --write
+
+Configure Husky:
+
+Create a pre-commit hook that executes lint-staged.
+
+Commits must fail if linting fails.
+
+Do not reformat the entire project.
+
+Verification:
+
+Run:
+
+npm.cmd run lint
+npm.cmd run build
+npm.cmd run test
+
+All commands must pass successfully.
+
+Provide a concise summary of modified configuration files.
+
+## Purpose:
+
+Introduce automated code quality enforcement and a professional development workflow.
+
+## Result:
+
+Configured ESLint, Prettier, Husky, and lint-staged, added automated linting and formatting before commits, and verified successful linting, testing, and production builds.
+
+---
+
