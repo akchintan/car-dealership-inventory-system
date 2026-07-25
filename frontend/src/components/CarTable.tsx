@@ -24,6 +24,7 @@ interface CarTableProps {
   sortField: CarSortField
   sortDirection: SortDirection
   onSortChange: (field: CarSortField) => void
+  onPrefetchCar: (id: string) => void
 }
 
 const currencyFormatter = new Intl.NumberFormat(undefined, {
@@ -98,6 +99,7 @@ function CarTable({
   sortField,
   sortDirection,
   onSortChange,
+  onPrefetchCar,
 }: CarTableProps) {
   if (cars.length === 0) {
     return (
@@ -144,6 +146,8 @@ function CarTable({
                     <div style={{ display: 'flex', gap: '10px' }}>
                       <Link
                         to={`/cars/${car._id}/edit`}
+                        onMouseEnter={() => void onPrefetchCar(car._id)}
+                        onFocus={() => void onPrefetchCar(car._id)}
                         style={{ padding: '10px 14px', color: '#ffffff', background: '#c2410c', borderRadius: '8px', fontWeight: 700, textDecoration: 'none' }}
                       >
                         Edit

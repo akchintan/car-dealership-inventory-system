@@ -4715,3 +4715,78 @@ Separate server mutations from UI by introducing reusable TanStack Query mutatio
 ## Result:
 
 Created reusable mutation hooks for create, update, and delete operations. Migrated all inventory mutations to TanStack Query while preserving existing UI behavior and automatically invalidating cached inventory and dashboard queries.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+
+Task: Introduce reusable TanStack Query prefetching for navigation performance.
+
+Requirements:
+
+Create:
+
+frontend/src/hooks/prefetch/
+
+Create:
+
+- usePrefetchCar.ts
+- usePrefetchDashboard.ts
+
+Each hook must:
+
+- use useQueryClient()
+- use prefetchQuery()
+- contain no UI logic
+- contain no navigation logic
+- contain no component state
+
+Car prefetch:
+
+- Query key: ['car', id]
+- Use existing getCarById API service
+
+Dashboard prefetch:
+
+- Query key: ['dashboard']
+- Use existing dashboard API service
+
+Update Cars.tsx:
+
+Prefetch the selected vehicle when the Edit action receives:
+
+- mouse hover
+- keyboard focus
+
+Reuse cached queries.
+
+Update Login.tsx:
+
+After successful login:
+
+Start dashboard prefetch before redirect.
+
+Fire-and-forget only.
+
+Do not migrate other pages.
+
+Verification:
+
+Run:
+
+npm.cmd run build
+
+Build must complete successfully with zero TypeScript errors.
+
+Provide a concise summary of modified files.
+
+## Purpose:
+
+Improve navigation performance through cache-aware React Query prefetching while keeping prefetch logic reusable and independent of UI components.
+
+## Result:
+
+Introduced reusable prefetch hooks for vehicle and dashboard data, prefetched inventory details on Edit interaction, prefetched dashboard data after login, and improved perceived application responsiveness.

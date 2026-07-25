@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
+import { usePrefetchDashboard } from '../hooks/prefetch/usePrefetchDashboard'
 import api from '../services/api'
 import { getApiErrorMessage } from '../utils/apiError'
 
@@ -11,6 +12,7 @@ interface LoginResponse {
 function Login() {
   const { login } = useAuth()
   const { success } = useToast()
+  const prefetchDashboard = usePrefetchDashboard()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -28,6 +30,7 @@ function Login() {
       })
 
       login(data.token, { email })
+      void prefetchDashboard()
       success('Signed in successfully.')
     } catch (requestError) {
       setError(getApiErrorMessage(requestError, 'Unable to log in.'))

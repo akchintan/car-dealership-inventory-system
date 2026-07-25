@@ -14,6 +14,7 @@ import { useLoading } from '../context/LoadingContext'
 import useDebounce from '../hooks/useDebounce'
 import useKeyboardShortcuts from '../hooks/useKeyboardShortcuts'
 import { useDeleteCarMutation } from '../hooks/mutations/useDeleteCarMutation'
+import { usePrefetchCar } from '../hooks/prefetch/usePrefetchCar'
 import { useCarsQuery } from '../hooks/queries/useCarsQuery'
 import { getApiErrorMessage } from '../utils/apiError'
 import { exportCarsToCsv } from '../utils/exportCarsToCsv'
@@ -55,6 +56,7 @@ function Cars() {
     error,
   } = useCarsQuery()
   const { mutateAsync: deleteCar } = useDeleteCarMutation()
+  const prefetchCar = usePrefetchCar()
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300)
   const normalizedSearchTerm = debouncedSearchTerm.trim().toLowerCase()
@@ -246,6 +248,7 @@ function Cars() {
             sortField={sortField}
             sortDirection={sortDirection}
             onSortChange={handleSortChange}
+            onPrefetchCar={prefetchCar}
           />
 
           {sortedCars.length > 0 && (
