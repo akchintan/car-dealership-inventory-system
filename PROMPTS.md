@@ -4880,3 +4880,79 @@ Added comprehensive tests for reusable UI components, increased automated covera
 
 ---
 
+## Tool:
+OpenAI Codex
+
+## Prompt:
+
+Task: Implement optimistic delete updates using TanStack Query.
+
+Requirements:
+
+Update:
+
+frontend/src/hooks/mutations/useDeleteCarMutation.ts
+
+Implement optimistic updates.
+
+Workflow:
+
+onMutate
+
+- cancel outgoing ['cars'] queries
+- cancel outgoing ['dashboard'] queries
+- snapshot both caches
+- immediately remove deleted vehicle
+- immediately update dashboard cache
+
+Return rollback context.
+
+onError
+
+Restore:
+
+- ['cars']
+- ['dashboard']
+
+from the rollback snapshot.
+
+onSettled
+
+Invalidate:
+
+- ['cars']
+- ['dashboard']
+
+Keep:
+
+- no UI logic
+- no navigation
+- no loading overlay
+- no toast handling
+
+Cars.tsx should remain unchanged.
+
+Verification:
+
+Run:
+
+npm.cmd run build
+
+Run:
+
+npm.cmd run test
+
+Both must pass successfully.
+
+Provide a concise summary of modified files.
+
+## Purpose:
+
+Improve perceived application responsiveness by introducing optimistic cache updates while maintaining reliable rollback behavior.
+
+## Result:
+
+Implemented optimistic deletion with cache snapshotting, rollback support, automatic cache synchronization, and preserved existing UI behavior. Build and automated tests passed successfully.
+
+---
+
