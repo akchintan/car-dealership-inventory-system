@@ -10,7 +10,10 @@ import cors from 'cors';
 const app = express();
 app.use(
   cors({
-    origin: 'http://localhost:5173',
+    origin: [
+      'http://localhost:5173',
+      'https://car-dealership-inventory-system-1-6peu.onrender.com',
+    ],
     credentials: false,
   }),
 );
