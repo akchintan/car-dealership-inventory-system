@@ -8,7 +8,7 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
   if (typeof req.body.name !== 'string' || req.body.name.trim() === '') {
     res.status(400).json({
       success: false,
-      message: 'Name is required'
+      message: 'Name is required',
     });
     return;
   }
@@ -16,7 +16,7 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
   if (typeof req.body.email !== 'string' || req.body.email.trim() === '') {
     res.status(400).json({
       success: false,
-      message: 'Email is required'
+      message: 'Email is required',
     });
     return;
   }
@@ -24,7 +24,7 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(req.body.email)) {
     res.status(400).json({
       success: false,
-      message: 'Invalid email format'
+      message: 'Invalid email format',
     });
     return;
   }
@@ -32,7 +32,7 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
   if (typeof req.body.password !== 'string' || req.body.password.trim() === '') {
     res.status(400).json({
       success: false,
-      message: 'Password is required'
+      message: 'Password is required',
     });
     return;
   }
@@ -40,7 +40,7 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
   if (req.body.password.length < 8) {
     res.status(400).json({
       success: false,
-      message: 'Password must be at least 8 characters'
+      message: 'Password must be at least 8 characters',
     });
     return;
   }
@@ -53,7 +53,17 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
   ) {
     res.status(400).json({
       success: false,
-      message: 'Password must contain uppercase, lowercase, number and special character'
+      message: 'Password must contain uppercase, lowercase, number and special character',
+    });
+    return;
+  }
+
+  const existingUser = await User.findOne({ email: req.body.email });
+
+  if (existingUser) {
+    res.status(409).json({
+      success: false,
+      message: 'Email is already registered',
     });
     return;
   }
@@ -63,25 +73,56 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
   await User.create({
     name: req.body.name,
     email: req.body.email,
-    password: hashedPassword
+    password: hashedPassword,
   });
 
   res.status(201).json({
     success: true,
-    message: 'User registered successfully'
+    message: 'User registered successfully',
   });
 };
 
 export const loginUser = async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.body;
+
+  if (!email || !password) {
+    res.status(400).json({
+      success: false,
+      message: 'Email and password are required',
+    });
+    return;
+  }
+
   const user = await User.findOne({ email });
-  await bcrypt.compare(password, user!.password);
-  const token = jwt.sign({ id: user!._id }, process.env.JWT_SECRET || 'secret', {
-    expiresIn: '1d'
-  });
+
+  if (!user) {
+    res.status(401).json({
+      success: false,
+      message: 'Invalid email or password',
+    });
+    return;
+  }
+
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+
+  if (!isPasswordValid) {
+    res.status(401).json({
+      success: false,
+      message: 'Invalid email or password',
+    });
+    return;
+  }
+
+  const token = jwt.sign(
+    { id: user._id },
+    process.env.JWT_SECRET || 'secret',
+    {
+      expiresIn: '1d',
+    }
+  );
 
   res.status(200).json({
     success: true,
-    token
+    token,
   });
 };
