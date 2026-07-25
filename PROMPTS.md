@@ -5208,3 +5208,175 @@ Created a parallel CI workflow that installs dependencies, runs linting, execute
 
 ---
 
+## Tool:
+OpenAI Codex
+
+## Prompt:
+
+Task: Create a production-quality README.md for the Car Dealership Inventory System.
+
+Requirements:
+
+- Replace README.md.
+- Include:
+  - Project introduction
+  - Live demo placeholders
+  - Categorized features
+  - Tech stack
+  - Architecture
+  - Folder structure
+  - Screenshot placeholders
+  - Installation guide
+  - Environment variables
+  - Available scripts
+  - Testing
+  - Accessibility
+  - Performance
+  - CI/CD
+  - Future improvements
+  - Resume summary
+  - MIT License
+
+Use professional Markdown.
+
+Use tables where appropriate.
+
+Do not invent URLs.
+
+Use placeholders where required.
+
+## Purpose
+
+Create a professional public GitHub README suitable for a production-quality portfolio project.
+
+## Result
+
+Created a complete professional README with architecture, setup, developer documentation, testing, accessibility, performance, CI/CD, and resume-ready project summary.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+
+Task: Add a professional architecture diagram section to README.md.
+
+Requirements:
+
+Add a new section immediately after:
+
+## Architecture
+
+Title:
+
+## Architecture Diagram
+
+Create a GitHub-compatible Mermaid flowchart showing:
+
+Browser
+↓
+React Frontend
+↓
+React Router
+↓
+TanStack Query
+↓
+Axios
+↓
+Express Backend
+↓
+Controllers
+↓
+Services
+↓
+MongoDB
+
+Also illustrate JWT authentication between frontend and backend.
+
+Do not modify any existing README sections.
+
+## Purpose
+
+Provide a visual overview of the application's architecture for easier understanding by recruiters and developers.
+
+## Result
+
+Added a Mermaid architecture diagram showing the complete frontend-to-backend request flow and JWT authentication.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+
+Task: Add Docker support for the Car Dealership Inventory System.
+
+Requirements:
+
+Create:
+
+- backend/Dockerfile
+- frontend/Dockerfile
+- backend/.dockerignore
+- frontend/.dockerignore
+- docker-compose.yml
+
+Backend:
+
+- Node.js LTS
+- Install dependencies
+- Copy source
+- Expose port 5000
+- Run production server
+
+Frontend:
+
+- Node.js LTS
+- Build Vite application
+- Serve using Nginx
+- Expose port 80
+
+docker-compose.yml:
+
+Services:
+
+- mongodb
+- backend
+- frontend
+
+MongoDB:
+
+- Port 27017
+- Persistent volume
+
+Backend:
+
+Environment variables:
+
+- PORT
+- JWT_SECRET
+- MONGO_URI
+
+Frontend:
+
+Configure VITE_API_URL for backend communication.
+
+Do not modify application logic.
+
+Do not change package versions.
+
+Provide:
+
+- Created files
+- Ports
+- Docker commands
+
+## Purpose
+
+Containerize the complete application for consistent local development and deployment.
+
+## Result
+
+Added Dockerfiles, Docker Compose configuration, persistent MongoDB storage, and one-command startup for the complete application stack.
