@@ -13,9 +13,8 @@ import { useToast } from '../context/ToastContext'
 import { useLoading } from '../context/LoadingContext'
 import useDebounce from '../hooks/useDebounce'
 import useKeyboardShortcuts from '../hooks/useKeyboardShortcuts'
+import { useDeleteCarMutation } from '../hooks/mutations/useDeleteCarMutation'
 import { useCarsQuery } from '../hooks/queries/useCarsQuery'
-import { queryClient } from '../lib/queryClient'
-import { deleteCar } from '../services/api'
 import { getApiErrorMessage } from '../utils/apiError'
 import { exportCarsToCsv } from '../utils/exportCarsToCsv'
 
@@ -55,6 +54,7 @@ function Cars() {
     isError,
     error,
   } = useCarsQuery()
+  const { mutateAsync: deleteCar } = useDeleteCarMutation()
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300)
   const normalizedSearchTerm = debouncedSearchTerm.trim().toLowerCase()
@@ -105,8 +105,7 @@ function Cars() {
     showLoading('Deleting car...')
 
     try {
-      await deleteCar<unknown>(car._id)
-      await queryClient.invalidateQueries({ queryKey: ['cars'] })
+      await deleteCar(car._id)
       success(`${car.brand} ${car.model} was deleted from inventory.`)
     } catch (requestError) {
       setDeleteError(getApiErrorMessage(requestError, 'Unable to delete the car.'))

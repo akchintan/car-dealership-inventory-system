@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import CarForm, { type CarFormValues } from '../components/forms/CarForm'
 import { useToast } from '../context/ToastContext'
 import { useLoading } from '../context/LoadingContext'
-import { createCar, type CreateCarPayload } from '../services/api'
+import { useCreateCarMutation } from '../hooks/mutations/useCreateCarMutation'
+import { type CreateCarPayload } from '../services/api'
 import { getApiErrorMessage } from '../utils/apiError'
 
 const initialFormValues: CarFormValues = {
@@ -29,6 +30,7 @@ function AddCar() {
   const [submitError, setSubmitError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const { mutateAsync: createCar } = useCreateCarMutation()
 
   const handleSubmit = async (formValues: CarFormValues) => {
     setSubmitError('')
@@ -37,16 +39,14 @@ function AddCar() {
     showLoading('Creating vehicle...')
 
     try {
-      await createCar<unknown>(
-        {
-          brand: formValues.brand.trim(),
-          model: formValues.model.trim(),
-          year: Number(formValues.year),
-          price: Number(formValues.price),
-          mileage: Number(formValues.mileage),
-          status: formValues.status as CreateCarPayload['status'],
-        },
-      )
+      await createCar({
+        brand: formValues.brand.trim(),
+        model: formValues.model.trim(),
+        year: Number(formValues.year),
+        price: Number(formValues.price),
+        mileage: Number(formValues.mileage),
+        status: formValues.status as CreateCarPayload['status'],
+      })
 
       setIsSuccess(true)
       success('Car added successfully. Redirecting to inventory...')

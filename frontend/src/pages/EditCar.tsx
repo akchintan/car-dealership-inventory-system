@@ -3,9 +3,9 @@ import { useNavigate, useParams } from 'react-router-dom'
 import CarForm, { type CarFormValues } from '../components/forms/CarForm'
 import { useToast } from '../context/ToastContext'
 import { useLoading } from '../context/LoadingContext'
+import { useUpdateCarMutation } from '../hooks/mutations/useUpdateCarMutation'
 import {
   getCarById,
-  updateCar,
   type CreateCarPayload,
 } from '../services/api'
 import { getApiErrorMessage } from '../utils/apiError'
@@ -45,6 +45,7 @@ function EditCar() {
   const [isLoading, setIsLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const { mutateAsync: updateCar } = useUpdateCarMutation()
 
   useEffect(() => {
     let isMounted = true
@@ -102,9 +103,9 @@ function EditCar() {
     showLoading('Saving vehicle...')
 
     try {
-      await updateCar<unknown>(
+      await updateCar({
         id,
-        {
+        car: {
           brand: formValues.brand.trim(),
           model: formValues.model.trim(),
           year: Number(formValues.year),
@@ -112,7 +113,7 @@ function EditCar() {
           mileage: Number(formValues.mileage),
           status: formValues.status as CreateCarPayload['status'],
         },
-      )
+      })
 
       setIsSuccess(true)
       success('Car updated successfully. Redirecting to inventory...')

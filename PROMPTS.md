@@ -4599,3 +4599,119 @@ Complete migration of dashboard read operations to TanStack Query while preservi
 ## Result:
 
 Created a reusable dashboard query hook, replaced manual fetching with TanStack Query, preserved dashboard calculations and visualization, and completed migration of application read operations to React Query.
+
+---
+
+## Tool:
+OpenAI Codex
+
+## Prompt:
+
+Task: Introduce reusable TanStack Query mutation hooks for inventory management.
+
+Requirements:
+
+Create:
+
+frontend/src/hooks/mutations/
+
+Create:
+
+- useCreateCarMutation.ts
+- useUpdateCarMutation.ts
+- useDeleteCarMutation.ts
+
+Each hook must:
+
+- use useMutation()
+- use the existing API service
+- contain no UI logic
+- contain no toast logic
+- contain no navigation logic
+- contain no component state
+
+Own only:
+
+- mutation function
+- cache invalidation
+
+Invalidate:
+
+['cars']
+['dashboard']
+
+after successful mutations.
+
+Do not manually refetch.
+
+Update:
+
+AddCar.tsx
+
+Replace direct API calls with useCreateCarMutation().
+
+Preserve:
+
+- validation
+- loading overlay
+- toasts
+- redirect
+- shared CarForm
+
+Update:
+
+EditCar.tsx
+
+Replace direct update API with useUpdateCarMutation().
+
+Preserve:
+
+- vehicle loading
+- validation
+- loading overlay
+- redirect
+- toasts
+
+Update:
+
+Cars.tsx
+
+Replace delete API with useDeleteCarMutation().
+
+Preserve:
+
+- confirmation modal
+- loading overlay
+- keyboard shortcuts
+- CSV export
+- search
+- filtering
+- sorting
+- pagination
+- toast notifications
+- error handling
+
+Do not move:
+
+- navigation
+- loading overlay
+- validation
+- toast logic
+
+Verification:
+
+Run:
+
+npm.cmd run build
+
+Build must complete successfully with zero TypeScript errors.
+
+Provide a concise summary of modified files.
+
+## Purpose:
+
+Separate server mutations from UI by introducing reusable TanStack Query mutation hooks and centralized cache invalidation.
+
+## Result:
+
+Created reusable mutation hooks for create, update, and delete operations. Migrated all inventory mutations to TanStack Query while preserving existing UI behavior and automatically invalidating cached inventory and dashboard queries.
