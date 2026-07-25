@@ -5,8 +5,15 @@ import carRouter from './routes/car.routes';
 import swaggerSpec from './config/swagger';
 import errorMiddleware from './middleware/error.middleware';
 import userRouter from './routes/user.routes';
+import cors from 'cors';
 
 const app = express();
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    credentials: false,
+  }),
+);
 
 app.use(express.json());
 app.use('/api/auth', authRouter);

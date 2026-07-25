@@ -1,5 +1,7 @@
 import axios, { type AxiosError } from 'axios'
 
+console.log("API URL =", import.meta.env.VITE_API_URL)
+
 export const AUTH_TOKEN_STORAGE_KEY = 'authToken'
 export const API_UNAUTHORIZED_EVENT = 'api:unauthorized'
 
