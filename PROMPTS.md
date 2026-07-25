@@ -5133,3 +5133,78 @@ Improved form accessibility, table semantics, loading announcements, accessible 
 
 ---
 
+## Tool:
+OpenAI Codex
+
+## Prompt:
+
+Task: Configure GitHub Actions CI/CD for the project.
+
+Requirements:
+
+Create:
+
+.github/workflows/ci.yml
+
+Trigger:
+
+- push
+- pull_request
+
+for:
+
+main
+
+Frontend job:
+
+Working directory:
+
+frontend
+
+Run:
+
+- npm ci
+- npm run lint
+- npm run test
+- npm run build
+
+Backend job:
+
+Working directory:
+
+backend
+
+Run:
+
+- npm ci
+
+If build script exists:
+
+- npm run build
+
+If test script exists:
+
+- npm run test
+
+Run frontend and backend in parallel.
+
+Use Node.js LTS.
+
+Enable npm cache.
+
+Do not modify application code.
+
+Validate workflow syntax.
+
+Provide verification instructions.
+
+## Purpose:
+
+Automate code quality verification for every push and pull request using GitHub Actions.
+
+## Result:
+
+Created a parallel CI workflow that installs dependencies, runs linting, executes automated tests, performs production builds, and validates both frontend and backend on every push and pull request.
+
+---
+
