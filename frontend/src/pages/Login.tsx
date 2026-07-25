@@ -40,16 +40,19 @@ function Login() {
   }
 
   return (
-    <section>
+    <section aria-labelledby="login-heading">
       <div className="auth-page">
         <div className="auth-card">
           <p className="auth-eyebrow">Dealer portal</p>
-          <h1>Welcome back</h1>
-          <p className="auth-intro">
-            Sign in to manage your dealership inventory.
-          </p>
+          <h1 id="login-heading">Welcome back</h1>
+          <p className="auth-intro">Sign in to manage your dealership inventory.</p>
 
-          <form className="auth-form" onSubmit={handleSubmit}>
+          <form
+            className="auth-form"
+            onSubmit={handleSubmit}
+            aria-busy={isLoading}
+            aria-describedby={error ? 'login-error' : undefined}
+          >
             <div className="form-field">
               <label htmlFor="login-email">Email address</label>
               <input
@@ -77,12 +80,17 @@ function Login() {
             </div>
 
             {error && (
-              <p className="form-message form-message--error" role="alert">
+              <p id="login-error" className="form-message form-message--error" role="alert">
                 {error}
               </p>
             )}
 
-            <button className="auth-submit" type="submit" disabled={isLoading}>
+            <button
+              className="auth-submit"
+              type="submit"
+              disabled={isLoading}
+              aria-busy={isLoading}
+            >
               {isLoading && <span className="button-spinner" aria-hidden="true" />}
               {isLoading ? 'Signing in...' : 'Sign in'}
             </button>

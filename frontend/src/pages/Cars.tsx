@@ -7,7 +7,9 @@ import StatusFilter from '../components/StatusFilter'
 import Button from '../components/ui/Button'
 import Card from '../components/ui/Card'
 import ConfirmationModal from '../components/ui/ConfirmationModal'
-import KeyboardShortcutsModal, { type KeyboardShortcutDisplay } from '../components/ui/KeyboardShortcutsModal'
+import KeyboardShortcutsModal, {
+  type KeyboardShortcutDisplay,
+} from '../components/ui/KeyboardShortcutsModal'
 import Spinner from '../components/ui/Spinner'
 import { useToast } from '../context/ToastContext'
 import { useLoading } from '../context/LoadingContext'
@@ -49,12 +51,7 @@ function Cars() {
   const [carPendingDeletion, setCarPendingDeletion] = useState<Car | null>(null)
   const [isShortcutsModalOpen, setIsShortcutsModalOpen] = useState(false)
   const searchInputRef = useRef<HTMLInputElement>(null)
-  const {
-    data,
-    isLoading,
-    isError,
-    error,
-  } = useCarsQuery()
+  const { data, isLoading, isError, error } = useCarsQuery()
   const { mutateAsync: deleteCar } = useDeleteCarMutation()
   const prefetchCar = usePrefetchCar()
 
@@ -65,13 +62,14 @@ function Cars() {
   const searchFilteredCars = cars.filter((car) =>
     `${car.brand} ${car.model}`.toLowerCase().includes(normalizedSearchTerm),
   )
-  const statusFilteredCars = searchFilteredCars.filter((car) =>
-    statusFilter === 'all' || car.status.toLowerCase() === statusFilter,
+  const statusFilteredCars = searchFilteredCars.filter(
+    (car) => statusFilter === 'all' || car.status.toLowerCase() === statusFilter,
   )
   const sortedCars = [...statusFilteredCars].sort((firstCar, secondCar) => {
-    const comparison = sortField === 'brand'
-      ? firstCar.brand.localeCompare(secondCar.brand)
-      : firstCar[sortField] - secondCar[sortField]
+    const comparison =
+      sortField === 'brand'
+        ? firstCar.brand.localeCompare(secondCar.brand)
+        : firstCar[sortField] - secondCar[sortField]
 
     return sortDirection === 'ascending' ? comparison : -comparison
   })
@@ -177,10 +175,13 @@ function Cars() {
   ])
 
   return (
-    <section style={pageStyle} aria-labelledby="cars-heading">
+    <section style={pageStyle} aria-labelledby="cars-heading" aria-busy={isLoading}>
       <header style={{ marginBottom: '28px' }}>
         <p className="auth-eyebrow">Inventory</p>
-        <h1 id="cars-heading" style={{ margin: 0, color: '#172033', fontSize: 'clamp(1.75rem, 4vw, 2.25rem)' }}>
+        <h1
+          id="cars-heading"
+          style={{ margin: 0, color: '#172033', fontSize: 'clamp(1.75rem, 4vw, 2.25rem)' }}
+        >
           Available cars
         </h1>
       </header>
@@ -195,13 +196,20 @@ function Cars() {
       )}
 
       {!isLoading && errorMessage && (
-        <Card style={{ color: '#b42318', background: '#fef3f2', borderColor: '#fecdca' }} role="alert">
+        <Card
+          style={{ color: '#b42318', background: '#fef3f2', borderColor: '#fecdca' }}
+          role="alert"
+        >
           {errorMessage}
         </Card>
       )}
 
       {!isLoading && !errorMessage && deleteError && (
-        <p className="form-message form-message--error" role="alert" style={{ marginBottom: '20px' }}>
+        <p
+          className="form-message form-message--error"
+          role="alert"
+          style={{ marginBottom: '20px' }}
+        >
           {deleteError}
         </p>
       )}
@@ -223,7 +231,12 @@ function Cars() {
               </div>
               <StatusFilter value={statusFilter} onChange={handleStatusFilterChange} />
               <div style={{ display: 'flex', alignItems: 'end' }}>
-                <Button type="button" variant="secondary" onClick={handleExportCsv} disabled={sortedCars.length === 0}>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={handleExportCsv}
+                  disabled={sortedCars.length === 0}
+                >
                   Export CSV
                 </Button>
               </div>
@@ -262,9 +275,11 @@ function Cars() {
           <ConfirmationModal
             open={carPendingDeletion !== null}
             title="Delete vehicle?"
-            message={carPendingDeletion
-              ? `Delete ${carPendingDeletion.brand} ${carPendingDeletion.model} from inventory? This cannot be undone.`
-              : ''}
+            message={
+              carPendingDeletion
+                ? `Delete ${carPendingDeletion.brand} ${carPendingDeletion.model} from inventory? This cannot be undone.`
+                : ''
+            }
             confirmLabel={deletingCarId ? 'Deleting...' : 'Delete'}
             cancelLabel="Cancel"
             loading={deletingCarId !== null}

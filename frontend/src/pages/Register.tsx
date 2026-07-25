@@ -27,16 +27,19 @@ function Register() {
   }
 
   return (
-    <section>
+    <section aria-labelledby="register-heading">
       <div className="auth-page">
         <div className="auth-card">
           <p className="auth-eyebrow">Dealer portal</p>
-          <h1>Create your account</h1>
-          <p className="auth-intro">
-            Set up your account and keep your vehicle inventory moving.
-          </p>
+          <h1 id="register-heading">Create your account</h1>
+          <p className="auth-intro">Set up your account and keep your vehicle inventory moving.</p>
 
-          <form className="auth-form" onSubmit={handleSubmit}>
+          <form
+            className="auth-form"
+            onSubmit={handleSubmit}
+            aria-busy={isLoading}
+            aria-describedby={error ? 'register-error' : undefined}
+          >
             <div className="form-field">
               <label htmlFor="register-name">Full name</label>
               <input
@@ -77,11 +80,16 @@ function Register() {
             </div>
 
             {error && (
-              <p className="form-message form-message--error" role="alert">
+              <p id="register-error" className="form-message form-message--error" role="alert">
                 {error}
               </p>
             )}
-            <button className="auth-submit" type="submit" disabled={isLoading}>
+            <button
+              className="auth-submit"
+              type="submit"
+              disabled={isLoading}
+              aria-busy={isLoading}
+            >
               {isLoading && <span className="button-spinner" aria-hidden="true" />}
               {isLoading ? 'Creating account...' : 'Create account'}
             </button>

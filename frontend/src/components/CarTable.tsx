@@ -77,7 +77,13 @@ interface SortableHeaderProps {
   onSortChange: (field: CarSortField) => void
 }
 
-function SortableHeader({ label, field, sortField, sortDirection, onSortChange }: SortableHeaderProps) {
+function SortableHeader({
+  label,
+  field,
+  sortField,
+  sortDirection,
+  onSortChange,
+}: SortableHeaderProps) {
   const isActive = sortField === field
   const indicator = isActive ? (sortDirection === 'ascending' ? '▲' : '▼') : '↕'
 
@@ -85,7 +91,9 @@ function SortableHeader({ label, field, sortField, sortDirection, onSortChange }
     <th scope="col" aria-sort={isActive ? sortDirection : 'none'} style={headerCellStyle}>
       <button type="button" onClick={() => onSortChange(field)} style={sortButtonStyle}>
         {label}
-        <span aria-hidden="true" style={{ color: isActive ? '#344054' : '#98a2b3' }}>{indicator}</span>
+        <span aria-hidden="true" style={{ color: isActive ? '#344054' : '#98a2b3' }}>
+          {indicator}
+        </span>
       </button>
     </th>
   )
@@ -106,9 +114,11 @@ function CarTable({
       <Card>
         <EmptyState
           title={isSearching ? 'No matching vehicles found.' : 'No cars in inventory'}
-          description={isSearching
-            ? 'Try searching for a different brand or model.'
-            : 'Cars added to the dealership will appear here.'}
+          description={
+            isSearching
+              ? 'Try searching for a different brand or model.'
+              : 'Cars added to the dealership will appear here.'
+          }
         />
       </Card>
     )
@@ -120,13 +130,43 @@ function CarTable({
         <table style={{ width: '100%', minWidth: '820px', borderCollapse: 'collapse' }}>
           <thead>
             <tr>
-              <SortableHeader label="Brand" field="brand" sortField={sortField} sortDirection={sortDirection} onSortChange={onSortChange} />
-              <th scope="col" style={headerCellStyle}>Model</th>
-              <SortableHeader label="Year" field="year" sortField={sortField} sortDirection={sortDirection} onSortChange={onSortChange} />
-              <SortableHeader label="Price" field="price" sortField={sortField} sortDirection={sortDirection} onSortChange={onSortChange} />
-              <SortableHeader label="Mileage" field="mileage" sortField={sortField} sortDirection={sortDirection} onSortChange={onSortChange} />
-              <th scope="col" style={headerCellStyle}>Status</th>
-              <th scope="col" style={headerCellStyle}>Actions</th>
+              <SortableHeader
+                label="Brand"
+                field="brand"
+                sortField={sortField}
+                sortDirection={sortDirection}
+                onSortChange={onSortChange}
+              />
+              <th scope="col" style={headerCellStyle}>
+                Model
+              </th>
+              <SortableHeader
+                label="Year"
+                field="year"
+                sortField={sortField}
+                sortDirection={sortDirection}
+                onSortChange={onSortChange}
+              />
+              <SortableHeader
+                label="Price"
+                field="price"
+                sortField={sortField}
+                sortDirection={sortDirection}
+                onSortChange={onSortChange}
+              />
+              <SortableHeader
+                label="Mileage"
+                field="mileage"
+                sortField={sortField}
+                sortDirection={sortDirection}
+                onSortChange={onSortChange}
+              />
+              <th scope="col" style={headerCellStyle}>
+                Status
+              </th>
+              <th scope="col" style={headerCellStyle}>
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -136,19 +176,33 @@ function CarTable({
 
               return (
                 <tr key={car._id}>
-                  <td style={{ ...cellStyle, fontWeight: 700, color: '#172033' }}>{car.brand}</td>
+                  <th scope="row" style={{ ...cellStyle, fontWeight: 700, color: '#172033' }}>
+                    {car.brand}
+                  </th>
                   <td style={cellStyle}>{car.model}</td>
                   <td style={cellStyle}>{car.year}</td>
-                  <td style={{ ...cellStyle, fontWeight: 700 }}>{currencyFormatter.format(car.price)}</td>
+                  <td style={{ ...cellStyle, fontWeight: 700 }}>
+                    {currencyFormatter.format(car.price)}
+                  </td>
                   <td style={cellStyle}>{numberFormatter.format(car.mileage)} km</td>
-                  <td style={cellStyle}><StatusBadge status={car.status} /></td>
+                  <td style={cellStyle}>
+                    <StatusBadge status={car.status} />
+                  </td>
                   <td style={cellStyle}>
                     <div style={{ display: 'flex', gap: '10px' }}>
                       <Link
                         to={`/cars/${car._id}/edit`}
+                        aria-label={`Edit ${car.brand} ${car.model}`}
                         onMouseEnter={() => void onPrefetchCar(car._id)}
                         onFocus={() => void onPrefetchCar(car._id)}
-                        style={{ padding: '10px 14px', color: '#ffffff', background: '#c2410c', borderRadius: '8px', fontWeight: 700, textDecoration: 'none' }}
+                        style={{
+                          padding: '10px 14px',
+                          color: '#ffffff',
+                          background: '#c2410c',
+                          borderRadius: '8px',
+                          fontWeight: 700,
+                          textDecoration: 'none',
+                        }}
                       >
                         Edit
                       </Link>
@@ -156,7 +210,18 @@ function CarTable({
                         type="button"
                         onClick={() => onDelete(car)}
                         disabled={isDeleteDisabled}
-                        style={{ padding: '10px 14px', color: '#b42318', background: '#ffffff', border: '1px solid #fecdca', borderRadius: '8px', cursor: isDeleteDisabled ? 'wait' : 'pointer', fontWeight: 700, opacity: isDeleteDisabled && !isDeleting ? 0.65 : 1 }}
+                        aria-label={`Delete ${car.brand} ${car.model}`}
+                        aria-busy={isDeleting || undefined}
+                        style={{
+                          padding: '10px 14px',
+                          color: '#b42318',
+                          background: '#ffffff',
+                          border: '1px solid #fecdca',
+                          borderRadius: '8px',
+                          cursor: isDeleteDisabled ? 'wait' : 'pointer',
+                          fontWeight: 700,
+                          opacity: isDeleteDisabled && !isDeleting ? 0.65 : 1,
+                        }}
                       >
                         {isDeleting ? 'Deleting...' : 'Delete'}
                       </button>

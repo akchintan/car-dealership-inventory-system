@@ -5032,3 +5032,104 @@ Configured ESLint, Prettier, Husky, and lint-staged, added automated linting and
 
 ---
 
+## Tool:
+OpenAI Codex
+
+## Prompt:
+
+Task: Perform a frontend accessibility audit and implement accessibility improvements without changing the visual design.
+
+Requirements:
+
+Audit:
+
+- Button
+- Card
+- Dialog/Modal
+- KeyboardShortcutsModal
+- LoadingOverlay
+- ErrorFallback
+- CarForm
+- Login
+- Register
+- AddCar
+- EditCar
+- Cars
+- Home
+
+Improve accessibility using appropriate:
+
+- aria-label
+- aria-labelledby
+- aria-describedby
+- aria-busy
+- aria-hidden
+- role attributes
+- semantic HTML
+
+Forms:
+
+- accessible labels
+- accessible validation
+- aria-invalid
+- aria-describedby
+- required semantics
+
+Dialogs:
+
+- role="dialog"
+- aria-modal
+- focus trapping
+- focus restoration
+- Escape support
+
+Loading:
+
+Expose loading state to assistive technologies without duplicate announcements.
+
+Buttons:
+
+Ensure icon-only actions have accessible names.
+
+Tables:
+
+Improve row/header semantics.
+
+Navigation:
+
+Preserve aria-current where appropriate.
+
+Do not:
+
+- change styling
+- change layouts
+- change business logic
+
+Verification:
+
+Run:
+
+npm.cmd run test
+
+Run:
+
+npm.cmd run build
+
+Both must pass successfully.
+
+Provide:
+
+- modified files
+- implemented accessibility improvements
+- remaining accessibility limitations requiring design changes
+
+## Purpose:
+
+Improve accessibility, semantic correctness, and assistive technology support while preserving the existing user experience.
+
+## Result:
+
+Improved form accessibility, table semantics, loading announcements, accessible control names, and screen reader support without altering layouts, styling, or business logic. All tests and production builds completed successfully.
+
+---
+

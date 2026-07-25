@@ -12,7 +12,6 @@ function LoadingOverlay({ open, message = 'Loading...' }: LoadingOverlayProps) {
   return (
     <div
       role="status"
-      aria-live="polite"
       aria-atomic="true"
       style={{
         position: 'fixed',
@@ -24,7 +23,15 @@ function LoadingOverlay({ open, message = 'Loading...' }: LoadingOverlayProps) {
         placeItems: 'center',
       }}
     >
-      <Card style={{ display: 'flex', alignItems: 'center', gap: '12px', width: 'min(100%, 360px)', color: '#172033' }}>
+      <Card
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          width: 'min(100%, 360px)',
+          color: '#172033',
+        }}
+      >
         <Spinner size={20} />
         <span style={{ fontWeight: 700 }}>{message}</span>
       </Card>
